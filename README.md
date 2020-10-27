@@ -1,6 +1,6 @@
 # Mortal Gunfight
 
-Mortal Gunfight es un juego desarrollado com un proyecto académico para la asignatura de Juegos en Red del grado de Diseño y Desarrollo de Videojuegos(URJC).
+Mortal Gunfight es un juego desarrollado como un proyecto académico para la asignatura de Juegos en Red del grado de Diseño y Desarrollo de Videojuegos (URJC).
 Este juego enfrenta en una batalla 1vs1 a dos jugadores, donde el que más bajas consiga al finalizar el tiempo de la partida gana.
     
 
