@@ -1,4 +1,4 @@
-# Mortal Gunfight
+# Mortal Gunfight 🔫
 
 Mortal Gunfight es un juego desarrollado como un proyecto académico para la asignatura de Juegos en Red del grado de Diseño y Desarrollo de Videojuegos (URJC).
 Este juego enfrenta en una batalla 1vs1 a dos jugadores, donde el que más bajas consiga al finalizar el tiempo de la partida gana.
@@ -15,7 +15,7 @@ Este juego enfrenta en una batalla 1vs1 a dos jugadores, donde el que más bajas
 
 ---
 
-## Documento de Diseño de Juego
+## Documento de Diseño de Juego 📄
 
 ### Descripción del juego
 
@@ -46,8 +46,8 @@ Todos los personajes son iguales en cuanto a características y solo cambian est
 
 | **Personaje**             | **Descripción**           | **Información Adicional** |
 | --------------------- | --------------------- | --------------------- |
-| Toby y Mr. Blind|Mr. Blind es un hombre ciego que tiene un perro llamado Toby que le ayuda en las batallas.|Cuando coge un arma, Toby se pone a dos patas y es el que dispara. ¿Cómo iba a disparar Mr. Blind si está ciego? |
-| The BillyRex | The BillyRex es un flipado de los dinosaurios que va a todos sitios vestido de dinosaurio. Incluso al campo de batalla. | The BillyRex está tan flipado que incluso ruge como un dinosaurio. |
+| Toby y Mr. Blind 👨🏾‍🦯 🦮|Mr. Blind es un hombre ciego que tiene un perro llamado Toby que le ayuda en las batallas.|Cuando coge un arma, Toby se pone a dos patas y es el que dispara. ¿Cómo iba a disparar Mr. Blind si está ciego? |
+| The BillyRex 🦖| The BillyRex es un flipado de los dinosaurios que va a todos sitios vestido de dinosaurio. Incluso al campo de batalla. | The BillyRex está tan flipado que incluso ruge como un dinosaurio. |
 | El Cojo Ninja | El Cojo Ninja lleva entrenando las técnicas del ninjutsu toda su vida y está preparado para enfrentarse a cualquiera. | Nadie sabe de donde proviene su nombre, pero todos saben que no es precisamente cojo. |
 
 ### Gameplay
