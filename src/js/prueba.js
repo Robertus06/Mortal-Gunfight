@@ -1,47 +1,48 @@
 var config = {
-        type: Phaser.AUTO,
-        width: 800,
-        height: 600,
-        physics: {
-            default: 'arcade',
-            arcade: {
-                gravity: { y: 200 }
-            }
-        },
-        scene: {
-            preload: preload,
-            create: create
+    type: Phaser.AUTO,
+    width: 960,
+    height: 540,
+
+    physics: {
+        default: 'arcade',
+        arcade: {
+            gravity: { y: 200 }
         }
-    };
+    },
 
-    var game = new Phaser.Game(config);
-
-    function preload ()
-    {
-        this.load.setBaseURL('http://labs.phaser.io');
-
-        this.load.image('sky', 'assets/skies/space3.png');
-        this.load.image('logo', 'assets/sprites/phaser3-logo.png');
-        this.load.image('red', 'assets/particles/red.png');
+    scene: {
+        preload: preload,
+        create: create
     }
+};
 
-    function create ()
-    {
-        this.add.image(400, 300, 'sky');
+var game = new Phaser.Game(config);
 
-        var particles = this.add.particles('red');
+function preload ()
+{
+    this.load.image('prueba', 'resources/img/ImagenPrueba.png');
+}
 
-        var emitter = particles.createEmitter({
-            speed: 100,
-            scale: { start: 1, end: 0 },
-            blendMode: 'ADD'
-        });
+function create ()
+{
+    var imagenPrueba = this.add.image(480, 270, 'prueba');
+    imagenPrueba.setScale(0.5);
+    
+    /**
+    var particles = this.add.particles('prueba');
 
-        var logo = this.physics.add.image(400, 100, 'logo');
+    var emitter = particles.createEmitter({
+        speed: 100,
+        scale: { start: 1, end: 0 },
+        blendMode: 'ADD'
+    });
 
-        logo.setVelocity(100, 200);
-        logo.setBounce(1, 1);
-        logo.setCollideWorldBounds(true);
+    var logo = this.physics.add.image(960, 540, 'prueba');
 
-        emitter.startFollow(logo);
-    }
+    logo.setVelocity(100, 200);
+    logo.setBounce(1, 1);
+    logo.setCollideWorldBounds(true);
+
+    emitter.startFollow(logo);
+    /**/
+}
