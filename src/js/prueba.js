@@ -1,7 +1,7 @@
 var config = {
     type: Phaser.AUTO,
-    width: 960,
-    height: 540,
+    width: 1280,
+    height: 720,
 
     physics: {
         default: 'arcade',
@@ -20,13 +20,13 @@ var game = new Phaser.Game(config);
 
 function preload ()
 {
-    this.load.image('prueba', 'resources/img/ImagenPrueba.png');
+    this.load.image('prueba', 'resources/img/controles.png');
 }
 
 function create ()
 {
-    var imagenPrueba = this.add.image(480, 270, 'prueba');
-    imagenPrueba.setScale(0.5);
+    var imagenPrueba = this.add.image(640, 360, 'prueba');
+    //imagenPrueba.setScale(0.5);
     
     /**
     var particles = this.add.particles('prueba');
