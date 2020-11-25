@@ -22,6 +22,7 @@ var game = new Phaser.Game(config);
 
 function preload ()
 {
+    //Alo
     this.load.image('inicio', 'resources/img/inicio.png');
     this.load.image('botonControles', 'resources/img/botonControles.png');
     this.load.image('botonJugar', 'resources/img/botonJugar.png');
