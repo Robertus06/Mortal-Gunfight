@@ -1,0 +1,73 @@
+body { 
+    background: #181818
+}
+
+main {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center
+}
+
+h1 {
+    font-size: 21px;
+    margin: 0;
+    color: rgb(233, 239, 255)
+}
+
+#juego {
+    width: 1280px;
+    height: 720px;
+}
+
+.cabecera {
+    display: flex;
+    width: 1280px;
+    height: 64px;
+    background: rgb(10, 10, 10)
+}
+
+.cabecera2 {
+    display: flex;
+    width: 1280px;
+    height: 80px;
+    background: rgb(10, 10, 10)
+}
+
+.creadores {
+    color: rgb(168, 198, 201);
+    font-size: 10px
+}
+
+.creadores2 {
+    color: rgb(168, 198, 201);
+    font-size: 12px
+}
+
+.logo {
+    margin: 12px;
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    box-shadow: 0px 2px 4px 0px rgb(0, 0, 0)
+}
+
+.tecla {
+    margin: 9px;
+    width: 90px;
+    height: 65px
+}
+
+.descripcion {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%
+}
+
+.creditos p {
+    font-size: 15px;
+    text-align: left;
+    margin: 0;
+    color: rgb(128, 128, 128)
+}
