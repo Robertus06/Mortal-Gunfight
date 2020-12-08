@@ -4,6 +4,12 @@ export default class ScenePersonajeUno extends Phaser.Scene {
     }
 
     create() {
+        this.transicion = this.sys.game.globalsTransicion.transicion;
+        
+        if (!this.transicion.cancelarSeleccion) {
+            this.cameras.main.fadeIn(250);
+        }
+
         this.fondo = this.add.image(640, 360, 'personajes');
 
         this.personaje = this.sys.game.globalsPersonaje.personaje;
@@ -112,6 +118,10 @@ export default class ScenePersonajeUno extends Phaser.Scene {
         }.bind(this));
 
         this.cursor_ESC = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
+
+        this.cameras.main.once('camerafadeoutcomplete', function () {
+            this.scene.start("SceneMenu");
+        }.bind(this));
     }
 
     updateAudio() {
@@ -126,7 +136,7 @@ export default class ScenePersonajeUno extends Phaser.Scene {
 
     update() {
         if (this.cursor_ESC.isDown) {
-            this.scene.start("SceneMenu");
+            this.cameras.main.fadeOut(250);
         }
     }
 }

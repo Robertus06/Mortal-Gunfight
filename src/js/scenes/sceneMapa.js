@@ -4,7 +4,11 @@ export default class SceneMapa extends Phaser.Scene {
     }
 
     create() {
+        this.cameras.main.fadeIn(250);
+
         this.fondo = this.add.image(640, 360, 'mapa');
+
+        this.transicion = this.sys.game.globalsTransicion.transicion;
 
         this.mapa = this.sys.game.globalsMapa.mapa;
         this.mapa.escenario = null;
@@ -91,6 +95,11 @@ export default class SceneMapa extends Phaser.Scene {
         }.bind(this));
 
         this.cursor_ESC = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
+
+        this.cameras.main.once('camerafadeoutcomplete', function () {
+            this.scene.start("ScenePersonajeUno");
+            this.transicion.cancelarSeleccion = false;
+        }.bind(this));
     }
 
     updateAudio() {
@@ -105,7 +114,7 @@ export default class SceneMapa extends Phaser.Scene {
 
     update() {
         if (this.cursor_ESC.isDown) {
-            this.scene.start("ScenePersonajeDos");
+            this.cameras.main.fadeOut(250);
         }
     }
 }

@@ -11,6 +11,7 @@ import SceneJuego from '/src/js/scenes/sceneJuego.js';
 import Sonido from '/src/js/component/sonido.js';
 import Personaje from '/src/js/component/personaje.js';
 import Mapa from '/src/js/component/mapa.js';
+import Transicion from '/src/js/component/transicion.js';
 
 class Game extends Phaser.Game {
     constructor() {
@@ -24,6 +25,9 @@ class Game extends Phaser.Game {
 
         const mapa = new Mapa();
         this.globalsMapa = { mapa };
+
+        const transicion = new Transicion();
+        this.globalsTransicion = { transicion };
 
         this.scene.add('BootScene', BootScene);
         this.scene.add('Bootloader', Bootloader);

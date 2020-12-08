@@ -4,6 +4,8 @@ export default class ScenePersonajeDos extends Phaser.Scene {
     }
 
     create() {
+        this.transicion = this.sys.game.globalsTransicion.transicion;
+
         this.fondo = this.add.image(640, 360, 'personajes');
 
         this.personaje = this.sys.game.globalsPersonaje.personaje;
@@ -40,7 +42,7 @@ export default class ScenePersonajeDos extends Phaser.Scene {
     
             this.bDinosaurio.on('pointerdown', function () {
                 this.personaje.jugadorDos = 'd';
-                this.scene.start("SceneMapa");
+                this.cameras.main.fadeOut(250);
             }.bind(this));
         }
 
@@ -67,7 +69,7 @@ export default class ScenePersonajeDos extends Phaser.Scene {
     
             this.bZombie.on('pointerdown', function () {
                 this.personaje.jugadorDos = 'z';
-                this.scene.start("SceneMapa");
+                this.cameras.main.fadeOut(250);
             }.bind(this));
         }
 
@@ -94,7 +96,7 @@ export default class ScenePersonajeDos extends Phaser.Scene {
     
             this.bCiego.on('pointerdown', function () {
                 this.personaje.jugadorDos = 'c';
-                this.scene.start("SceneMapa");
+                this.cameras.main.fadeOut(250);
             }.bind(this));
         }
 
@@ -121,9 +123,13 @@ export default class ScenePersonajeDos extends Phaser.Scene {
     
             this.bNinja.on('pointerdown', function () {
                 this.personaje.jugadorDos = 'n';
-                this.scene.start("SceneMapa");
+                this.cameras.main.fadeOut(250);
             }.bind(this));
         }
+        
+        this.cameras.main.once('camerafadeoutcomplete', function () {
+            this.scene.start("SceneMapa");
+        }.bind(this));
 
         this.sonido = this.sys.game.globalsSonido.sonido;
 
@@ -158,6 +164,7 @@ export default class ScenePersonajeDos extends Phaser.Scene {
 
     update() {
         if (this.cursor_ESC.isDown) {
+            this.transicion.cancelarSeleccion = true;
             this.scene.start("ScenePersonajeUno");
         }
     }

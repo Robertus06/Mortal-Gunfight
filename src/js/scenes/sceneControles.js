@@ -4,6 +4,8 @@ export default class SceneControles extends Phaser.Scene {
     }
 
     create() {
+        this.cameras.main.fadeIn(250);
+
         this.controles = this.add.image(640, 360, 'controles');
 
         this.sonido = this.sys.game.globalsSonido.sonido;
@@ -25,6 +27,10 @@ export default class SceneControles extends Phaser.Scene {
         }.bind(this));
 
         this.cursor_ESC = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
+
+        this.cameras.main.once('camerafadeoutcomplete', function () {
+            this.scene.start("SceneMenu");
+        }.bind(this));
     }
 
     updateAudio() {
@@ -39,7 +45,7 @@ export default class SceneControles extends Phaser.Scene {
 
     update() {
         if (this.cursor_ESC.isDown) {
-            this.scene.start("SceneMenu");
+            this.cameras.main.fadeOut(250);
         }
     }
 }

@@ -4,7 +4,14 @@ export default class SceneMenu extends Phaser.Scene {
     }
 
     create() {
+        this.bPulsado = false;
+        this.pulsadoControles = false;
+        this.pulsadoJugar = false;
+        this.cameras.main.fadeIn(250);
+
         this.fondo = this.add.image(640, 360, 'inicio');
+
+        this.transicion = this.sys.game.globalsTransicion.transicion;
 
         // Para que la música no pare si clicamos fuera de la pantalla de google
         this.sound.pauseOnBlur = false;
@@ -32,14 +39,31 @@ export default class SceneMenu extends Phaser.Scene {
         this.bJugar = this.add.sprite(640, 475, 'botonJugar').setInteractive();
         this.bControles = this.add.sprite(640, 640, 'botonControles').setInteractive();
 
-        // Clic botón controles
-        this.bControles.on('pointerdown', function () {
-            this.scene.start("SceneControles");
-        }.bind(this));
+        if (!this.bPulsado) {
+            // Clic botón controles
+            this.bControles.on('pointerdown', function () {
+                this.cameras.main.fadeOut(250);
+                this.bPulsado = true;
+                this.pulsadoControles = true;
+            }.bind(this));
+        }
 
-        // Clic botón jugar
-        this.bJugar.on('pointerdown', function () {
-            this.scene.start("ScenePersonajeUno");
+        if (!this.bPulsado) {
+            // Clic botón jugar
+            this.bJugar.on('pointerdown', function () {
+                this.cameras.main.fadeOut(250);
+                this.bPulsado = true;
+                this.pulsadoJugar = true;
+            }.bind(this));
+        }
+
+        this.cameras.main.once('camerafadeoutcomplete', function () {
+            if (this.pulsadoControles) {
+                this.scene.start("SceneControles");
+            } else if (this.pulsadoJugar) {
+                this.scene.start("ScenePersonajeUno");
+                this.transicion.cancelarSeleccion = false;
+            }
         }.bind(this));
 
         // Zoom en botones cuando pasas por encima

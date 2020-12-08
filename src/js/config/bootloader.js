@@ -82,16 +82,19 @@ export default class Bootloader extends Phaser.Scene {
         this.load.image('nombreVolcan', 'resources/img/nombreVolcan.png');
 
         // alargar tiempo de espera...
-        /**
+        /**/
         for (var i = 0; i < 20; i++) {
             this.load.audio('musica' + i, 'resources/music/cancionPrueba.mp3');
         }
         /**/
 
         this.input.on('pointerdown', function () {
+            this.cameras.main.fadeOut(500);
+        }.bind(this));
+
+        this.cameras.main.once('camerafadeoutcomplete', function () {
             progressBar.destroy();
             progressBox.destroy();
-
             this.scene.start("SceneMenu");
         }.bind(this));
     }
