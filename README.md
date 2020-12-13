@@ -49,6 +49,7 @@ Todos los personajes son iguales en cuanto a características y solo cambian est
 | Toby y Mr. Blind 👨🏾‍🦯 🦮|Mr. Blind es un hombre ciego que tiene un perro llamado Toby que le ayuda en las batallas.|Cuando coge un arma, Toby se pone a dos patas y es el que dispara. ¿Cómo iba a disparar Mr. Blind si está ciego? |
 | The BillyRex 🦖| The BillyRex es un flipado de los dinosaurios que va a todos sitios vestido de dinosaurio. Incluso al campo de batalla. | The BillyRex está tan flipado que incluso ruge como un dinosaurio. |
 | El Cojo Ninja | El Cojo Ninja lleva entrenando las técnicas del ninjutsu toda su vida y está preparado para enfrentarse a cualquiera. | Nadie sabe de donde proviene su nombre, pero todos saben que no es precisamente cojo. |
+| Zombie 🧟‍♂️ | El Zombie ha regresado de entre los muertos y está dispuesto a comerse a todos los seres vivos que se encuentre. | El Zombie usa uno de sus brazos para agarrar el otro ya que se le cayó hace mucho tiempo y atacar con él. |
 
 ### Gameplay
 
@@ -58,7 +59,7 @@ Cuenta con un único modo de juego, Deathmatch, en el cual tendrás que ser el j
 #### Mecánicas del Gameplay
 
 El jugador podrá moverse a la izquierda, a la derecha, saltar, agacharse, disparar y al pasar por encima de las armas que se encuentran en el mapa de forma aleatoria, podrá recogerlas para usarlas contra el oponente. Para cambiar de arma, el jugador soltará el arma que porta dejándola en el suelo y cogerá el arma encontrada en el juego.
-La mecánica principal de disparo permitirá al jugador disparar en todo momento a su oponente. El propio juego apunta automáticamente al jugador contrario, pero al disparar, la bala no persigue al oponente, se mantiene en la dirección de salida.
+La mecánica principal de disparo permitirá al jugador disparar en todo momento a su oponente. El propio juego apunta automáticamente al jugador contrario, pero al disparar, la bala no persigue al oponente, se mantiene en la dirección de salida. La cámara se encuentra fija mirando hacia el escenario y viendo a los personajes de lado ya que es un juego en dos dimensiones.
 Cada jugador tendrá una barra de vida que se reducirá al recibir disparos. Cuando la barra de vida llega a cero el otro jugador sumará una baja, y el jugador eliminado reaparecerá con toda la vida de nuevo.
 El daño infligido dependerá del arma, siendo mayor con un arma pesada (instakill) y siendo menor con armas de gran cadencia (hasta veinte balas).
 
@@ -68,9 +69,9 @@ Los niveles son de plataformas con diferentes alturas. No cambia la dificultad e
 
 | **Niveles** | **Descripción** |
 | ------------ | ------- |
-| Ciudad |Este escenario corresponde a Toby y Mr. Blind. Es una ciudad en la que hay coches como obstáculos. |
-| Volcán |Este escenario corresponde a The BillyRex. Es un volcán en erupción en el que hay piedras que funcionan de obstáculo al moverse por él. |
-| Templo | Este escenario corresponde a El Cojo Ninja. Es un templo de la era Edo de Japón en el que hay rocas colgando de cadenas que actúan como plataforma. |
+| Long Street |Este escenario corresponde a Toby y Mr. Blind. Es una ciudad en la que hay coches como obstáculos. |
+| Zona Volcánica |Este escenario corresponde a The BillyRex. Es un volcán en erupción en el que hay piedras que funcionan de obstáculo al moverse por él. |
+| Templo Akaliux | Este escenario corresponde a El Cojo Ninja. Es un templo de la era Edo de Japón en el que hay rocas colgando de cadenas que actúan como plataforma. |
 
 ### Controles
 
@@ -89,5 +90,17 @@ Las teclas utilizadas en el juego, en su modalidad local (los dos jugadores en e
 
 El juego tiene una estética cartoon ya que tanto los personajes como los escenarios son dibujos en dos dimensiones.
 En cuanto a la interfaz de usuario se puede observar las bajas de cada jugador, identificadas de color azul para el jugador 1, y de color rojo para el jugador 2; y las barras de vida de cada jugador, junto con el nombre de su personaje, y las balas restantes del cargador del arma, en el lado de pantalla correspondiente a cada uno.
+
+En los menús por el lado izquierdo predomina el color azul ya que es el que corresponde al jugador uno mientras que por el lado derecho predomina el color rojo por el jugador dos. Para los botones hemos decidido utilizar el blanco para las letras en contraste con amarillos y naranjas en el resto del botón.
+
+En cuanto al diagrama de flujo del juego, partimos de una pantalla donde se cargaría el juego y podemos ver el progreso mediante una barra de carga. Al cargar el juego, nos pedirá que cliquemos en cualquier parte de la pantalla y nos llevará directamente al menú, donde podremos utilizar el botón "Jugar" y el botón "Controles". Si seleccionamos el botón "Controles" nos llevará a una pantalla donde nos explica qué teclas podemos utilizar dentro del juego y cuáles son las acciones de cada una. Si pulsamos el botón "Jugar" nos llevará a la pantalla de selección de personajes donde primero elige el jugador número uno y después el jugador número dos. Al haber elegido personajes los dos jugadores, pasaremos a la pantalla de selección de mapa, dónde podremos elegir entre tres mapas. Cuando hayamos elegido uno de los tres mapas llegamos a una pantalla donde se pide a ambos jugadores que indiquen si se encuentran listos para jugar pulsando una tecla. Después de indicar que están listos se pasa al juego dónde transcurre toda la partida, aquí podremos pulsar el botón "Escape" y nos llevará al menú de pausa donde podremos elegir si salir al menú principal o si queremos continuar la partida. Por último, al terminar la partida iremos a la pantalla final donde se nos dan las opciónes de volver a jugar con los mismos personajes, de volver a jugar pero volviendo a seleccionar los personajes, o de salir al menú principal directamente.
+
+### Música y efectos sonoros
+
+Para los efectos sonoros para las armas hemos decidido hacerlos nosotros mismos con nuestras voces y también hemos decidido grabar algunas frases para los personajes.
+
+### Fuentes externas
+
+Nos hemos fijado en juegos de peleas en dos dimensiones con partidas rápidas como podría ser el ejemplo de el "Stickfight", "Super Smash Bros" o juegos de ese estilo.
 
 ---
