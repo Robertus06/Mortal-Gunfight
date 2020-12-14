@@ -6,7 +6,10 @@ import SceneControles from '/src/js/scenes/sceneControles.js';
 import ScenePersonajeUno from '/src/js/scenes/scenePersonajeUno.js';
 import ScenePersonajeDos from '/src/js/scenes/scenePersonajeDos.js';
 import SceneMapa from '/src/js/scenes/sceneMapa.js';
+import ScenePreparatoria from '/src/js/scenes/scenePreparatoria.js';
 import SceneJuego from '/src/js/scenes/sceneJuego.js';
+import ScenePausa from '/src/js/scenes/scenePausa.js';
+import SceneFinal from '/src/js/scenes/sceneFinal.js';
 
 import Sonido from '/src/js/component/sonido.js';
 import Personaje from '/src/js/component/personaje.js';
@@ -36,7 +39,10 @@ class Game extends Phaser.Game {
         this.scene.add('ScenePersonajeUno', ScenePersonajeUno);
         this.scene.add('ScenePersonajeDos', ScenePersonajeDos);
         this.scene.add('SceneMapa', SceneMapa);
+        this.scene.add('ScenePreparatoria', ScenePreparatoria);
         this.scene.add('SceneJuego', SceneJuego);
+        this.scene.add('ScenePausa', ScenePausa);
+        this.scene.add('SceneFinal', SceneFinal);
 
         this.scene.start('BootScene');
     }

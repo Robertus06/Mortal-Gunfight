@@ -10,6 +10,7 @@ main {
 }
 
 h1 {
+    font-family: 'Do Hyeon', sans-serif;
     font-size: 21px;
     margin: 0;
     color: rgb(233, 239, 255)
@@ -35,11 +36,13 @@ h1 {
 }
 
 .creadores {
+    font-family: 'Do Hyeon', sans-serif;
     color: rgb(168, 198, 201);
     font-size: 10px
 }
 
 .creadores2 {
+    font-family: 'Londrina Solid', cursive;
     color: rgb(168, 198, 201);
     font-size: 12px
 }

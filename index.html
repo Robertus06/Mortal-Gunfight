@@ -2,6 +2,12 @@
 <html>
   <head>
     <title>Mortal Gunfight</title>
+    <!-- Para coger fuentes de letra en CSS: -->
+    <!-- https://fonts.google.com/?selection.family=Do+Hyeon -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Londrina+Solid:wght@300&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&display=swap" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="/src/css/estilos.css" media="screen"/>
     <script src="/src/js/phaser.js"></script>
     <link rel="app icon" href="/resources/img/icon.ico">
@@ -20,18 +26,19 @@
         </div>
     
         <div id="juego"></div>
-        <script src="/src/js/config/init.js" type="module"></script>
     
         <div class="cabecera2">
           <img alt="Tecla ESC" class="tecla" src="/resources/img/ESC.png">
           <div class="descripcion">
             <div>
-              <h1>¡Recuerda!</h1>
+              <h1>Recuerda:</h1>
             </div>
-            <span class="creadores2">Con la tecla 'ESC' podrás volver atrás en los menús, y pausar el juego una vez en partida.</span>
+            <span class="creadores2">Con la tecla '<strong>ESC</strong>' podrás volver atrás en los menús, y pausar el juego una vez en partida.</span>
           </div>
         </div>
       </div>
     </main>
+    
+    <script src="/src/js/config/init.js" type="module"></script>
   </body>
 </html>

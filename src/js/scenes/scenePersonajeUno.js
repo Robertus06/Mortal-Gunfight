@@ -5,6 +5,8 @@ export default class ScenePersonajeUno extends Phaser.Scene {
 
     create() {
         this.transicion = this.sys.game.globalsTransicion.transicion;
+
+        this.pulsado = false;
         
         if (!this.transicion.cancelarSeleccion) {
             this.cameras.main.fadeIn(250);
@@ -16,86 +18,147 @@ export default class ScenePersonajeUno extends Phaser.Scene {
         this.personaje.jugadorUno = null;
 
         this.seleccionadoUno = null;
+        this.resplandorUno = null;
         this.nombreUno = null;
 
         this.bDinosaurio = this.add.sprite(837, 649, 'botonesDinosaurio', 0).setInteractive();
         this.bZombie = this.add.sprite(690, 649, 'botonesZombie', 0).setInteractive();
         this.bNinja = this.add.sprite(545, 649, 'botonesNinja', 0).setInteractive();
         this.bCiego = this.add.sprite(400, 649, 'botonesCiego', 0).setInteractive();
-
+        
         this.bDinosaurio.on('pointerover', function () {
             this.bDinosaurio.setScale(1.15);
+            this.bDinosaurio.setDepth(2);
             this.nombreUno = this.add.image(100, 145, 'nombreDinosaurio');
             this.nombreUno.setOrigin(0);
             this.seleccionadoUno = this.add.image(290, 350, 'dinosaurio');
             this.seleccionadoUno.setScale(-0.17, 0.17);
+            this.resplandorUno = this.add.image(837, 649, 'botonJugadorUno');
+            this.resplandorUno.setDepth(1);
+            this.resplandorUno.setScale(1.15);
         }.bind(this));
 
         this.bDinosaurio.on('pointerout', function () {
             this.bDinosaurio.setScale(1);
             this.nombreUno.destroy();
+            this.resplandorUno.destroy();
             this.seleccionadoUno.destroy();
         }.bind(this));
 
         this.bDinosaurio.on('pointerdown', function () {
             this.personaje.jugadorUno = 'd';
+            this.resplandorUno.setScale(1);
+            this.bDinosaurio.destroy();
+            this.bDinosaurio = this.add.sprite(837, 649, 'botonesDinosaurio', 1);
+            this.bDinosaurio.setDepth(2);
+            this.bZombie.destroy();
+            this.bZombie = this.add.sprite(690, 649, 'botonesZombie', 0);
+            this.bCiego.destroy();
+            this.bCiego = this.add.sprite(400, 649, 'botonesCiego', 0);
+            this.bNinja.destroy();
+            this.bNinja = this.add.sprite(545, 649, 'botonesNinja', 0);
             this.scene.start("ScenePersonajeDos");
         }.bind(this));
 
         this.bZombie.on('pointerover', function () {
             this.bZombie.setScale(1.15);
+            this.bZombie.setDepth(2);
             this.nombreUno = this.add.image(100, 145, 'nombreZombie');
             this.nombreUno.setOrigin(0);
             this.seleccionadoUno = this.add.image(310, 350, 'zombie');
             this.seleccionadoUno.setScale(-0.17, 0.17);
+            this.resplandorUno = this.add.image(690, 649, 'botonJugadorUno');
+            this.resplandorUno.setDepth(1);
+            this.resplandorUno.setScale(1.15);
         }.bind(this));
 
         this.bZombie.on('pointerout', function () {
             this.bZombie.setScale(1);
             this.nombreUno.destroy();
+            this.resplandorUno.destroy();
             this.seleccionadoUno.destroy();
         }.bind(this));
 
         this.bZombie.on('pointerdown', function () {
             this.personaje.jugadorUno = 'z';
+            this.resplandorUno.setScale(1);
+            this.bZombie.destroy();
+            this.bZombie = this.add.sprite(690, 649, 'botonesZombie', 1);
+            this.bZombie.setDepth(2);
+            this.bDinosaurio.destroy();
+            this.bDinosaurio = this.add.sprite(837, 649, 'botonesDinosaurio', 0);
+            this.bCiego.destroy();
+            this.bCiego = this.add.sprite(400, 649, 'botonesCiego', 0);
+            this.bNinja.destroy();
+            this.bNinja = this.add.sprite(545, 649, 'botonesNinja', 0);
             this.scene.start("ScenePersonajeDos");
         }.bind(this));
 
         this.bCiego.on('pointerover', function () {
             this.bCiego.setScale(1.15);
+            this.bCiego.setDepth(2);
             this.nombreUno = this.add.image(100, 145, 'nombreCiego');
             this.nombreUno.setOrigin(0);
             this.seleccionadoUno = this.add.image(290, 356, 'ciego');
             this.seleccionadoUno.setScale(-0.17, 0.17);
+            this.resplandorUno = this.add.image(400, 649, 'botonJugadorUno');
+            this.resplandorUno.setDepth(1);
+            this.resplandorUno.setScale(1.15);
         }.bind(this));
 
         this.bCiego.on('pointerout', function () {
             this.bCiego.setScale(1);
             this.nombreUno.destroy();
+            this.resplandorUno.destroy();
             this.seleccionadoUno.destroy();
         }.bind(this));
 
         this.bCiego.on('pointerdown', function () {
             this.personaje.jugadorUno = 'c';
+            this.resplandorUno.setScale(1);
+            this.bCiego.destroy();
+            this.bCiego = this.add.sprite(400, 649, 'botonesCiego', 1);
+            this.bCiego.setDepth(2);
+            this.bZombie.destroy();
+            this.bZombie = this.add.sprite(690, 649, 'botonesZombie', 0);
+            this.bDinosaurio.destroy();
+            this.bDinosaurio = this.add.sprite(837, 649, 'botonesDinosaurio', 0);
+            this.bNinja.destroy();
+            this.bNinja = this.add.sprite(545, 649, 'botonesNinja', 0);
             this.scene.start("ScenePersonajeDos");
         }.bind(this));
 
         this.bNinja.on('pointerover', function () {
             this.bNinja.setScale(1.15);
+            this.bNinja.setDepth(2);
             this.nombreUno = this.add.image(100, 145, 'nombreNinja');
             this.nombreUno.setOrigin(0);
             this.seleccionadoUno = this.add.image(330, 350, 'ninja');
             this.seleccionadoUno.setScale(-0.17, 0.17);
+            this.resplandorUno = this.add.image(545, 649, 'botonJugadorUno');
+            this.resplandorUno.setDepth(1);
+            this.resplandorUno.setScale(1.15);
         }.bind(this));
 
         this.bNinja.on('pointerout', function () {
             this.bNinja.setScale(1);
             this.nombreUno.destroy();
+            this.resplandorUno.destroy();
             this.seleccionadoUno.destroy();
         }.bind(this));
 
         this.bNinja.on('pointerdown', function () {
             this.personaje.jugadorUno = 'n';
+            this.resplandorUno.setScale(1);
+            this.bNinja.destroy();
+            this.bNinja = this.add.sprite(545, 649, 'botonesNinja', 1);
+            this.bNinja.setDepth(2);
+            this.bZombie.destroy();
+            this.bZombie = this.add.sprite(690, 649, 'botonesZombie', 0);
+            this.bCiego.destroy();
+            this.bCiego = this.add.sprite(400, 649, 'botonesCiego', 0);
+            this.bDinosaurio.destroy();
+            this.bDinosaurio = this.add.sprite(837, 649, 'botonesDinosaurio', 0);
             this.scene.start("ScenePersonajeDos");
         }.bind(this));
 
@@ -135,7 +198,8 @@ export default class ScenePersonajeUno extends Phaser.Scene {
     }
 
     update() {
-        if (this.cursor_ESC.isDown) {
+        if (this.cursor_ESC.isDown && !this.pulsado) {
+            this.pulsado = true;
             this.cameras.main.fadeOut(250);
         }
     }

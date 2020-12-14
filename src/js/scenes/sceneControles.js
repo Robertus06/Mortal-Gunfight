@@ -6,6 +6,8 @@ export default class SceneControles extends Phaser.Scene {
     create() {
         this.cameras.main.fadeIn(250);
 
+        this.pulsado = false;
+
         this.controles = this.add.image(640, 360, 'controles');
 
         this.sonido = this.sys.game.globalsSonido.sonido;
@@ -44,7 +46,8 @@ export default class SceneControles extends Phaser.Scene {
     }
 
     update() {
-        if (this.cursor_ESC.isDown) {
+        if (this.cursor_ESC.isDown && !this.pulsado) {
+            this.pulsado = true;
             this.cameras.main.fadeOut(250);
         }
     }

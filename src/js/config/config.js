@@ -11,3 +11,18 @@ export default {
         }
     }
 };
+
+// personajes
+    // .setScale(-0.23, 0.23);
+    // .setScale(0.23);
+    // .setOrigin(0.72, 0.53);
+
+// brazo
+    // .setScale(-0.23, 0.23);
+    // .setScale(0.23);
+    // .setOrigin(0.61, 0.33);
+
+// arma
+    // .setScale(-0.23, 0.23);
+    // .setScale(0.23);
+    // .setOrigin(0.78, 0.28);

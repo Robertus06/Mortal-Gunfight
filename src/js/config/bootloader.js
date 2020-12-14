@@ -13,25 +13,27 @@ export default class Bootloader extends Phaser.Scene {
         this.logo.setScale(0.8);
 
         this.anims.create({
-            key: 'hola',
+            key: 'carga',
             frames: this.anims.generateFrameNumbers('cargando'),
             frameRate: 3,
             repeat: -1
         });
 
-        this.textoCarga = this.add.sprite(30, 655, 'cargando').play('hola');
+        this.textoCarga = this.add.sprite(30, 655, 'cargando').play('carga');
         this.textoCarga.setOrigin(0, 0.5);
 
         var progressBar = this.add.graphics();
         var progressBox = this.add.graphics();
         progressBox.fillStyle(0xa7a7a7, 0.4);
         progressBox.fillRect(20, 680, 1240, 16);
+        progressBox.setDepth(1);
 
         // var width = this.cameras.main.width;
         // var height = this.cameras.main.height;
 
         this.load.on('progress', function (value) {
             progressBar.clear();
+            progressBar.setDepth(2);
             progressBar.fillStyle(0xff9900, 1);
             progressBar.fillRect(25, 685, 1230 * value, 8);
         });
@@ -44,6 +46,7 @@ export default class Bootloader extends Phaser.Scene {
 
         this.load.image('botonControles', 'resources/img/botonControles.png');
         this.load.image('botonJugar', 'resources/img/botonJugar.png');
+        this.load.image('fondoMenu', 'resources/img/fondoMenu.png');
         // this.load.image('botonSonido', 'resources/img/botonSonido.png');
         // this.load.image('botonMute', 'resources/img/botonMute.png');
         this.load.spritesheet('botonMusic', 'resources/img/botonMusic.png', { frameWidth: 66, frameHeight: 55 });
@@ -80,9 +83,53 @@ export default class Bootloader extends Phaser.Scene {
         this.load.image('nombreTemplo', 'resources/img/nombreTemplo.png');
         this.load.image('nombreCiudad', 'resources/img/nombreCiudad.png');
         this.load.image('nombreVolcan', 'resources/img/nombreVolcan.png');
+        this.load.image('botonJugadorUno', 'resources/img/botonJugadorUno.png');
+        this.load.image('botonJugadorDos', 'resources/img/botonJugadorDos.png');
+        this.load.image('botonMapa', 'resources/img/botonMapa.png');
+        this.load.spritesheet('cuentaAtras', 'resources/img/cuentaAtras.png', { frameWidth: 258, frameHeight: 319 });
+        this.load.image('preparatoria', 'resources/img/preparatoria.png');
+        this.load.image('listo', 'resources/img/listo.png');
+        this.load.image('temploBlur', 'resources/img/temploBlur.png');
+        this.load.image('volcanBlur', 'resources/img/volcanBlur.png');
+        this.load.image('ciudadBlur', 'resources/img/ciudadBlur.png');
+        this.load.image('cohete', 'resources/img/cohete.png');
+        this.load.image('bala', 'resources/img/bala.png');
+        this.load.image('ar', 'resources/img/ar.png');
+        // this.load.image('lanzacohetes0', 'resources/img/lanzacahotes0.png');
+        // this.load.image('lanzacohetes1', 'resources/img/lanzacahotes1.png');
+        this.load.spritesheet('lanzacohetes', 'resources/img/lanzacohetes.png', { frameWidth: 745, frameHeight: 273 });
+        this.load.image('minigun', 'resources/img/minigun.png');
+        this.load.image('pistola', 'resources/img/pistola.png');
+        this.load.image('smg', 'resources/img/smg.png');
+        this.load.image('sniper', 'resources/img/sniper.png');
+        this.load.image('brazoPerro', 'resources/img/brazoPerro.png');
+        this.load.image('brazoPerroRelax', 'resources/img/brazoPerroRelax.png');
+        this.load.image('brazoDinosaurio', 'resources/img/brazoDinosaurio.png');
+        this.load.image('brazoDinosaurioRelax', 'resources/img/brazoDinosaurioRelax.png');
+        this.load.image('brazoNinja', 'resources/img/brazoNinja.png');
+        this.load.image('brazoNinjaRelax', 'resources/img/brazoNinjaRelax.png');
+        this.load.image('brazoZombie', 'resources/img/brazoZombie.png');
+        this.load.image('spritePerro', 'resources/img/perroSprite.png');
+        this.load.image('spriteCiego', 'resources/img/ciegoSprite.png');
+        this.load.image('spriteCiegoReverse', 'resources/img/ciegoSpriteReverse.png');
+        this.load.image('spriteDinosaurio', 'resources/img/dinosaurioSprite.png');
+        this.load.image('spriteNinja', 'resources/img/ninjaSprite.png');
+        this.load.image('spriteZombie', 'resources/img/zombieSprite.png');
+        // this.load.image('victoriaUno', 'resources/img/victoriaUnoEstatica.png');
+        this.load.spritesheet('victoriaUno', 'resources/img/victoriaUno.png', { frameWidth: 1280, frameHeight: 720 });
+        // this.load.image('victoriaDos', 'resources/img/victoriaDosEstatica.png');
+        this.load.spritesheet('victoriaDos', 'resources/img/victoriaDos.png', { frameWidth: 1280, frameHeight: 720 });
+        this.load.image('final', 'resources/img/final.png');
+        this.load.image('victoria', 'resources/img/victoria.png');
+        this.load.image('derrota', 'resources/img/derrota.png');
+        this.load.image('mismosPersonajes', 'resources/img/mismosPersonajes.png');
+        this.load.image('cambiarPersonajes', 'resources/img/cambiarPersonajes.png');
+        this.load.image('salirMenu', 'resources/img/salirMenu.png');
+        this.load.image('continuarPartida', 'resources/img/continuarPartida.png');
+        this.load.image('vs', 'resources/img/vs.png');
 
         // alargar tiempo de espera...
-        /**/
+        /**
         for (var i = 0; i < 20; i++) {
             this.load.audio('musica' + i, 'resources/music/cancionPrueba.mp3');
         }

@@ -4,12 +4,11 @@ export default class SceneMenu extends Phaser.Scene {
     }
 
     create() {
-        this.bPulsado = false;
         this.pulsadoControles = false;
         this.pulsadoJugar = false;
         this.cameras.main.fadeIn(250);
-
-        this.fondo = this.add.image(640, 360, 'inicio');
+        
+        this.fondo = this.add.image(640, 360, 'fondoMenu');
 
         this.transicion = this.sys.game.globalsTransicion.transicion;
 
@@ -39,31 +38,24 @@ export default class SceneMenu extends Phaser.Scene {
         this.bJugar = this.add.sprite(640, 475, 'botonJugar').setInteractive();
         this.bControles = this.add.sprite(640, 640, 'botonControles').setInteractive();
 
-        if (!this.bPulsado) {
-            // Clic botón controles
-            this.bControles.on('pointerdown', function () {
-                this.cameras.main.fadeOut(250);
-                this.bPulsado = true;
-                this.pulsadoControles = true;
-            }.bind(this));
-        }
+        // Clic botón controles
+        this.bControles.on('pointerdown', function () {
+            this.bControles.destroy();
+            this.bControles = this.add.sprite(640, 640, 'botonControles');
+            this.bJugar.destroy();
+            this.bJugar = this.add.sprite(640, 475, 'botonJugar');
+            this.cameras.main.fadeOut(250);
+            this.pulsadoControles = true;
+        }.bind(this));
 
-        if (!this.bPulsado) {
-            // Clic botón jugar
-            this.bJugar.on('pointerdown', function () {
-                this.cameras.main.fadeOut(250);
-                this.bPulsado = true;
-                this.pulsadoJugar = true;
-            }.bind(this));
-        }
-
-        this.cameras.main.once('camerafadeoutcomplete', function () {
-            if (this.pulsadoControles) {
-                this.scene.start("SceneControles");
-            } else if (this.pulsadoJugar) {
-                this.scene.start("ScenePersonajeUno");
-                this.transicion.cancelarSeleccion = false;
-            }
+        // Clic botón jugar
+        this.bJugar.on('pointerdown', function () {
+            this.bControles.destroy();
+            this.bControles = this.add.sprite(640, 640, 'botonControles');
+            this.bJugar.destroy();
+            this.bJugar = this.add.sprite(640, 475, 'botonJugar');
+            this.cameras.main.fadeOut(250);
+            this.pulsadoJugar = true;
         }.bind(this));
 
         // Zoom en botones cuando pasas por encima
@@ -83,5 +75,16 @@ export default class SceneMenu extends Phaser.Scene {
             this.bSonido.setFrame(0);
             this.sys.game.globalsSonido.music.resume();
         }
+    }
+
+    update() {
+        this.cameras.main.once('camerafadeoutcomplete', function () {
+            if (this.pulsadoControles) {
+                this.scene.start("SceneControles");
+            } else if (this.pulsadoJugar) {
+                this.scene.start("ScenePersonajeUno");
+                this.transicion.cancelarSeleccion = false;
+            }
+        }.bind(this));
     }
 }
