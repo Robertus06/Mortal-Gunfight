@@ -127,6 +127,12 @@ export default class Bootloader extends Phaser.Scene {
         this.load.image('salirMenu', 'resources/img/salirMenu.png');
         this.load.image('continuarPartida', 'resources/img/continuarPartida.png');
         this.load.image('vs', 'resources/img/vs.png');
+        this.load.image('spriteSuelo','resources/img/suelo.png');
+        this.load.image('plataforma', 'resources/img/plataforma.png');
+        this.load.image('tejas', 'resources/img/tejas.png');
+        this.load.image('pared', 'resources/img/pared.png');
+        this.load.image('paloma', 'resources/img/paloma.png');
+        this.load.image('cadenas', 'resources/img/cadenas.png');
 
         // alargar tiempo de espera...
         /**

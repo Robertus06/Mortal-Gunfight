@@ -18,7 +18,8 @@ export default class SceneMenu extends Phaser.Scene {
         this.sonido = this.sys.game.globalsSonido.sonido;
         if (this.sonido.musicOn === true && this.sonido.bgMusicPlaying === false) {
             this.music = this.sound.add('musica', { loop: true });
-            this.music.play()
+            this.music.play();
+            this.music.setVolume(0.05);
             this.sonido.bgMusicPlaying = true;
             this.sys.game.globalsSonido.music = this.music;
         }
