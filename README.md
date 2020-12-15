@@ -97,7 +97,7 @@ En cuanto al diagrama de flujo del juego, partimos de una pantalla donde se carg
 
 ### Música y efectos sonoros
 
-Para los efectos sonoros para las armas hemos decidido hacerlos nosotros mismos con nuestras voces y también hemos decidido grabar algunas frases para los personajes.
+Para los efectos sonoros para las armas hemos decidido hacerlos nosotros mismos con nuestras voces y también hemos decidido grabar algunas frases para los personajes. En cuanto a la música, hemos decidido utilizar una canción sin copyright llamada "Oblivion" de el artista TheFatRat.
 
 ### Fuentes externas
 
