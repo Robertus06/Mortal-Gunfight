@@ -14,6 +14,8 @@ export default class SceneFinal extends Phaser.Scene {
 
         this.fondo = this.add.image(640, 360, 'final');
 
+        this.sonidoBoton = this.sound.add('sonidoBoton');
+
         this.personaje = this.sys.game.globalsPersonaje.personaje;
 
         if (this.personaje.jugadorUno == 'd') {
@@ -88,6 +90,15 @@ export default class SceneFinal extends Phaser.Scene {
         this.bCambiar.setScale(0.85);
         this.bSalir.setScale(0.85);
 
+        this.bMismos.on('pointerover', function () {
+            this.sonidoBoton.play();
+            this.bMismos.setScale(1);
+        }.bind(this));
+
+        this.bMismos.on('pointerout', function () {
+            this.bMismos.setScale(0.85);
+        }.bind(this));
+
         this.bMismos.on('pointerdown', function () {
             this.bMismos.destroy();
             this.bMismos = this.add.sprite(640, 475, 'mismosPersonajes');
@@ -100,6 +111,15 @@ export default class SceneFinal extends Phaser.Scene {
             this.bSalir.setScale(0.85);
             this.cameras.main.fadeOut(250);
             this.pulsadoMismos = true;
+        }.bind(this));
+
+        this.bCambiar.on('pointerover', function () {
+            this.sonidoBoton.play();
+            this.bCambiar.setScale(1);
+        }.bind(this));
+
+        this.bCambiar.on('pointerout', function () {
+            this.bCambiar.setScale(0.85);
         }.bind(this));
 
         this.bCambiar.on('pointerdown', function () {
@@ -116,6 +136,15 @@ export default class SceneFinal extends Phaser.Scene {
             this.pulsadoCambiar = true;
         }.bind(this));
 
+        this.bSalir.on('pointerover', function () {
+            this.sonidoBoton.play();
+            this.bSalir.setScale(1);
+        }.bind(this));
+
+        this.bSalir.on('pointerout', function () {
+            this.bSalir.setScale(0.85);
+        }.bind(this));
+
         this.bSalir.on('pointerdown', function () {
             this.bMismos.destroy();
             this.bMismos = this.add.sprite(640, 475, 'mismosPersonajes');
@@ -130,14 +159,6 @@ export default class SceneFinal extends Phaser.Scene {
             this.pulsadoSalir = true;
         }.bind(this));
 
-        // Zoom en botones cuando pasas por encima
-        this.input.on('pointerover', function (event, gameObjects) {
-            gameObjects[0].setScale(1);
-        }.bind(this));
-        this.input.on('pointerout', function (event, gameObjects) {
-            gameObjects[0].setScale(0.85);
-        }.bind(this));
-
         this.sonido = this.sys.game.globalsSonido.sonido;
 
         this.bSonido = this.add.sprite(1240, 30, 'botonMusic').setInteractive();
@@ -150,8 +171,10 @@ export default class SceneFinal extends Phaser.Scene {
         this.updateAudio();
 
         this.bSonido.on('pointerover', function () {
+            this.sonidoBoton.play();
             this.bSonido.setScale(1.15);
         }.bind(this));
+
         this.bSonido.on('pointerout', function () {
             this.bSonido.setScale(1);
         }.bind(this));

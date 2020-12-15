@@ -38,6 +38,8 @@ export default class SceneJuego extends Phaser.Scene {
         } else if (this.mapa.escenario == 'c') {
             this.fondo = this.add.image(640, 360, 'ciudad');
         }
+
+        this.sonidoAtras = this.sound.add('sonidoAtras');
         
         this.personaje = this.sys.game.globalsPersonaje.personaje;
 
@@ -77,6 +79,25 @@ export default class SceneJuego extends Phaser.Scene {
         this.vidaDos.fillRect(863, 53, 310, 24);
 
         this.versus = this.add.image(640, 60, 'vs');
+
+        this.cadenas1 = this.add.image(450, 0, 'cadenas');
+        this.cadenas1.setOrigin(0.5, 0);
+        this.cadenas2 = this.add.image(830, 0, 'cadenas');
+        this.cadenas2.setOrigin(0.5, 0);
+        this.plataforma = this.add.image(640, 385, 'plataforma');
+        this.paloma1 = this.add.image(390, 382, 'paloma');
+        this.paloma1.setScale(-1, 1);
+        this.paloma1.setOrigin(0.5, 1);
+        this.paloma2 = this.add.image(890, 382, 'paloma');
+        this.paloma2.setOrigin(0.5, 1);
+        this.pared = this.add.image(640, 720, 'pared');
+        this.pared.setOrigin(0.5, 1);
+        this.tejas1 = this.add.image(56, 310, 'tejas');
+        this.tejas1.setScale(-1, 1);
+        this.tejas2 = this.add.image(246, 530, 'tejas');
+        this.tejas2.setScale(-1, 1);
+        this.tejas3 = this.add.image(1224, 310, 'tejas');
+        this.tejas4 = this.add.image(1034, 530, 'tejas');
         
         if (this.personaje.jugadorUno == 'd') {
             this.nombreUno = this.add.image(40, 20, 'nombreDinosaurio');
@@ -125,16 +146,40 @@ export default class SceneJuego extends Phaser.Scene {
         this.brazo3.setScale(0.23);
         this.brazo3.setOrigin(0.61, 0.33);
 
-        this.personaje = this.add.image(840, 640,'spriteNinja');
-        this.personaje.setScale(0.23);
-        this.personaje.setOrigin(0.72, 0.53);
-        this.arma = this.add.image(840, 640,'lanzacohetes');
-        this.arma.setScale(0.23);
-        this.arma.setOrigin(0.78, 0.28);
-        this.brazo = this.add.image(840, 640,'brazoNinja');
-        this.brazo.setScale(0.23);
-        this.brazo.setOrigin(0.61, 0.33);
+        /**
+        this.personaje1 = this.add.image(840, 640,'spritePerro');
+        this.personaje1.setScale(-0.23, 0.23);
+        this.personaje1.setOrigin(0.72, 0.53);
+        this.arma1 = this.add.image(840, 640,'lanzacohetes');
+        this.arma1.setScale(-0.23, 0.23);
+        this.arma1.setOrigin(0.78, 0.28);
+        this.brazo1 = this.add.image(840, 640,'brazoPerro');
+        this.brazo1.setScale(-0.23, 0.23);
+        this.brazo1.setOrigin(0.61, 0.33);
+        /**/
 
+        this.personaje2 = this.add.image(640, 640,'spritePerro');
+        this.personaje2.setScale(0.23);
+        this.personaje2.setOrigin(0.72, 0.53);
+        this.arma2 = this.add.image(640, 640,'sniper');
+        this.arma2.setScale(0.23);
+        this.arma2.setOrigin(0.78, 0.28);
+        this.brazo2 = this.add.image(640, 640,'brazoPerro');
+        this.brazo2.setScale(0.23);
+        this.brazo2.setOrigin(0.61, 0.33);
+
+        this.personaje4 = this.add.image(840, 640,'spritePerro');
+        this.personaje4.setFlipX(true);
+        this.personaje4.setScale(0.23);
+        this.personaje4.setOrigin(0.72, 0.53);
+        this.arma4 = this.add.image(840, 640,'lanzacohetes');
+        this.arma4.setScale(-0.23, 0.23);
+        this.arma4.setOrigin(0.78, 0.28);
+        this.brazo4 = this.add.image(840, 640,'brazoPerro');
+        this.brazo4.setScale(-0.23, 0.23);
+        this.brazo4.setOrigin(0.61, 0.33);
+
+        /**
         this.personaje2 = this.add.image(400, 640,'spriteZombie');
         this.personaje2.setScale(-0.23, 0.23);
         this.personaje2.setOrigin(0.72, 0.53);
@@ -156,9 +201,8 @@ export default class SceneJuego extends Phaser.Scene {
         this.brazo4.setOrigin(0.61, 0.33);
         /**/
         
-        this.timeText = this.add.text(645, 120);
+        this.timeText = this.add.text(638, 130, '02:00', { fontFamily: 'luckiestGuy', fontSize: 50, shadowStroke: true, shadowBlur: 1, strokeThickness: 4, stroke: '#000000' });
         this.timeText.setOrigin(0.5);
-        this.timeText.setScale(2.5);
 
         // https://stackoverflow.com/questions/51217147/how-to-use-a-local-font-in-phaser-3
         // https://github.com/photonstorm/phaser3-examples/tree/master/public/src/game%20objects/text
@@ -172,18 +216,18 @@ export default class SceneJuego extends Phaser.Scene {
     }
 
     updateGanador (value) {
-        this.sys.game.globalsPersonaje.personaje.ganador = value;
+        this.personaje.ganador = value;
     }
 
     update(time) {
-        this.brazo.angle += 1;
-        this.arma.angle += 1;
+        //this.brazo1.angle += 1;
+        //this.arma1.angle += 1;
 
-        this.brazo2.angle -= 1;
-        this.arma2.angle -= 1;
+        this.brazo2.angle += 1;
+        this.arma2.angle += 1;
 
-        this.brazo4.angle -= 1;
-        this.arma4.angle -= 1;
+        this.brazo4.angle += 1;
+        this.arma4.angle += 1;
 
         this.brazo3.angle += 1;
         this.arma3.angle += 1;
@@ -208,6 +252,7 @@ export default class SceneJuego extends Phaser.Scene {
         }
 
         if (this.cursor_ESC.isDown && !this.pulsado) {
+            this.sonidoAtras.play();
             this.pulsado = true;
         }
 
@@ -219,13 +264,16 @@ export default class SceneJuego extends Phaser.Scene {
             this.scene.launch("ScenePausa");
         }
 
+        if (this.minutos == 0 && this.segundos <= 0) {
+            this.timeText.setText('00:00');
+        }
+
         if (this.minutos == 0 && this.segundos <= 0 && !this.entrado) {
             this.entrado = true;
-            this.timeText.setText('00:00');
             this.updateGanador(2);
-            if (this.sys.game.globalsPersonaje.personaje.ganador == 1) {
+            if (this.personaje.ganador == 1) {
                 this.victoria = this.add.sprite(640, 360, 'victoriaUno').play('animacion1');
-            } else if (this.sys.game.globalsPersonaje.personaje.ganador == 2) {
+            } else if (this.personaje.ganador == 2) {
                 this.victoria = this.add.sprite(640, 360, 'victoriaDos').play('animacion2');
             }
         }
