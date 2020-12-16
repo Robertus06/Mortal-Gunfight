@@ -10,9 +10,21 @@ export default class SceneControles extends Phaser.Scene {
 
         this.controles = this.add.image(640, 360, 'controles');
 
+        this.sonidoBoton = this.sound.add('sonidoBoton');
+        this.sonidoAtras = this.sound.add('sonidoAtras');
+
         this.sonido = this.sys.game.globalsSonido.sonido;
 
         this.bSonido = this.add.sprite(1240, 30, 'botonMusic').setInteractive();
+        
+        this.bSonido.on('pointerover', function () {
+            this.sonidoBoton.play();
+            bSonido.setScale(1.15);
+        }.bind(this));
+
+        this.bSonido.on('pointerout', function () {
+            bSonido.setScale(1);
+        }.bind(this));
 
         this.bSonido.on('pointerdown', function () {
             this.sonido.musicOn = !this.sonido.musicOn;
@@ -20,13 +32,6 @@ export default class SceneControles extends Phaser.Scene {
         }.bind(this));
 
         this.updateAudio();
-
-        this.input.on('pointerover', function (event, gameObjects) {
-            gameObjects[0].setScale(1.15);
-        }.bind(this));
-        this.input.on('pointerout', function (event, gameObjects) {
-            gameObjects[0].setScale(1);
-        }.bind(this));
 
         this.cursor_ESC = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
 
@@ -48,6 +53,7 @@ export default class SceneControles extends Phaser.Scene {
     update() {
         if (this.cursor_ESC.isDown && !this.pulsado) {
             this.pulsado = true;
+            this.sonidoAtras.play();
             this.cameras.main.fadeOut(250);
         }
     }

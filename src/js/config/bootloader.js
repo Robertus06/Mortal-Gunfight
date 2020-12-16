@@ -51,7 +51,7 @@ export default class Bootloader extends Phaser.Scene {
         // this.load.image('botonMute', 'resources/img/botonMute.png');
         this.load.spritesheet('botonMusic', 'resources/img/botonMusic.png', { frameWidth: 66, frameHeight: 55 });
         this.load.image('controles', 'resources/img/controles.png');
-        this.load.audio('musica', 'resources/music/cancionPrueba.mp3');
+        this.load.audio('musica', 'resources/music/backgroundMusic.mp3');
         this.load.image('personajes', 'resources/img/personajes.png');
         this.load.image('dinosaurio', 'resources/img/dinosaurio.png');
         this.load.image('zombie', 'resources/img/zombie.png');
@@ -78,6 +78,7 @@ export default class Bootloader extends Phaser.Scene {
         this.load.image('botonVolcan', 'resources/img/botonVolcan.png');
         this.load.image('botonCiudad', 'resources/img/botonCiudad.png');
         this.load.image('templo', 'resources/img/templo.png');
+        this.load.image('temploSeleccion', 'resources/img/temploSeleccion.png');
         this.load.image('volcan', 'resources/img/volcan.png');
         this.load.image('ciudad', 'resources/img/ciudad.png');
         this.load.image('nombreTemplo', 'resources/img/nombreTemplo.png');
@@ -127,12 +128,30 @@ export default class Bootloader extends Phaser.Scene {
         this.load.image('salirMenu', 'resources/img/salirMenu.png');
         this.load.image('continuarPartida', 'resources/img/continuarPartida.png');
         this.load.image('vs', 'resources/img/vs.png');
+        this.load.audio('fraseCiego', 'resources/music/ciego.mp3');
+        this.load.audio('fraseDinosaurio', 'resources/music/dinosaurio.mp3');
+        this.load.audio('fraseNinja', 'resources/music/ninja.mp3');
+        this.load.audio('fraseZombie', 'resources/music/zombie.mp3');
+        this.load.audio('sonidoBoton', 'resources/music/boton.mp3');
+        this.load.audio('sonidoAtras', 'resources/music/atras.mp3');
+        this.load.audio('sonidoAr', 'resources/music/ar.mp3');
+        this.load.audio('sonidoCohete', 'resources/music/cohete.mp3');
+        this.load.audio('sonidoLanzacohetes', 'resources/music/lanzacohetes.mp3');
+        this.load.audio('sonidoMinigun', 'resources/music/minigun.mp3');
+        this.load.audio('sonidoMinigunDos', 'resources/music/minigunDos.mp3');
+        this.load.audio('sonidoPistola', 'resources/music/pistola.mp3');
+        this.load.audio('sonidoSmg', 'resources/music/smg.mp3');
+        this.load.audio('sonidoSniper', 'resources/music/sniper.mp3');
         this.load.image('spriteSuelo','resources/img/suelo.png');
         this.load.image('plataforma', 'resources/img/plataforma.png');
         this.load.image('tejas', 'resources/img/tejas.png');
         this.load.image('pared', 'resources/img/pared.png');
         this.load.image('paloma', 'resources/img/paloma.png');
         this.load.image('cadenas', 'resources/img/cadenas.png');
+        this.load.spritesheet('botones', 'resources/img/botonTiempo.png', { frameWidth: 139, frameHeight: 56 });
+
+        // cortar sonidos
+        // https://mp3cut.net/es/
 
         // alargar tiempo de espera...
         /**

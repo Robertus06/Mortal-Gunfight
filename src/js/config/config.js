@@ -4,6 +4,10 @@ export default {
     height: 720,
     parent: "juego",
 
+    audio: {
+        disableWebAudio: true
+    },
+
     physics: {
         default: 'arcade',
         arcade: {

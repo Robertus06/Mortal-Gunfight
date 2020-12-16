@@ -10,6 +10,9 @@ export default class SceneMapa extends Phaser.Scene {
 
         this.fondo = this.add.image(640, 360, 'mapa');
 
+        this.sonidoBoton = this.sound.add('sonidoBoton');
+        this.sonidoAtras = this.sound.add('sonidoAtras');
+
         this.transicion = this.sys.game.globalsTransicion.transicion;
         this.siguiente = false;
 
@@ -24,11 +27,12 @@ export default class SceneMapa extends Phaser.Scene {
         this.resplandorMapa = null;
 
         this.bTemplo.on('pointerover', function () {
+            this.sonidoBoton.play();
             this.bTemplo.setScale(1.15);
             this.bTemplo.setDepth(2);
             this.nombreMapa = this.add.image(293, 130, 'nombreTemplo');
             this.nombreMapa.setOrigin(0);
-            this.seleccionadoMapa = this.add.image(640, 342, 'templo');
+            this.seleccionadoMapa = this.add.image(640, 342, 'temploSeleccion');
             this.seleccionadoMapa.setScale(0.505, 0.5);
             this.resplandorMapa = this.add.image(850, 648, 'botonMapa');
             this.resplandorMapa.setDepth(1);
@@ -57,6 +61,7 @@ export default class SceneMapa extends Phaser.Scene {
         }.bind(this));
 
         this.bCiudad.on('pointerover', function () {
+            this.sonidoBoton.play();
             this.bCiudad.setScale(1.15);
             this.bCiudad.setDepth(2);
             this.nombreMapa = this.add.image(293, 130, 'nombreCiudad');
@@ -92,6 +97,7 @@ export default class SceneMapa extends Phaser.Scene {
         /**/
 
         this.bVolcan.on('pointerover', function () {
+            this.sonidoBoton.play();
             this.bVolcan.setScale(1.15);
             this.bVolcan.setDepth(2);
             this.nombreMapa = this.add.image(293, 125, 'nombreVolcan');
@@ -138,8 +144,10 @@ export default class SceneMapa extends Phaser.Scene {
         this.updateAudio();
 
         this.bSonido.on('pointerover', function () {
+            this.sonidoBoton.play();
             this.bSonido.setScale(1.15);
         }.bind(this));
+        
         this.bSonido.on('pointerout', function () {
             this.bSonido.setScale(1);
         }.bind(this));
@@ -159,6 +167,7 @@ export default class SceneMapa extends Phaser.Scene {
 
     update() {
         if (this.cursor_ESC.isDown && !this.pulsado) {
+            this.sonidoAtras.play();
             this.pulsado = true;
             this.cameras.main.fadeOut(250);
             this.siguiente = false;

@@ -30,6 +30,9 @@ export default class ScenePausa extends Phaser.Scene {
             this.fondo.setAlpha(0.7);
         }
 
+        this.sonidoBoton = this.sound.add('sonidoBoton');
+        this.sonidoAtras = this.sound.add('sonidoAtras');
+
         this.bContinuar = this.add.image(640, 260, 'continuarPartida').setInteractive();
         this.bSalir = this.add.image(640, 410, 'salirMenu').setInteractive();
 
@@ -45,6 +48,15 @@ export default class ScenePausa extends Phaser.Scene {
             }.bind(this));
         }.bind(this));
 
+        this.bContinuar.on('pointerover', function () {
+            this.sonidoBoton.play();
+            this.bContinuar.setScale(1.15);
+        }.bind(this));
+
+        this.bContinuar.on('pointerout', function () {
+            this.bContinuar.setScale(1);
+        }.bind(this));
+
         this.bSalir.on('pointerdown', function () {
             this.bContinuar.destroy();
             this.bContinuar = this.add.image(640, 260, 'continuarPartida');
@@ -53,11 +65,13 @@ export default class ScenePausa extends Phaser.Scene {
             this.cameras.main.fadeOut(250);
         }.bind(this));
 
-        this.input.on('pointerover', function (event, gameObjects) {
-            gameObjects[0].setScale(1.15);
+        this.bSalir.on('pointerover', function () {
+            this.sonidoBoton.play();
+            this.bSalir.setScale(1.15);
         }.bind(this));
-        this.input.on('pointerout', function (event, gameObjects) {
-            gameObjects[0].setScale(1);
+
+        this.bSalir.on('pointerout', function () {
+            this.bSalir.setScale(1);
         }.bind(this));
 
         this.sonido = this.sys.game.globalsSonido.sonido;
@@ -72,8 +86,10 @@ export default class ScenePausa extends Phaser.Scene {
         this.updateAudio();
 
         this.bSonido.on('pointerover', function () {
+            this.sonidoBoton.play();
             this.bSonido.setScale(1.15);
         }.bind(this));
+
         this.bSonido.on('pointerout', function () {
             this.bSonido.setScale(1);
         }.bind(this));
@@ -98,6 +114,7 @@ export default class ScenePausa extends Phaser.Scene {
 
     update () {
         if (this.cursor_ESC.isDown && !this.pulsado) {
+            this.sonidoAtras.play();
             this.pulsado = true;
             this.bContinuar.destroy();
             this.bSalir.destroy();
