@@ -87,6 +87,10 @@ export default class SceneJuego extends Phaser.Scene {
         this.puntos1 = 0;
         this.puntos2 = 0;
 
+        this.tiempo = this.sys.game.globalsTiempo.tiempo;
+
+        this.sonidoPistola = this.sound.add('sonidoPistola');
+
         this.anims.create({
             key: 'animacion1',
             frames: this.anims.generateFrameNumbers('victoriaUno'),
@@ -100,6 +104,8 @@ export default class SceneJuego extends Phaser.Scene {
             frameRate: 9,
             repeat: 0
         });
+
+        this.puntos = this.sys.game.globalsPuntos.puntos;
         
         this.mapa = this.sys.game.globalsMapa.mapa;
         
@@ -198,7 +204,7 @@ export default class SceneJuego extends Phaser.Scene {
         if (this.personaje.jugadorUno == 'd') {
             this.nombreUno = this.add.image(40, 20, 'nombreDinosaurio');
             this.nombreUno.setOrigin(0);
-            this.nombreUno.setScale(0.65);
+            this.nombreUno.setScale(0.75);
             this.jugador1 = this.add.image(80, 640,'spriteDinosaurio');
             this.jugador1.setScale(0.23).setFlipX(true).setOrigin(0.28, 0.53);    
             this.brazo1 = this.add.image(80, 640,'brazoDinosaurio');
@@ -207,7 +213,7 @@ export default class SceneJuego extends Phaser.Scene {
         } else if (this.personaje.jugadorUno == 'c') {
             this.nombreUno = this.add.image(40, 20, 'nombreCiego');
             this.nombreUno.setOrigin(0);
-            this.nombreUno.setScale(0.65);
+            this.nombreUno.setScale(0.75);
             this.jugador1 = this.add.image(80, 640,'spritePerro');            
             this.jugador1.setScale(0.23).setFlipX(true).setOrigin(0.28, 0.53);
             this.brazo1 = this.add.image(80, 640,'brazoPerro');
@@ -219,7 +225,7 @@ export default class SceneJuego extends Phaser.Scene {
         } else if (this.personaje.jugadorUno == 'n') {
             this.nombreUno = this.add.image(40, 20, 'nombreNinja');
             this.nombreUno.setOrigin(0);
-            this.nombreUno.setScale(0.65);
+            this.nombreUno.setScale(0.75);
             this.jugador1 = this.add.image(80, 640,'spriteNinja');
             this.jugador1.setScale(0.23).setFlipX(true).setOrigin(0.28, 0.53);
             this.brazo1 = this.add.image(80, 640,'brazoNinja');
@@ -228,7 +234,7 @@ export default class SceneJuego extends Phaser.Scene {
         } else if (this.personaje.jugadorUno == 'z') {
             this.nombreUno = this.add.image(40, 20, 'nombreZombie');
             this.nombreUno.setOrigin(0);
-            this.nombreUno.setScale(0.65);
+            this.nombreUno.setScale(0.75);
             this.jugador1 = this.add.image(80, 640,'spriteZombie');
             this.jugador1.setScale(0.23).setFlipX(true).setOrigin(0.28, 0.53);
             this.brazo1 = this.add.image(80, 640,'brazoZombie');
@@ -239,7 +245,7 @@ export default class SceneJuego extends Phaser.Scene {
         if (this.personaje.jugadorDos == 'd') {
             this.nombreDos = this.add.image(1240, 20, 'nombreDinosaurio');
             this.nombreDos.setOrigin(1, 0);
-            this.nombreDos.setScale(0.65);
+            this.nombreDos.setScale(0.75);
             this.jugador2 = this.add.image(1200, 640,'spriteDinosaurio');
             this.jugador2.setScale(0.23);
             this.jugador2.setOrigin(0.72, 0.53);
@@ -249,7 +255,7 @@ export default class SceneJuego extends Phaser.Scene {
         } else if (this.personaje.jugadorDos == 'c') {
             this.nombreDos = this.add.image(1240, 20, 'nombreCiego');
             this.nombreDos.setOrigin(1, 0);
-            this.nombreDos.setScale(0.65);
+            this.nombreDos.setScale(0.75);
             this.jugador2 = this.add.image(1200, 640,'spritePerro');
             this.jugador2.setScale(0.23);
             this.jugador2.setOrigin(0.72, 0.53);
@@ -262,7 +268,7 @@ export default class SceneJuego extends Phaser.Scene {
         } else if (this.personaje.jugadorDos == 'n') {
             this.nombreDos = this.add.image(1240, 20, 'nombreNinja');
             this.nombreDos.setOrigin(1, 0);
-            this.nombreDos.setScale(0.65);
+            this.nombreDos.setScale(0.75);
             this.jugador2 = this.add.image(1200, 640,'spriteNinja');
             this.jugador2.setScale(0.23);
             this.jugador2.setOrigin(0.72, 0.53);
@@ -272,7 +278,7 @@ export default class SceneJuego extends Phaser.Scene {
         } else if (this.personaje.jugadorDos == 'z') {
             this.nombreDos = this.add.image(1240, 20, 'nombreZombie');
             this.nombreDos.setOrigin(1, 0);
-            this.nombreDos.setScale(0.65);
+            this.nombreDos.setScale(0.75);
             this.jugador2 = this.add.image(1200, 640,'spriteZombie');
             this.jugador2.setScale(0.23);
             this.jugador2.setOrigin(0.72, 0.53);
@@ -345,7 +351,7 @@ export default class SceneJuego extends Phaser.Scene {
     update(time) {
         
         if (!this.cargado){            
-            this.currentTime = time + 30000;
+            this.currentTime = time + this.tiempo.tiempoJuego;
             this.cargado = true;
         } else if (this.pausado) {
             this.currentTime = time + this.timeRestante;
@@ -385,10 +391,11 @@ export default class SceneJuego extends Phaser.Scene {
             else if(this.puntos1 < this.puntos2){
                 this.updateGanador(2);
                 this.entrado = true;
-                
             }
-            else this.updateGanador(0);
-            
+            else{
+                this.updateGanador(0);
+                this.timeText.setText('Muerte súbita');
+            } 
         }
         
         if (this.minutos <= 0 && this.segundos <= 0 && !this.final && this.personaje.ganador != 0 ) {
@@ -401,6 +408,8 @@ export default class SceneJuego extends Phaser.Scene {
             }
         }
         if(this.final){
+            this.puntos.puntosJugadorUno = this.puntos1;
+            this.puntos.puntosJugadorDos = this.puntos2;
             this.timeText.setText('00:00');
             this.victoria.on('animationcomplete', function(){
                 
@@ -425,8 +434,10 @@ export default class SceneJuego extends Phaser.Scene {
             this.jugador2.body.reset(Phaser.Math.Between(80,1200),80);
         }
 
-        this.p1Text.setText(this.puntos1);
-        this.p2Text.setText(this.puntos2);
+        if(!this.final){
+            this.p1Text.setText(this.puntos1);
+            this.p2Text.setText(this.puntos2);
+        }
 
         /* Fisicas*/
         /*Posicion*/        
@@ -505,11 +516,14 @@ export default class SceneJuego extends Phaser.Scene {
         
         if (this.cursors_jugador1.disparar.isDown && this.cd1 < time)
         {
-            var bullet = this.balas1.get();
-            if (bullet)
-            {
-                bullet.fire(this.arma1);
-                this.cd1 = time + 500;
+            if (this.arma1 != null){
+                var bullet = this.balas1.get();
+                this.sonidoPistola.play();
+                if (bullet)
+                {
+                    bullet.fire(this.arma1);
+                    this.cd1 = time + 500;
+                }
             }
         }
         /*Jugador 2*/
@@ -531,11 +545,14 @@ export default class SceneJuego extends Phaser.Scene {
         }
         if (this.cursors_jugador2.disparar.isDown && this.cd2 < time)
         {
-            var bullet = this.balas2.get();
-            if (bullet)
-            {
-                bullet.fire(this.arma2);
-                this.cd2 = time + 500;
+            if (this.arma2 != null) {
+                var bullet = this.balas2.get();
+                this.sonidoPistola.play();
+                if (bullet)
+                {
+                    bullet.fire(this.arma2);
+                    this.cd2 = time + 500;
+                }
             }
         }
 

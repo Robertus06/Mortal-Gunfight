@@ -12,7 +12,17 @@ export default class SceneFinal extends Phaser.Scene {
 
         this.transicion = this.sys.game.globalsTransicion.transicion;
 
+        this.points = this.sys.game.globalsPuntos.puntos;
+
         this.fondo = this.add.image(640, 360, 'final');
+
+        this.p1Text = this.add.text(180, 250,'0',{ fontFamily: 'luckiestGuy', fontSize: 70, shadowStroke: true, shadowBlur: 1, strokeThickness: 4, stroke: '#000000' });
+        this.p1Text.setOrigin(0.5);
+        this.p1Text.setText(this.points.puntosJugadorUno);
+        
+        this.p2Text = this.add.text(1117, 250,'0',{ fontFamily: 'luckiestGuy', fontSize: 70, shadowStroke: true, shadowBlur: 1, strokeThickness: 4, stroke: '#000000' });
+        this.p2Text.setOrigin(0.5);
+        this.p2Text.setText(this.points.puntosJugadorDos);
 
         this.sonidoBoton = this.sound.add('sonidoBoton');
 
