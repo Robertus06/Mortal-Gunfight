@@ -33,6 +33,7 @@ export default class ScenePersonajeUno extends Phaser.Scene {
         this.bZombie = this.add.sprite(690, 649, 'botonesZombie', 0).setInteractive();
         this.bNinja = this.add.sprite(545, 649, 'botonesNinja', 0).setInteractive();
         this.bCiego = this.add.sprite(400, 649, 'botonesCiego', 0).setInteractive();
+        this.bAleatorio = this.add.image(100, 649, 'botonAleatorio').setInteractive();
         
         this.bDinosaurio.on('pointerover', function () {
             this.sonidoBoton.play();
@@ -114,6 +115,144 @@ export default class ScenePersonajeUno extends Phaser.Scene {
             this.seleccionadoUno.destroy();
         }.bind(this));
 
+        this.bAleatorio.on('pointerover', function () {
+            this.sonidoBoton.play();
+            this.bAleatorio.setScale(1.15);
+            this.bAleatorio.setDepth(2);
+            this.nombreUno = this.add.image(100, 145, 'nombreAleatorio');
+            this.nombreUno.setOrigin(0);
+            this.seleccionadoUno = this.add.image(295, 335, 'aleatorio');
+            this.resplandorUno = this.add.image(100, 649, 'botonJugadorUno');
+            this.resplandorUno.setDepth(1);
+            this.resplandorUno.setScale(1.25);
+        }.bind(this));
+
+        this.bAleatorio.on('pointerout', function () {
+            this.bAleatorio.setScale(1);
+            this.nombreUno.destroy();
+            this.resplandorUno.destroy();
+            this.seleccionadoUno.destroy();
+        }.bind(this));
+
+        this.bAleatorio.on('pointerdown', function () {
+            this.seleccionar = Phaser.Math.Between(1, 4);
+
+            if (this.seleccionar == 1) {
+                this.personaje.jugadorUno = 'c';
+                this.nombreUno.destroy();
+                this.nombreUno = this.add.image(100, 145, 'nombreCiego');
+                this.nombreUno.setOrigin(0);
+                this.seleccionadoUno.destroy();
+                this.seleccionadoUno = this.add.image(290, 356, 'ciego');
+                this.seleccionadoUno.setScale(-0.17, 0.17);
+                this.resplandorUno.destroy();
+                this.resplandorUno = this.add.image(400, 649, 'botonJugadorUno');
+                this.resplandorUno.setDepth(1);
+                this.resplandorUno.setScale(1);
+                this.bCiego.destroy();
+                this.bCiego = this.add.sprite(400, 649, 'botonesCiego', 1);
+                this.bCiego.setDepth(2);
+                this.bZombie.destroy();
+                this.bZombie = this.add.sprite(690, 649, 'botonesZombie', 0);
+                this.bDinosaurio.destroy();
+                this.bDinosaurio = this.add.sprite(837, 649, 'botonesDinosaurio', 0);
+                this.bNinja.destroy();
+                this.bNinja = this.add.sprite(545, 649, 'botonesNinja', 0);
+                this.bAleatorio.destroy();
+                this.bAleatorio = this.add.image(100, 649, 'botonAleatorio');
+                this.pulsado = true;
+                this.fraseCiego.play();
+                this.fraseCiego.setVolume(2);
+                this.fraseCiego.on('complete', function () {
+                    this.scene.start("ScenePersonajeDos");
+                }.bind(this));
+            } else if (this.seleccionar == 2) {
+                this.personaje.jugadorUno = 'n';
+                this.nombreUno.destroy();
+                this.nombreUno = this.add.image(100, 145, 'nombreNinja');
+                this.nombreUno.setOrigin(0);
+                this.seleccionadoUno.destroy();
+                this.seleccionadoUno = this.add.image(330, 350, 'ninja');
+                this.seleccionadoUno.setScale(-0.17, 0.17);
+                this.resplandorUno.destroy();
+                this.resplandorUno = this.add.image(545, 649, 'botonJugadorUno');
+                this.resplandorUno.setDepth(1);
+                this.resplandorUno.setScale(1);
+                this.bNinja.destroy();
+                this.bNinja = this.add.sprite(545, 649, 'botonesNinja', 1);
+                this.bNinja.setDepth(2);
+                this.bZombie.destroy();
+                this.bZombie = this.add.sprite(690, 649, 'botonesZombie', 0);
+                this.bCiego.destroy();
+                this.bCiego = this.add.sprite(400, 649, 'botonesCiego', 0);
+                this.bDinosaurio.destroy();
+                this.bDinosaurio = this.add.sprite(837, 649, 'botonesDinosaurio', 0);
+                this.bAleatorio.destroy();
+                this.bAleatorio = this.add.image(100, 649, 'botonAleatorio');
+                this.pulsado = true;
+                this.fraseNinja.play();
+                this.fraseNinja.on('complete', function () {
+                    this.scene.start("ScenePersonajeDos");
+                }.bind(this));
+            } else if (this.seleccionar == 3) {
+                this.personaje.jugadorUno = 'z';
+                this.nombreUno.destroy();
+                this.nombreUno = this.add.image(100, 145, 'nombreZombie');
+                this.nombreUno.setOrigin(0);
+                this.seleccionadoUno.destroy();
+                this.seleccionadoUno = this.add.image(310, 350, 'zombie');
+                this.seleccionadoUno.setScale(-0.17, 0.17);
+                this.resplandorUno.destroy();
+                this.resplandorUno = this.add.image(690, 649, 'botonJugadorUno');
+                this.resplandorUno.setDepth(1);
+                this.resplandorUno.setScale(1);
+                this.bZombie.destroy();
+                this.bZombie = this.add.sprite(690, 649, 'botonesZombie', 1);
+                this.bZombie.setDepth(2);
+                this.bDinosaurio.destroy();
+                this.bDinosaurio = this.add.sprite(837, 649, 'botonesDinosaurio', 0);
+                this.bCiego.destroy();
+                this.bCiego = this.add.sprite(400, 649, 'botonesCiego', 0);
+                this.bNinja.destroy();
+                this.bNinja = this.add.sprite(545, 649, 'botonesNinja', 0);
+                this.bAleatorio.destroy();
+                this.bAleatorio = this.add.image(100, 649, 'botonAleatorio');
+                this.pulsado = true;
+                this.fraseZombie.play();
+                this.fraseZombie.on('complete', function () {
+                    this.scene.start("ScenePersonajeDos");
+                }.bind(this));
+            } else if (this.seleccionar == 4) {
+                this.personaje.jugadorUno = 'd';
+                this.nombreUno.destroy();
+                this.nombreUno = this.add.image(100, 145, 'nombreDinosaurio');
+                this.nombreUno.setOrigin(0);
+                this.seleccionadoUno.destroy();
+                this.seleccionadoUno = this.add.image(290, 350, 'dinosaurio');
+                this.seleccionadoUno.setScale(-0.17, 0.17);
+                this.resplandorUno.destroy();
+                this.resplandorUno = this.add.image(837, 649, 'botonJugadorUno');
+                this.resplandorUno.setDepth(1);
+                this.resplandorUno.setScale(1);
+                this.bDinosaurio.destroy();
+                this.bDinosaurio = this.add.sprite(837, 649, 'botonesDinosaurio', 1);
+                this.bDinosaurio.setDepth(2);
+                this.bZombie.destroy();
+                this.bZombie = this.add.sprite(690, 649, 'botonesZombie', 0);
+                this.bCiego.destroy();
+                this.bCiego = this.add.sprite(400, 649, 'botonesCiego', 0);
+                this.bNinja.destroy();
+                this.bNinja = this.add.sprite(545, 649, 'botonesNinja', 0);
+                this.bAleatorio.destroy();
+                this.bAleatorio = this.add.image(100, 649, 'botonAleatorio');
+                this.pulsado = true;
+                this.fraseDinosaurio.play();
+                this.fraseDinosaurio.on('complete', function () {
+                    this.scene.start("ScenePersonajeDos");
+                }.bind(this));
+            }
+        }.bind(this));
+
         this.sonido = this.sys.game.globalsSonido.sonido;
 
         this.bSonido = this.add.sprite(1240, 30, 'botonMusic').setInteractive();
@@ -163,6 +302,8 @@ export default class ScenePersonajeUno extends Phaser.Scene {
             this.bCiego = this.add.sprite(400, 649, 'botonesCiego', 0);
             this.bNinja.destroy();
             this.bNinja = this.add.sprite(545, 649, 'botonesNinja', 0);
+            this.bAleatorio.destroy();
+            this.bAleatorio = this.add.image(100, 649, 'botonAleatorio');
             this.pulsado = true;
             this.fraseDinosaurio.play();
             this.fraseDinosaurio.on('complete', function () {
@@ -182,6 +323,8 @@ export default class ScenePersonajeUno extends Phaser.Scene {
             this.bCiego = this.add.sprite(400, 649, 'botonesCiego', 0);
             this.bNinja.destroy();
             this.bNinja = this.add.sprite(545, 649, 'botonesNinja', 0);
+            this.bAleatorio.destroy();
+            this.bAleatorio = this.add.image(100, 649, 'botonAleatorio');
             this.pulsado = true;
             this.fraseZombie.play();
             this.fraseZombie.on('complete', function () {
@@ -201,6 +344,8 @@ export default class ScenePersonajeUno extends Phaser.Scene {
             this.bDinosaurio = this.add.sprite(837, 649, 'botonesDinosaurio', 0);
             this.bNinja.destroy();
             this.bNinja = this.add.sprite(545, 649, 'botonesNinja', 0);
+            this.bAleatorio.destroy();
+            this.bAleatorio = this.add.image(100, 649, 'botonAleatorio');
             this.pulsado = true;
             this.fraseCiego.play();
             this.fraseCiego.setVolume(2);
@@ -221,6 +366,8 @@ export default class ScenePersonajeUno extends Phaser.Scene {
             this.bCiego = this.add.sprite(400, 649, 'botonesCiego', 0);
             this.bDinosaurio.destroy();
             this.bDinosaurio = this.add.sprite(837, 649, 'botonesDinosaurio', 0);
+            this.bAleatorio.destroy();
+            this.bAleatorio = this.add.image(100, 649, 'botonAleatorio');
             this.pulsado = true;
             this.fraseNinja.play();
             this.fraseNinja.on('complete', function () {

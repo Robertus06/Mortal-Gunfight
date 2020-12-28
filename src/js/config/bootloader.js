@@ -3,7 +3,7 @@ export default class Bootloader extends Phaser.Scene {
         super({ key: "Bootloader" });
     }
 
-    preload() {
+    preload() {        
         this.cameras.main.setBackgroundColor('#e2e2e2');
 
         this.fondo = this.add.image(640, 360, 'inicio');
@@ -47,6 +47,8 @@ export default class Bootloader extends Phaser.Scene {
         this.load.image('botonControles', 'resources/img/botonControles.png');
         this.load.image('botonJugar', 'resources/img/botonJugar.png');
         this.load.image('fondoMenu', 'resources/img/fondoMenu.png');
+        this.load.image('botonCreditos', 'resources/img/botonCreditos.png');
+        this.load.image('creditos', 'resources/img/creditos.png');
         // this.load.image('botonSonido', 'resources/img/botonSonido.png');
         // this.load.image('botonMute', 'resources/img/botonMute.png');
         this.load.spritesheet('botonMusic', 'resources/img/botonMusic.png', { frameWidth: 66, frameHeight: 55 });
@@ -54,6 +56,7 @@ export default class Bootloader extends Phaser.Scene {
         this.load.audio('musica', 'resources/music/backgroundMusic.mp3');
         this.load.image('personajes', 'resources/img/personajes.png');
         this.load.image('dinosaurio', 'resources/img/dinosaurio.png');
+        this.load.image('aleatorio', 'resources/img/aleatorio.png');
         this.load.image('zombie', 'resources/img/zombie.png');
         this.load.image('ciego', 'resources/img/ciego.png');
         this.load.image('ninja', 'resources/img/ninja.png');
@@ -69,10 +72,12 @@ export default class Bootloader extends Phaser.Scene {
         // this.load.image('botonNinja', 'resources/img/botonNinja.png');
         // this.load.image('botonNinjaPulsado', 'resources/img/botonNinjaPulsado.png');
         this.load.spritesheet('botonesNinja', 'resources/img/botonesNinja.png', { frameWidth: 121, frameHeight: 107 });
+        this.load.image('botonAleatorio', 'resources/img/botonAleatorio.png');
         this.load.image('nombreDinosaurio', 'resources/img/nombreDinosaurio.png');
         this.load.image('nombreZombie', 'resources/img/nombreZombie.png');
         this.load.image('nombreCiego', 'resources/img/nombreCiego.png');
         this.load.image('nombreNinja', 'resources/img/nombreNinja.png');
+        this.load.image('nombreAleatorio', 'resources/img/nombreAleatorio.png');
         this.load.image('mapa', 'resources/img/mapa.png');
         this.load.image('botonTemplo', 'resources/img/botonTemplo.png');
         this.load.image('botonVolcan', 'resources/img/botonVolcan.png');
@@ -81,12 +86,14 @@ export default class Bootloader extends Phaser.Scene {
         this.load.image('temploSeleccion', 'resources/img/temploSeleccion.png');
         this.load.image('volcan', 'resources/img/volcan.png');
         this.load.image('ciudad', 'resources/img/ciudad.png');
+        this.load.image('mapaAleatorio', 'resources/img/mapaAleatorio.png');
         this.load.image('nombreTemplo', 'resources/img/nombreTemplo.png');
         this.load.image('nombreCiudad', 'resources/img/nombreCiudad.png');
         this.load.image('nombreVolcan', 'resources/img/nombreVolcan.png');
         this.load.image('botonJugadorUno', 'resources/img/botonJugadorUno.png');
         this.load.image('botonJugadorDos', 'resources/img/botonJugadorDos.png');
         this.load.image('botonMapa', 'resources/img/botonMapa.png');
+        this.load.image('botonMapaAleatorio', 'resources/img/botonMapaAleatorio.png');
         this.load.spritesheet('cuentaAtras', 'resources/img/cuentaAtras.png', { frameWidth: 258, frameHeight: 319 });
         this.load.image('preparatoria', 'resources/img/preparatoria.png');
         this.load.image('listo', 'resources/img/listo.png');

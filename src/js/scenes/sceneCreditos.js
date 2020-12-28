@@ -1,6 +1,6 @@
-export default class SceneControles extends Phaser.Scene {
+export default class SceneCreditos extends Phaser.Scene {
     constructor() {
-        super({ key: "SceneControles" });
+        super({ key: "SceneCreditos" });
     }
 
     create() {
@@ -8,7 +8,16 @@ export default class SceneControles extends Phaser.Scene {
 
         this.pulsado = false;
 
-        this.controles = this.add.image(640, 360, 'controles');
+        this.fondo = this.add.image(640, 360, 'inicio');
+        //this.creditos = this.physics.add.image(640, 360, 'creditos');
+        this.creditos = this.add.image(640, 360, 'creditos');
+
+        /**
+        this.creditos.setVelocity(25, 15);
+        this.creditos.setBounce(1, 1);
+        this.creditos.setCollideWorldBounds(true);
+        this.creditos.setAccelerationY(-1000);
+        /**/
 
         this.sonidoBoton = this.sound.add('sonidoBoton');
         this.sonidoAtras = this.sound.add('sonidoAtras');

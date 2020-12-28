@@ -6,6 +6,7 @@ export default class SceneMenu extends Phaser.Scene {
     create() {
         this.pulsadoControles = false;
         this.pulsadoJugar = false;
+        this.pulsadoCreditos = false;
         this.cameras.main.fadeIn(250);
         
         this.fondo = this.add.image(640, 360, 'fondoMenu');
@@ -49,6 +50,27 @@ export default class SceneMenu extends Phaser.Scene {
 
         this.bJugar = this.add.sprite(640, 475, 'botonJugar').setInteractive();
         this.bControles = this.add.sprite(640, 640, 'botonControles').setInteractive();
+        this.bCreditos = this.add.sprite(100, 40, 'botonCreditos').setInteractive();
+
+        this.bCreditos.on('pointerover', function () {
+            this.sonidoBoton.play();
+            this.bCreditos.setScale(1.15);
+        }.bind(this));
+
+        this.bCreditos.on('pointerout', function () {
+            this.bCreditos.setScale(1);
+        }.bind(this));
+
+        this.bCreditos.on('pointerdown', function () {
+            this.bCreditos.destroy();
+            this.bCreditos = this.add.sprite(100, 40, 'botonCreditos');
+            this.bControles.destroy();
+            this.bControles = this.add.sprite(640, 640, 'botonControles');
+            this.bJugar.destroy();
+            this.bJugar = this.add.sprite(640, 475, 'botonJugar');
+            this.cameras.main.fadeOut(250);
+            this.pulsadoCreditos = true;
+        }.bind(this));
 
         this.bControles.on('pointerover', function () {
             this.sonidoBoton.play();
@@ -60,6 +82,8 @@ export default class SceneMenu extends Phaser.Scene {
         }.bind(this));
 
         this.bControles.on('pointerdown', function () {
+            this.bCreditos.destroy();
+            this.bCreditos = this.add.sprite(100, 40, 'botonCreditos');
             this.bControles.destroy();
             this.bControles = this.add.sprite(640, 640, 'botonControles');
             this.bJugar.destroy();
@@ -78,6 +102,8 @@ export default class SceneMenu extends Phaser.Scene {
         }.bind(this));
 
         this.bJugar.on('pointerdown', function () {
+            this.bCreditos.destroy();
+            this.bCreditos = this.add.sprite(100, 40, 'botonCreditos');
             this.bControles.destroy();
             this.bControles = this.add.sprite(640, 640, 'botonControles');
             this.bJugar.destroy();
@@ -104,6 +130,8 @@ export default class SceneMenu extends Phaser.Scene {
             } else if (this.pulsadoJugar) {
                 this.scene.start("ScenePersonajeUno");
                 this.transicion.cancelarSeleccion = false;
+            } else if (this.pulsadoCreditos) {
+                this.scene.start("SceneCreditos");
             }
         }.bind(this));
     }

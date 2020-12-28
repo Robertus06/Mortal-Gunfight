@@ -15,7 +15,7 @@ export default class SceneJuego extends Phaser.Scene {
                 Phaser.Physics.Arcade.Image.call(this, scene, 0, 0, 'bala');        
             
                 this.setDepth(1);
-                this.setScale(0.23);
+                this.setScale(0.27);
                 
         
                 this.speed = 1200;
@@ -132,27 +132,27 @@ export default class SceneJuego extends Phaser.Scene {
 
         this.vidaUnoBox.fillStyle(0x000000, 1);
         this.vidaUnoBox.fillRect(20, 50, 400, 30);
-        this.vidaUnoBox.setDepth(1);
+        this.vidaUnoBox.setDepth(4);
 
         this.vidaDosBox.fillStyle(0x000000, 1);
         this.vidaDosBox.fillRect(860, 50, 400, 30);
-        this.vidaDosBox.setDepth(1);
+        this.vidaDosBox.setDepth(4);
 
-        this.vidaUnoBar.setDepth(2);
+        this.vidaUnoBar.setDepth(5);
         this.vidaUnoBar.fillStyle(0xffffff, 0.5);
         this.vidaUnoBar.fillRect(23, 53, 394, 24);
 
-        this.vidaDosBar.setDepth(2);
+        this.vidaDosBar.setDepth(5);
         this.vidaDosBar.fillStyle(0xffffff, 0.5);
         this.vidaDosBar.fillRect(863, 53, 394, 24);
 
         // this.vidaUno.clear();
-        this.vidaUno.setDepth(3);
+        this.vidaUno.setDepth(6);
         this.vidaUno.fillStyle(0x4d99ff, 1);
         this.vidaUno.fillRect(23, 53, 394*(this.salud1/100), 24);
 
         // this.vidaDosBar.clear();
-        this.vidaDos.setDepth(3);
+        this.vidaDos.setDepth(6);
         this.vidaDos.fillStyle(0xff4d4d, 1);
         this.vidaDos.fillRect(863, 53, 394*(this.salud2/100), 24);
 
@@ -163,6 +163,7 @@ export default class SceneJuego extends Phaser.Scene {
         this.decoracion.create(830, 0, 'cadenas').setOrigin(0.5, 0);
         
         this.versus = this.add.image(640, 60, 'vs');
+        this.versus.setDepth(4);
         this.plataformas = this.physics.add.staticGroup();
         this.plataformas.create(640, 703, 'spriteSuelo');
         this.plataformas.create(640, 720, 'pared').setOrigin(0.5, 1).refreshBody();
@@ -178,8 +179,8 @@ export default class SceneJuego extends Phaser.Scene {
         this.arma1 = null;
         this.arma2 = null;
         this.armas = this.physics.add.group();
-        this.armas.create(230, 20, 'pistola').setScale(0.23).setOrigin(0.22, 0.28).setFlipX(true);
-        this.armas.create(1050, 20, 'pistola').setScale(0.23).setOrigin(0.78, 0.28);
+        this.armas.create(230, 20, 'pistola').setScale(0.27).setOrigin(0.22, 0.28).setFlipX(true);
+        this.armas.create(1050, 20, 'pistola').setScale(0.27).setOrigin(0.78, 0.28);
         
         this.armas.children.iterate(function(child){
             //child.body.syncBounds = true;
@@ -205,40 +206,44 @@ export default class SceneJuego extends Phaser.Scene {
             this.nombreUno = this.add.image(40, 20, 'nombreDinosaurio');
             this.nombreUno.setOrigin(0);
             this.nombreUno.setScale(0.75);
+            this.nombreUno.setDepth(4);
             this.jugador1 = this.add.image(80, 640,'spriteDinosaurio');
-            this.jugador1.setScale(0.23).setFlipX(true).setOrigin(0.28, 0.53);    
+            this.jugador1.setScale(0.27).setFlipX(true).setOrigin(0.28, 0.53);    
             this.brazo1 = this.add.image(80, 640,'brazoDinosaurio');
-            this.brazo1.setScale(-0.23, 0.23);
+            this.brazo1.setScale(-0.27, 0.27);
             this.brazo1.setOrigin(0.61, 0.33);
         } else if (this.personaje.jugadorUno == 'c') {
             this.nombreUno = this.add.image(40, 20, 'nombreCiego');
             this.nombreUno.setOrigin(0);
             this.nombreUno.setScale(0.75);
+            this.nombreUno.setDepth(4);
             this.jugador1 = this.add.image(80, 640,'spritePerro');            
-            this.jugador1.setScale(0.23).setFlipX(true).setOrigin(0.28, 0.53);
+            this.jugador1.setScale(0.27).setFlipX(true).setOrigin(0.28, 0.53);
             this.brazo1 = this.add.image(80, 640,'brazoPerro');
-            this.brazo1.setScale(-0.23, 0.23);
+            this.brazo1.setScale(-0.27, 0.27);
             this.brazo1.setOrigin(0.61, 0.33);
-            this.ciego = this.add.image(80,640,'spriteCiegoReverse');
-            this.ciego.setScale(0.27);
+            this.ciego = this.add.image(80, 640,'spriteCiegoReverse');
+            this.ciego.setScale(0.31);
             this.ciego.setOrigin(1,0.5);
         } else if (this.personaje.jugadorUno == 'n') {
             this.nombreUno = this.add.image(40, 20, 'nombreNinja');
             this.nombreUno.setOrigin(0);
             this.nombreUno.setScale(0.75);
+            this.nombreUno.setDepth(4);
             this.jugador1 = this.add.image(80, 640,'spriteNinja');
-            this.jugador1.setScale(0.23).setFlipX(true).setOrigin(0.28, 0.53);
+            this.jugador1.setScale(0.27).setFlipX(true).setOrigin(0.28, 0.53);
             this.brazo1 = this.add.image(80, 640,'brazoNinja');
-            this.brazo1.setScale(-0.23, 0.23);
+            this.brazo1.setScale(-0.27, 0.27);
             this.brazo1.setOrigin(0.61, 0.33);
         } else if (this.personaje.jugadorUno == 'z') {
             this.nombreUno = this.add.image(40, 20, 'nombreZombie');
             this.nombreUno.setOrigin(0);
             this.nombreUno.setScale(0.75);
+            this.nombreUno.setDepth(4);
             this.jugador1 = this.add.image(80, 640,'spriteZombie');
-            this.jugador1.setScale(0.23).setFlipX(true).setOrigin(0.28, 0.53);
+            this.jugador1.setScale(0.27).setFlipX(true).setOrigin(0.28, 0.53);
             this.brazo1 = this.add.image(80, 640,'brazoZombie');
-            this.brazo1.setScale(-0.23, 0.23);
+            this.brazo1.setScale(-0.27, 0.27);
             this.brazo1.setOrigin(0.61, 0.33);
         }
 
@@ -246,44 +251,48 @@ export default class SceneJuego extends Phaser.Scene {
             this.nombreDos = this.add.image(1240, 20, 'nombreDinosaurio');
             this.nombreDos.setOrigin(1, 0);
             this.nombreDos.setScale(0.75);
+            this.nombreDos.setDepth(4);
             this.jugador2 = this.add.image(1200, 640,'spriteDinosaurio');
-            this.jugador2.setScale(0.23);
+            this.jugador2.setScale(0.27);
             this.jugador2.setOrigin(0.72, 0.53);
             this.brazo2 = this.add.image(1200, 640,'brazoDinosaurio');
-            this.brazo2.setScale(0.23);
+            this.brazo2.setScale(0.27);
             this.brazo2.setOrigin(0.61, 0.33);
         } else if (this.personaje.jugadorDos == 'c') {
             this.nombreDos = this.add.image(1240, 20, 'nombreCiego');
             this.nombreDos.setOrigin(1, 0);
             this.nombreDos.setScale(0.75);
+            this.nombreDos.setDepth(4);
             this.jugador2 = this.add.image(1200, 640,'spritePerro');
-            this.jugador2.setScale(0.23);
+            this.jugador2.setScale(0.27);
             this.jugador2.setOrigin(0.72, 0.53);
             this.brazo2 = this.add.image(1200, 640,'brazoPerro');
-            this.brazo2.setScale(0.23);
+            this.brazo2.setScale(0.27);
             this.brazo2.setOrigin(0.61, 0.33);
             this.ciego = this.add.image(1200,640,'spriteCiego');
-            this.ciego.setScale(0.27);
+            this.ciego.setScale(0.31);
             this.ciego.setOrigin(0,0.5);
         } else if (this.personaje.jugadorDos == 'n') {
             this.nombreDos = this.add.image(1240, 20, 'nombreNinja');
             this.nombreDos.setOrigin(1, 0);
             this.nombreDos.setScale(0.75);
+            this.nombreDos.setDepth(4);
             this.jugador2 = this.add.image(1200, 640,'spriteNinja');
-            this.jugador2.setScale(0.23);
+            this.jugador2.setScale(0.27);
             this.jugador2.setOrigin(0.72, 0.53);
             this.brazo2 = this.add.image(1200, 640,'brazoNinja');
-            this.brazo2.setScale(0.23);
+            this.brazo2.setScale(0.27);
             this.brazo2.setOrigin(0.61, 0.33);
         } else if (this.personaje.jugadorDos == 'z') {
             this.nombreDos = this.add.image(1240, 20, 'nombreZombie');
             this.nombreDos.setOrigin(1, 0);
             this.nombreDos.setScale(0.75);
+            this.nombreDos.setDepth(4);
             this.jugador2 = this.add.image(1200, 640,'spriteZombie');
-            this.jugador2.setScale(0.23);
+            this.jugador2.setScale(0.27);
             this.jugador2.setOrigin(0.72, 0.53);
             this.brazo2 = this.add.image(1200, 640,'brazoZombie');
-            this.brazo2.setScale(0.23);
+            this.brazo2.setScale(0.27);
             this.brazo2.setOrigin(0.61, 0.33);
         }
 
@@ -312,14 +321,15 @@ export default class SceneJuego extends Phaser.Scene {
         
         this.timeText = this.add.text(638, 130, '02:00', { fontFamily: 'luckiestGuy', fontSize: 50, shadowStroke: true, shadowBlur: 1, strokeThickness: 4, stroke: '#000000' });
         this.timeText.setOrigin(0.5);
+        this.timeText.setDepth(4);
 
         this.p1Text = this.add.text(530, 60,'0',{ fontFamily: 'luckiestGuy', fontSize: 70, shadowStroke: true, shadowBlur: 1, strokeThickness: 4, stroke: '#000000' });
         this.p1Text.setOrigin(0.5);
-        
+        this.p1Text.setDepth(4);
 
         this.p2Text = this.add.text(760, 60,'0',{ fontFamily: 'luckiestGuy', fontSize: 70, shadowStroke: true, shadowBlur: 1, strokeThickness: 4, stroke: '#000000' });
         this.p2Text.setOrigin(0.5);
-               
+        this.p2Text.setDepth(4);
 
         this.cursor_ESC = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
         
@@ -454,8 +464,8 @@ export default class SceneJuego extends Phaser.Scene {
             if(this.jugador1.x < this.jugador2.x){
                 this.jugador1.setFlipX(true).setOrigin(0.28, 0.53);
                 this.jugador2.setFlipX(false).setOrigin(0.72, 0.53);
-                this.brazo1.setScale(-0.23, 0.23);
-                this.brazo2.setScale(0.23);
+                this.brazo1.setScale(-0.27, 0.27);
+                this.brazo2.setScale(0.27);
                 if(this.personaje.jugadorUno == 'c') this.ciego.setTexture('spriteCiegoReverse').setOrigin(1,0.5);
                 if(this.personaje.jugadorDos == 'c') this.ciego.setTexture('spriteCiego').setOrigin(0,0.5);
                 this.girar = false;
@@ -468,8 +478,8 @@ export default class SceneJuego extends Phaser.Scene {
             if(this.jugador1.x > this.jugador2.x){
                 this.jugador1.setFlipX(false).setOrigin(0.72, 0.53);
                 this.jugador2.setFlipX(true).setOrigin(0.28, 0.53);
-                this.brazo1.setScale(0.23);
-                this.brazo2.setScale(-0.23, 0.23);
+                this.brazo1.setScale(0.27);
+                this.brazo2.setScale(-0.27, 0.27);
                 if(this.personaje.jugadorUno == 'c') this.ciego.setTexture('spriteCiego').setOrigin(0,0.5);
                 if(this.personaje.jugadorDos == 'c') this.ciego.setTexture('spriteCiegoReverse').setOrigin(1,0.5);
                 this.girar = true;
@@ -557,12 +567,12 @@ export default class SceneJuego extends Phaser.Scene {
         }
 
          this.vidaUno.clear();
-         this.vidaUno.setDepth(3);
+         this.vidaUno.setDepth(6);
          this.vidaUno.fillStyle(0x4d99ff, 1);
          this.vidaUno.fillRect(23, 53, 394*Phaser.Math.Clamp(this.salud1/100,0,1), 24);
  
          this.vidaDos.clear();
-         this.vidaDos.setDepth(3);
+         this.vidaDos.setDepth(6);
          this.vidaDos.fillStyle(0xff4d4d, 1);
          this.vidaDos.fillRect(863, 53, 394*Phaser.Math.Clamp(this.salud2/100,0,1), 24);
     }
