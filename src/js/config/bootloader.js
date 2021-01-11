@@ -84,6 +84,8 @@ export default class Bootloader extends Phaser.Scene {
         this.load.image('botonCiudad', 'resources/img/botonCiudad.png');
         this.load.image('templo', 'resources/img/templo.png');
         this.load.image('temploSeleccion', 'resources/img/temploSeleccion.png');
+        this.load.image('ciudadSeleccion', 'resources/img/ciudadSeleccion.png');
+        this.load.image('volcanSeleccion', 'resources/img/volcanSeleccion.png');
         this.load.image('volcan', 'resources/img/volcan.png');
         this.load.image('ciudad', 'resources/img/ciudad.png');
         this.load.image('mapaAleatorio', 'resources/img/mapaAleatorio.png');
@@ -150,11 +152,15 @@ export default class Bootloader extends Phaser.Scene {
         this.load.audio('sonidoSmg', 'resources/music/smg.mp3');
         this.load.audio('sonidoSniper', 'resources/music/sniper.mp3');
         this.load.image('spriteSuelo','resources/img/suelo.png');
+        this.load.image('spriteSuelo2','resources/img/suelo2.png');
         this.load.image('plataforma', 'resources/img/plataforma.png');
         this.load.image('tejas', 'resources/img/tejas.png');
+        this.load.image('pale', 'resources/img/pale.png');
         this.load.image('pared', 'resources/img/pared.png');
+        this.load.image('pared2', 'resources/img/pared2.png');
         this.load.image('paloma', 'resources/img/paloma.png');
         this.load.image('cadenas', 'resources/img/cadenas.png');
+        this.load.image('cuerda', 'resources/img/cuerda.png');
         this.load.spritesheet('botones', 'resources/img/botonTiempo.png', { frameWidth: 139, frameHeight: 56 });
 
         // cortar sonidos

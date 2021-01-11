@@ -69,7 +69,7 @@ export default class SceneMapa extends Phaser.Scene {
             this.bCiudad.setDepth(2);
             this.nombreMapa = this.add.image(293, 130, 'nombreCiudad');
             this.nombreMapa.setOrigin(0);
-            this.seleccionadoMapa = this.add.image(640, 342, 'ciudad');
+            this.seleccionadoMapa = this.add.image(640, 342, 'ciudadSeleccion');
             this.seleccionadoMapa.setScale(0.505, 0.5);
             this.resplandorMapa = this.add.image(635, 648, 'botonMapa');
             this.resplandorMapa.setDepth(1);
@@ -83,7 +83,6 @@ export default class SceneMapa extends Phaser.Scene {
             this.seleccionadoMapa.destroy();
         }.bind(this));
 
-        /**
         this.bCiudad.on('pointerdown', function () {
             this.mapa.escenario = 'c';
             this.resplandorMapa.setScale(1);
@@ -99,7 +98,6 @@ export default class SceneMapa extends Phaser.Scene {
             this.siguiente = true;
             this.cameras.main.fadeOut(250);
         }.bind(this));
-        /**/
 
         this.bVolcan.on('pointerover', function () {
             this.sonidoBoton.play();
@@ -160,8 +158,9 @@ export default class SceneMapa extends Phaser.Scene {
         }.bind(this));
 
         this.bAleatorio.on('pointerdown', function () {
-            this.seleccionar = Phaser.Math.Between(1, 3);
-            this.seleccionar = 3;
+            do{
+                this.seleccionar = Phaser.Math.Between(1, 3);
+            } while (this.seleccionar == 1);
 
             if (this.seleccionar == 1) {
                 this.mapa.escenario = 'v';
