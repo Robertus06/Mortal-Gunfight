@@ -10,9 +10,9 @@ export default class SceneJuego extends Phaser.Scene {
         
             initialize:
         
-            function Bala (scene)
+            function Bala (scene, nombre)
             {
-                Phaser.Physics.Arcade.Image.call(this, scene, 0, 0, 'bala');        
+                Phaser.Physics.Arcade.Image.call(this, scene, 0, 0, nombre);        
             
                 this.setDepth(1);
                 this.setScale(0.27);
@@ -62,14 +62,66 @@ export default class SceneJuego extends Phaser.Scene {
                 this.setActive(false);
                 this.setVisible(false);
                 this.body.stop();
+            },
+            flip: function ()
+            {
+                if(this.flipX) this.setFlipX(false);
+                else this.setFlipX(true);
             }
         
+        });
+
+        this.Arma = new Phaser.Class({
+
+            Extends: Phaser.Physics.Arcade.Image,
+        
+            initialize:
+
+            function Arma(scene,nombre,bala,sonido)
+            {
+                Phaser.Physics.Arcade.Image.call(this, scene, 0, 0, nombre);
+                this.setScale(0.27);
+                this.setOrigin(0.78, 0.28);
+                this.body.setSize(150,150);
+                this.body.setOffset(400,100);
+
+                this.tipoBala = bala;
+                this.sonido = sonido;
+            },
+            disparar: function()
+            {
+
+            },
+
+
+
+            flip: function()
+            {
+                if(this.flipX) 
+                {
+                    this.setFlipX(false)
+                    this.setOrigin(0.78, 0.28);
+                    this.body.setOffset(200,100);
+                }
+                else
+                {
+                    this.setFlipX(true)
+                    this.setOrigin(0.22, 0.28);
+                    this.body.setOffset(400,100);
+                }
+
+            }
+
+
+
+
         });
 
         this.minutos = 0;
         this.currentTime = 0;
         this.cd1 = 0;
         this.cd2 = 0;
+        this.cdGenerarArma = 0;
         this.cargado = false;
         this.final = false;
         this.entrado = false;
@@ -81,6 +133,8 @@ export default class SceneJuego extends Phaser.Scene {
 
         this.pulsado = false;
         this.pausado = false;
+
+        this.nombreArmas = ['ar','lanzacohetes','minigun','pistola','smg','sniper'];
 
         this.salud1 = 100;
         this.salud2 = 100;
@@ -193,8 +247,8 @@ export default class SceneJuego extends Phaser.Scene {
         this.arma1 = null;
         this.arma2 = null;
         this.armas = this.physics.add.group();
-        this.armas.create(230, 20, 'pistola').setScale(0.27).setOrigin(0.22, 0.28).setFlipX(true);
-        this.armas.create(1050, 20, 'pistola').setScale(0.27).setOrigin(0.78, 0.28);
+        //this.armas.create(230, 20, 'pistola').setScale(0.27).setOrigin(0.22, 0.28).setFlipX(true);
+        //this.armas.create(1050, 20, 'pistola').setScale(0.27).setOrigin(0.78, 0.28);
         
         this.armas.children.iterate(function(child){
             //child.body.syncBounds = true;
@@ -207,11 +261,13 @@ export default class SceneJuego extends Phaser.Scene {
 
         this.balas1 = this.physics.add.group({
             classType: this.Bala,
+            defaultKey: 'bala',
             maxSize: 30,
             runChildUpdate: true
         });
         this.balas2 = this.physics.add.group({
             classType: this.Bala,
+            defaultKey: 'bala',
             maxSize: 30,
             runChildUpdate: true
         });
@@ -378,7 +434,8 @@ export default class SceneJuego extends Phaser.Scene {
             this.currentTime = time + this.tiempo.tiempoJuego;
             this.cargado = true;
         } else if (this.pausado) {
-            this.currentTime = time + this.timeRestante;
+            this.currentTime += time - this.timeRestante;
+            this.cdGenerarArma+= time - this.timeRestante;
             this.pausado = false;            
         }
 
@@ -398,11 +455,18 @@ export default class SceneJuego extends Phaser.Scene {
 
         if (this.cursor_ESC.isUp && this.pulsado) {
             this.pulsado = false;
-            this.timeRestante = this.currentTime - time;
+            this.timeRestante = time;
             this.pausado = true;
             this.scene.pause();
             this.scene.launch("ScenePausa");
         }
+
+        if(this.cdGenerarArma < time)
+        {
+            this.cdGenerarArma = time + 20000;
+            this.generarArmas();
+        } 
+            
 
         
         if (this.minutos <= 0 && this.segundos <= 0 && !this.entrado) {
@@ -541,7 +605,10 @@ export default class SceneJuego extends Phaser.Scene {
         if (this.cursors_jugador1.disparar.isDown && this.cd1 < time)
         {
             if (this.arma1 != null){
-                var bullet = this.balas1.get();
+                var bullet = new this.Bala(this, 'bala');
+                if(this.jugador1.flipX == true)
+                bullet.flip();
+                this.balas1.add(bullet, true);
                 this.sonidoPistola.play();
                 if (bullet)
                 {
@@ -570,7 +637,10 @@ export default class SceneJuego extends Phaser.Scene {
         if (this.cursors_jugador2.disparar.isDown && this.cd2 < time)
         {
             if (this.arma2 != null) {
-                var bullet = this.balas2.get();
+                var bullet = new this.Bala(this, 'bala');
+                if(this.jugador2.flipX == true)
+                bullet.flip();
+                this.balas2.add(bullet, true);
                 this.sonidoPistola.play();
                 if (bullet)
                 {
@@ -593,26 +663,44 @@ export default class SceneJuego extends Phaser.Scene {
 
     cambiarArma1(jugador1,arma) {
         if(this.cursors_jugador1.interactuar.isDown){
-            if(this.arma1 == null){
-                arma.disableBody(true,false);
-                this.arma1 = arma;
-                this.arma1.setPosition(jugador1.x,jugador1.y)
-                this.arma1.setRotation(this.brazo1.rotation);
-                this.arma1.setDepth(2);
+            if(this.arma1 != null)
+            {
+                /*
+                this.arma1.setActive(false);
+                this.arma1.setVisible(false);
+                this.arma1.body.stop();
+                */
+               this.arma1.destroy();
             }
-
+            
+            this.arma1 = this.add.image(0, 0, arma.texture).setScale(0.27);
+            arma.destroy();
+            //arma.disableBody(true,false);
+            //this.arma1 = arma;
+            this.arma1.setPosition(jugador1.x,jugador1.y)
+            this.arma1.setRotation(this.brazo1.rotation);
+            this.arma1.setDepth(2);
         }
     }
 
     cambiarArma2(jugador2,arma) {
         if(this.cursors_jugador2.interactuar.isDown){
-            if(this.arma2 == null){
-                arma.disableBody(true,false);
-                this.arma2 = arma;
-                this.arma2.setPosition(jugador2.x,jugador2.y)
-                this.arma2.setRotation(this.brazo2.rotation);
-                this.arma2.setDepth(2);
+            if(this.arma2 != null)
+            {
+                /*
+                this.arma2.setActive(false);                
+                this.arma2.setVisible(false);
+                this.arma2.body.stop();
+                */
+               this.arma2.destroy();
             }
+            this.arma2 = this.add.image(0, 0, arma.texture).setScale(0.27);
+            arma.destroy();
+            //arma.disableBody(true,false);
+            //this.arma2 = arma;
+            this.arma2.setPosition(jugador2.x,jugador2.y)
+            this.arma2.setRotation(this.brazo2.rotation);
+            this.arma2.setDepth(2);
 
         }
     }
@@ -632,5 +720,22 @@ export default class SceneJuego extends Phaser.Scene {
             this.salud1 -= 10;
             bala.kill();
         }
+    }
+
+    generarArmas(){
+        this.armas.clear(true,true);
+        //this.armas.children.iterate(function(child){
+            //child.setActive(false);                
+            //child.setVisible(false);
+            //child.body.stop();
+            //child.destroy();
+        //});
+
+        this.x = Phaser.Math.Between(80,480);
+
+        this.armaX = this.armas.create(this.x, 20, this.nombreArmas[Phaser.Math.Between(0,5)]).setScale(0.27).setOrigin(0.22, 0.28).setFlipX(true);
+        this.armaX.body.setSize(150,150).setOffset(200,100);        
+        this.armaY = this.armas.create(1280-this.x, 20, this.nombreArmas[Phaser.Math.Between(0,5)]).setScale(0.27).setOrigin(0.78, 0.28);
+        this.armaY.body.setSize(150,150).setOffset(400,100);
     }
 }
