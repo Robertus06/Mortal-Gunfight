@@ -95,8 +95,7 @@ En los menús por el lado izquierdo predomina el color azul ya que es el que cor
 
 #### Diagrama de flujo
 
-![Diagrama de flujo]
-https://github.com/Robertus06/Mortal-Gunfight/blob/main/Diagrama%20de%20flujo.png
+![Diagrama de flujo](./Diagrama de flujo.png)
 
 En cuanto al diagrama de flujo del juego, partimos de una pantalla donde se cargaría el juego y podemos ver el progreso mediante una barra de carga. Al cargar el juego, nos pedirá que cliquemos en cualquier parte de la pantalla y nos llevará directamente al menú, donde podremos utilizar el botón "Jugar" y el botón "Controles". Si seleccionamos el botón "Controles" nos llevará a una pantalla donde nos explica qué teclas podemos utilizar dentro del juego y cuáles son las acciones de cada una. Si pulsamos el botón "Jugar" nos llevará a la pantalla de selección de personajes donde primero elige el jugador número uno y después el jugador número dos. Al haber elegido personajes los dos jugadores, pasaremos a la pantalla de selección de mapa, dónde podremos elegir entre tres mapas. Cuando hayamos elegido uno de los tres mapas llegamos a una pantalla donde se pide a ambos jugadores que indiquen si se encuentran listos para jugar pulsando una tecla. Después de indicar que están listos se pasa al juego dónde transcurre toda la partida, aquí podremos pulsar el botón "Escape" y nos llevará al menú de pausa donde podremos elegir si salir al menú principal o si queremos continuar la partida. Por último, al terminar la partida iremos a la pantalla final donde se nos dan las opciónes de volver a jugar con los mismos personajes, de volver a jugar pero volviendo a seleccionar los personajes, o de salir al menú principal directamente.
 
