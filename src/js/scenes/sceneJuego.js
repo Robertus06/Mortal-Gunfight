@@ -62,6 +62,7 @@ export default class SceneJuego extends Phaser.Scene {
                 this.setActive(false);
                 this.setVisible(false);
                 this.body.stop();
+                this.destroy();
             },
             flip: function ()
             {
@@ -143,7 +144,8 @@ export default class SceneJuego extends Phaser.Scene {
 
         this.tiempo = this.sys.game.globalsTiempo.tiempo;
 
-        this.sonidoPistola = this.sound.add('sonidoPistola');
+        this.sonidoPistola1 = this.sound.add('sonidoPistola1');
+        this.sonidoPistola2 = this.sound.add('sonidoPistola2');
 
         this.anims.create({
             key: 'animacion1',
@@ -262,13 +264,13 @@ export default class SceneJuego extends Phaser.Scene {
         this.balas1 = this.physics.add.group({
             classType: this.Bala,
             defaultKey: 'bala',
-            maxSize: 30,
+            maxSize: 100,
             runChildUpdate: true
         });
         this.balas2 = this.physics.add.group({
             classType: this.Bala,
             defaultKey: 'bala',
-            maxSize: 30,
+            maxSize: 100,
             runChildUpdate: true
         });
         
@@ -609,7 +611,9 @@ export default class SceneJuego extends Phaser.Scene {
                 if(this.jugador1.flipX == true)
                 bullet.flip();
                 this.balas1.add(bullet, true);
-                this.sonidoPistola.play();
+
+                this.sonidoPistola1.play();
+
                 if (bullet)
                 {
                     bullet.fire(this.arma1);
@@ -641,7 +645,9 @@ export default class SceneJuego extends Phaser.Scene {
                 if(this.jugador2.flipX == true)
                 bullet.flip();
                 this.balas2.add(bullet, true);
-                this.sonidoPistola.play();
+
+                this.sonidoPistola2.play();
+
                 if (bullet)
                 {
                     bullet.fire(this.arma2);

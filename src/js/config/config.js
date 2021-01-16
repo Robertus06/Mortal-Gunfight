@@ -4,6 +4,10 @@ export default {
     height: 720,
     parent: "juego",
 
+    dom: {
+        createContainer: true
+    },
+
     audio: {
         disableWebAudio: true
     },
