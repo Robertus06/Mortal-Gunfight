@@ -10,7 +10,7 @@ export default class Bootloader extends Phaser.Scene {
         this.fondo.setAlpha(0.4);
 
         this.logo = this.add.image(640, 360, 'logo');
-        this.logo.setScale(0.8);
+        this.logo.setScale(0.8, 0.77);
 
         this.anims.create({
             key: 'carga',
@@ -19,29 +19,34 @@ export default class Bootloader extends Phaser.Scene {
             repeat: -1
         });
 
+        this.start = false;
+        this.startCd = false;
+        this.timeAux = 0;
+        this.cd = 0;
+
         this.textoCarga = this.add.sprite(30, 655, 'cargando').play('carga');
         this.textoCarga.setOrigin(0, 0.5);
 
-        var progressBar = this.add.graphics();
-        var progressBox = this.add.graphics();
-        progressBox.fillStyle(0xa7a7a7, 0.4);
-        progressBox.fillRect(20, 680, 1240, 16);
-        progressBox.setDepth(1);
+        this.progressBarAux = this.add.graphics();
+        this.progressBar = this.add.graphics();
+        this.progressBox = this.add.graphics();
+        this.progressBox.fillStyle(0xa7a7a7, 0.4);
+        this.progressBox.fillRect(20, 680, 1240, 16);
+        this.progressBox.setDepth(1);
 
         // var width = this.cameras.main.width;
         // var height = this.cameras.main.height;
 
         this.load.on('progress', function (value) {
-            progressBar.clear();
-            progressBar.setDepth(2);
-            progressBar.fillStyle(0xff9900, 1);
-            progressBar.fillRect(25, 685, 1230 * value, 8);
-        });
+            this.progressBar.clear();
+            this.progressBar.setDepth(2);
+            this.progressBar.fillStyle(0xff9900, 1);
+            this.progressBar.fillRect(25, 685, 1000 * value, 8);
+        }.bind(this));
 
         this.load.on('complete', function () {
-            this.textoCarga.destroy();
-            this.textoCarga = this.add.image(30, 655, 'cargado');
-            this.textoCarga.setOrigin(0, 0.5);
+            this.start = true;
+            this.startCd = true;
         }.bind(this));
 
         this.load.image('botonControles', 'resources/img/botonControles.png');
@@ -139,7 +144,8 @@ export default class Bootloader extends Phaser.Scene {
         this.load.audio('sonidoLanzacohetes', 'resources/music/lanzacohetes.mp3');
         this.load.audio('sonidoMinigun', 'resources/music/minigun.mp3');
         this.load.audio('sonidoMinigunDos', 'resources/music/minigunDos.mp3');
-        this.load.audio('sonidoPistola', 'resources/music/pistola.mp3');
+        this.load.audio('sonidoPistola1', 'resources/music/pistola1.mp3');
+        this.load.audio('sonidoPistola2', 'resources/music/pistola2.mp3');
         this.load.audio('sonidoSmg', 'resources/music/smg.mp3');
         this.load.audio('sonidoSniper', 'resources/music/sniper.mp3');
         this.load.image('spriteSuelo','resources/img/suelo.png');
@@ -160,14 +166,40 @@ export default class Bootloader extends Phaser.Scene {
         }
         /**/
 
-        this.input.on('pointerdown', function () {
-            this.cameras.main.fadeOut(500);
-        }.bind(this));
-
         this.cameras.main.once('camerafadeoutcomplete', function () {
-            progressBar.destroy();
-            progressBox.destroy();
+            this.progressBar.destroy();
+            this.progressBox.destroy();
             this.scene.start("SceneMenu");
         }.bind(this));
+    }
+
+    update(time) {
+        if (this.start) {
+            this.cd = time + 3000;
+            this.start = false;
+
+            this.timeAux = time;
+        }
+
+        if (this.cd > time && this.startCd) {
+            this.progressBarAux.setDepth(2);
+            this.progressBarAux.fillStyle(0xff9900, 1);
+            this.progressBarAux.fillRect(25, 685, 1000, 8)
+
+            this.progressBar.clear();
+            this.progressBar.setDepth(2);
+            this.progressBar.fillStyle(0xff9900, 1);
+            this.progressBar.fillRect(1025, 685, 230 *Phaser.Math.Clamp((time-this.timeAux)/3000,0,1), 8);
+        }
+
+        if (this.cd < time && !this.start) {
+            this.textoCarga.destroy();
+            this.textoCarga = this.add.image(30, 655, 'cargado');
+            this.textoCarga.setOrigin(0, 0.5);
+
+            this.input.on('pointerdown', function () {
+                this.cameras.main.fadeOut(500);
+            }.bind(this));
+        }
     }
 }

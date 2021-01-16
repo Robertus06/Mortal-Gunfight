@@ -62,6 +62,15 @@ export default class SceneJuego extends Phaser.Scene {
                 this.setActive(false);
                 this.setVisible(false);
                 this.body.stop();
+<<<<<<< Updated upstream
+=======
+                this.destroy();
+            },
+            flip: function ()
+            {
+                if(this.flipX) this.setFlipX(false);
+                else this.setFlipX(true);
+>>>>>>> Stashed changes
             }
         
         });
@@ -87,6 +96,14 @@ export default class SceneJuego extends Phaser.Scene {
         this.puntos1 = 0;
         this.puntos2 = 0;
 
+<<<<<<< Updated upstream
+=======
+        this.tiempo = this.sys.game.globalsTiempo.tiempo;
+
+        this.sonidoPistola1 = this.sound.add('sonidoPistola1');
+        this.sonidoPistola2 = this.sound.add('sonidoPistola2');
+
+>>>>>>> Stashed changes
         this.anims.create({
             key: 'animacion1',
             frames: this.anims.generateFrameNumbers('victoriaUno'),
@@ -186,12 +203,22 @@ export default class SceneJuego extends Phaser.Scene {
 
         this.balas1 = this.physics.add.group({
             classType: this.Bala,
+<<<<<<< Updated upstream
             maxSize: 30,
+=======
+            defaultKey: 'bala',
+            maxSize: 100,
+>>>>>>> Stashed changes
             runChildUpdate: true
         });
         this.balas2 = this.physics.add.group({
             classType: this.Bala,
+<<<<<<< Updated upstream
             maxSize: 30,
+=======
+            defaultKey: 'bala',
+            maxSize: 100,
+>>>>>>> Stashed changes
             runChildUpdate: true
         });
         
@@ -505,11 +532,25 @@ export default class SceneJuego extends Phaser.Scene {
         
         if (this.cursors_jugador1.disparar.isDown && this.cd1 < time)
         {
+<<<<<<< Updated upstream
             var bullet = this.balas1.get();
             if (bullet)
             {
                 bullet.fire(this.arma1);
                 this.cd1 = time + 500;
+=======
+            if (this.arma1 != null){
+                var bullet = new this.Bala(this, 'bala');
+                if(this.jugador1.flipX == true)
+                bullet.flip();
+                this.balas1.add(bullet, true);
+                this.sonidoPistola1.play();
+                if (bullet)
+                {
+                    bullet.fire(this.arma1);
+                    this.cd1 = time + 500;
+                }
+>>>>>>> Stashed changes
             }
         }
         /*Jugador 2*/
@@ -531,11 +572,25 @@ export default class SceneJuego extends Phaser.Scene {
         }
         if (this.cursors_jugador2.disparar.isDown && this.cd2 < time)
         {
+<<<<<<< Updated upstream
             var bullet = this.balas2.get();
             if (bullet)
             {
                 bullet.fire(this.arma2);
                 this.cd2 = time + 500;
+=======
+            if (this.arma2 != null) {
+                var bullet = new this.Bala(this, 'bala');
+                if(this.jugador2.flipX == true)
+                bullet.flip();
+                this.balas2.add(bullet, true);
+                this.sonidoPistola2.play();
+                if (bullet)
+                {
+                    bullet.fire(this.arma2);
+                    this.cd2 = time + 500;
+                }
+>>>>>>> Stashed changes
             }
         }
 
