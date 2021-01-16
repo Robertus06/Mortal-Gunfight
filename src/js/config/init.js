@@ -2,6 +2,7 @@ import config from '/src/js/config/config.js'
 import BootScene from '/src/js/config/bootScene.js';
 import Bootloader from '/src/js/config/bootloader.js';
 import SceneMenu from '/src/js/scenes/sceneMenu.js';
+import SceneCreditos from '/src/js/scenes/sceneCreditos.js';
 import SceneControles from '/src/js/scenes/sceneControles.js';
 import ScenePersonajeUno from '/src/js/scenes/scenePersonajeUno.js';
 import ScenePersonajeDos from '/src/js/scenes/scenePersonajeDos.js';
@@ -15,6 +16,8 @@ import Sonido from '/src/js/component/sonido.js';
 import Personaje from '/src/js/component/personaje.js';
 import Mapa from '/src/js/component/mapa.js';
 import Transicion from '/src/js/component/transicion.js';
+import Tiempo from '/src/js/component/tiempo.js';
+import Puntos from '/src/js/component/puntos.js';
 
 class Game extends Phaser.Game {
     constructor() {
@@ -32,9 +35,16 @@ class Game extends Phaser.Game {
         const transicion = new Transicion();
         this.globalsTransicion = { transicion };
 
+        const tiempo = new Tiempo();
+        this.globalsTiempo = { tiempo };
+
+        const puntos = new Puntos();
+        this.globalsPuntos = { puntos };
+
         this.scene.add('BootScene', BootScene);
         this.scene.add('Bootloader', Bootloader);
         this.scene.add('SceneMenu', SceneMenu);
+        this.scene.add('SceneCreditos', SceneCreditos);
         this.scene.add('SceneControles', SceneControles);
         this.scene.add('ScenePersonajeUno', ScenePersonajeUno);
         this.scene.add('ScenePersonajeDos', ScenePersonajeDos);

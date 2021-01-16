@@ -22,6 +22,7 @@ export default class SceneMapa extends Phaser.Scene {
         this.bTemplo = this.add.image(850, 648, 'botonTemplo').setInteractive();
         this.bCiudad = this.add.image(635, 648, 'botonCiudad').setInteractive();
         this.bVolcan = this.add.image(425, 648, 'botonVolcan').setInteractive();
+        this.bAleatorio = this.add.image(100, 648, 'botonAleatorio').setInteractive();
 
         this.seleccionadoMapa = null;
         this.resplandorMapa = null;
@@ -49,6 +50,8 @@ export default class SceneMapa extends Phaser.Scene {
         this.bTemplo.on('pointerdown', function () {
             this.mapa.escenario = 't';
             this.resplandorMapa.setScale(1);
+            this.bAleatorio.destroy();
+            this.bAleatorio = this.add.image(100, 648, 'botonAleatorio');
             this.bTemplo.destroy();
             this.bTemplo = this.add.image(850, 648, 'botonTemplo');
             this.bTemplo.setDepth(2);
@@ -66,7 +69,7 @@ export default class SceneMapa extends Phaser.Scene {
             this.bCiudad.setDepth(2);
             this.nombreMapa = this.add.image(293, 130, 'nombreCiudad');
             this.nombreMapa.setOrigin(0);
-            this.seleccionadoMapa = this.add.image(640, 342, 'ciudad');
+            this.seleccionadoMapa = this.add.image(640, 342, 'ciudadSeleccion');
             this.seleccionadoMapa.setScale(0.505, 0.5);
             this.resplandorMapa = this.add.image(635, 648, 'botonMapa');
             this.resplandorMapa.setDepth(1);
@@ -80,10 +83,11 @@ export default class SceneMapa extends Phaser.Scene {
             this.seleccionadoMapa.destroy();
         }.bind(this));
 
-        /**
         this.bCiudad.on('pointerdown', function () {
             this.mapa.escenario = 'c';
             this.resplandorMapa.setScale(1);
+            this.bAleatorio.destroy();
+            this.bAleatorio = this.add.image(100, 648, 'botonAleatorio');
             this.bTemplo.destroy();
             this.bTemplo = this.add.image(850, 648, 'botonTemplo');
             this.bCiudad.destroy();
@@ -94,7 +98,6 @@ export default class SceneMapa extends Phaser.Scene {
             this.siguiente = true;
             this.cameras.main.fadeOut(250);
         }.bind(this));
-        /**/
 
         this.bVolcan.on('pointerover', function () {
             this.sonidoBoton.play();
@@ -120,6 +123,8 @@ export default class SceneMapa extends Phaser.Scene {
         this.bVolcan.on('pointerdown', function () {
             this.mapa.escenario = 'v';
             this.resplandorMapa.setScale(1);
+            this.bAleatorio.destroy();
+            this.bAleatorio = this.add.image(100, 648, 'botonAleatorio');
             this.bTemplo.destroy();
             this.bTemplo = this.add.image(850, 648, 'botonTemplo');
             this.bCiudad.destroy();
@@ -131,6 +136,103 @@ export default class SceneMapa extends Phaser.Scene {
             this.cameras.main.fadeOut(250);
         }.bind(this));
         /**/
+
+        this.bAleatorio.on('pointerover', function () {
+            this.sonidoBoton.play();
+            this.bAleatorio.setScale(1.15);
+            this.bAleatorio.setDepth(2);
+            this.nombreMapa = this.add.image(293, 130, 'nombreAleatorio');
+            this.nombreMapa.setOrigin(0);
+            this.seleccionadoMapa = this.add.image(640, 342, 'mapaAleatorio');
+            this.seleccionadoMapa.setScale(0.505, 0.5);
+            this.resplandorMapa = this.add.image(100, 648, 'botonMapaAleatorio');
+            this.resplandorMapa.setDepth(1);
+            this.resplandorMapa.setScale(1.25);
+        }.bind(this));
+
+        this.bAleatorio.on('pointerout', function () {
+            this.bAleatorio.setScale(1);
+            this.nombreMapa.destroy();
+            this.resplandorMapa.destroy();
+            this.seleccionadoMapa.destroy();
+        }.bind(this));
+
+        this.bAleatorio.on('pointerdown', function () {
+            do{
+                this.seleccionar = Phaser.Math.Between(1, 3);
+            } while (this.seleccionar == 1);
+
+            if (this.seleccionar == 1) {
+                this.mapa.escenario = 'v';
+                this.resplandorMapa.destroy();
+                this.resplandorMapa = this.add.image(425, 648, 'botonMapa');
+                this.resplandorMapa.setDepth(1);
+                this.resplandorMapa.setScale(1);
+                this.nombreMapa.destroy();
+                this.nombreMapa = this.add.image(293, 125, 'nombreVolcan');
+                this.nombreMapa.setOrigin(0);
+                this.seleccionadoMapa.destroy();
+                this.seleccionadoMapa = this.add.image(640, 342, 'volcan');
+                this.seleccionadoMapa.setScale(0.505, 0.5);
+                this.bAleatorio.destroy();
+                this.bAleatorio = this.add.image(100, 648, 'botonAleatorio');
+                this.bTemplo.destroy();
+                this.bTemplo = this.add.image(850, 648, 'botonTemplo');
+                this.bCiudad.destroy();
+                this.bCiudad = this.add.image(635, 648, 'botonCiudad');
+                this.bVolcan.destroy();
+                this.bVolcan = this.add.image(425, 648, 'botonVolcan');
+                this.bVolcan.setDepth(2);
+                this.siguiente = true;
+                this.cameras.main.fadeOut(250);
+            } else if (this.seleccionar == 2) {
+                this.mapa.escenario = 'c';
+                this.resplandorMapa.destroy();
+                this.resplandorMapa = this.add.image(635, 648, 'botonMapa');
+                this.resplandorMapa.setDepth(1);
+                this.resplandorMapa.setScale(1);
+                this.nombreMapa.destroy();
+                this.nombreMapa = this.add.image(293, 125, 'nombreCiudad');
+                this.nombreMapa.setOrigin(0);
+                this.seleccionadoMapa.destroy();
+                this.seleccionadoMapa = this.add.image(640, 342, 'ciudad');
+                this.seleccionadoMapa.setScale(0.505, 0.5);
+                this.bAleatorio.destroy();
+                this.bAleatorio = this.add.image(100, 648, 'botonAleatorio');
+                this.bTemplo.destroy();
+                this.bTemplo = this.add.image(850, 648, 'botonTemplo');
+                this.bCiudad.destroy();
+                this.bCiudad = this.add.image(635, 648, 'botonCiudad');
+                this.bCiudad.setDepth(2);
+                this.bVolcan.destroy();
+                this.bVolcan = this.add.image(425, 648, 'botonVolcan');
+                this.siguiente = true;
+                this.cameras.main.fadeOut(250);
+            } else if (this.seleccionar == 3) {
+                this.mapa.escenario = 't';
+                this.resplandorMapa.destroy();
+                this.resplandorMapa = this.add.image(850, 648, 'botonMapa');
+                this.resplandorMapa.setDepth(1);
+                this.resplandorMapa.setScale(1);
+                this.nombreMapa.destroy();
+                this.nombreMapa = this.add.image(293, 125, 'nombreTemplo');
+                this.nombreMapa.setOrigin(0);
+                this.seleccionadoMapa.destroy();
+                this.seleccionadoMapa = this.add.image(640, 342, 'templo');
+                this.seleccionadoMapa.setScale(0.505, 0.5);
+                this.bAleatorio.destroy();
+                this.bAleatorio = this.add.image(100, 648, 'botonAleatorio');
+                this.bTemplo.destroy();
+                this.bTemplo = this.add.image(850, 648, 'botonTemplo');
+                this.bTemplo.setDepth(2);
+                this.bCiudad.destroy();
+                this.bCiudad = this.add.image(635, 648, 'botonCiudad');
+                this.bVolcan.destroy();
+                this.bVolcan = this.add.image(425, 648, 'botonVolcan');
+                this.siguiente = true;
+                this.cameras.main.fadeOut(250);
+            }
+        }.bind(this));
 
         this.sonido = this.sys.game.globalsSonido.sonido;
 

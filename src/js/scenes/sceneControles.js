@@ -19,11 +19,11 @@ export default class SceneControles extends Phaser.Scene {
         
         this.bSonido.on('pointerover', function () {
             this.sonidoBoton.play();
-            bSonido.setScale(1.15);
+            this.bSonido.setScale(1.15);
         }.bind(this));
 
         this.bSonido.on('pointerout', function () {
-            bSonido.setScale(1);
+            this.bSonido.setScale(1);
         }.bind(this));
 
         this.bSonido.on('pointerdown', function () {
