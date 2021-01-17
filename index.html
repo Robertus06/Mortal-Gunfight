@@ -4,6 +4,7 @@
     <title>Mortal Gunfight</title>
     <!-- Para coger fuentes de letra en CSS: -->
     <!-- https://fonts.google.com/?selection.family=Do+Hyeon -->
+    <meta charset="UTF-8"/>
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Londrina+Solid:wght@300&display=swap" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -18,6 +19,19 @@
   </head>
   <body>
     
+    <script>
+      function conectados() {
+        $(document).ready(function(){
+            $.ajax({
+                url:'http://localhost:8080/logins'
+            }).done(function(data) {
+                console.log(data)
+            });
+        });
+      }
+      setInterval('conectados()',1000);
+    </script>
+
     <div class="fuentes">.</div>
     <main>
       <div>
