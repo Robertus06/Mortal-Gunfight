@@ -3,6 +3,146 @@
     src: url(/resources/font/LuckiestGuy-Regular.ttf);
 }
 
+#game {
+    float: left;
+}
+
+#properties {
+    float: left;
+    width: 260px;
+    margin-left: 10px;
+    background: rgb(30, 30, 30);
+}
+
+#properties2 {
+    float: left;
+    width: 260px;
+    margin-right: 10px;
+    background: rgb(30, 30, 30);
+}
+
+#online {
+    margin-left: 15px;
+    margin-right: 15px;
+    background: rgb(39, 39, 39);
+    height: 330px;
+    overflow-y: scroll;
+}
+
+#conexion {
+    position: absolute;
+    top: 72px;
+    width: 1280px;
+    height: 720px;
+    z-index: 2;
+    background: rgb(30, 30, 30);
+    opacity: 0.5;
+    visibility: hidden;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+  
+
+::-webkit-scrollbar-track {
+    background: rgb(48, 48, 48); 
+}
+   
+
+::-webkit-scrollbar-thumb {
+    background: rgb(85, 85, 85); 
+}
+  
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgb(65, 65, 65);
+}
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td {
+    padding: 4px;
+}
+
+tr:nth-child(even) {
+    background-color: rgb(45, 45, 45);
+}
+
+h4 {
+    font-family: 'Do Hyeon', sans-serif;
+    font-size: 100px;
+    text-align: center;
+    margin: 15px;
+    color: rgb(233, 239, 255);
+}
+
+h3 {
+    font-family: 'Do Hyeon', sans-serif;
+    font-size: 21px;
+    margin: 15px;
+    color: rgb(233, 239, 255)
+}
+
+h2 {
+    font-family: 'Do Hyeon', sans-serif;
+    text-decoration: underline;
+    font-size: 25px;
+    margin: 15px;
+    color: rgb(233, 239, 255);
+}
+
+#chatbar {
+    background:#464646;
+    border: 1px solid #a1a3a3;
+    font-family:'Londrina Solid', cursive;
+    font-size:14px;
+    border-radius: 4px;
+    box-shadow: 0 1px rgb(105, 105, 105);
+    box-sizing: border-box;
+    color: #ffffff;
+    height: 35px;
+    margin-top: 15px;
+    margin-left: 15px;
+    padding-left: 15px;
+    transition: box-shadow 0.3s;
+    width: 200px;
+}
+
+#chatbar:focus {
+    box-shadow: 0 0 4px 1px rgb(209, 209, 209);
+    outline: 0;
+}
+
+#enviar {
+    display: inline;
+    width:25px;
+    height:32px;
+    font-family:'Londrina Solid', cursive;
+    font-size:20px;
+    font-weight:bold;
+    color: #eceeee;
+    text-decoration:none;
+    text-transform:uppercase;
+    text-align:center;
+    text-shadow:1px 1px 0px #ff8800;
+    margin: 0;
+    padding-top:0px;
+    position:relative;
+    cursor:pointer;
+    border: none;  
+    background-color: #ffae00;
+    background-image: linear-gradient(top,#3db0a6,#3111);
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius:5px;
+    box-shadow: inset 0px 1px 0px #ff7300, 0px 5px 0px 0px #ff8800, 0px 7px 5px rgb(105, 105, 105);
+    outline:none;
+}
+
 .fuentes {
     font-family: 'luckiestGuy';
     position: absolute;
@@ -30,6 +170,7 @@ h1 {
 #juego {
     width: 1280px;
     height: 720px;
+    z-index: 1;
 }
 
 .cabecera {
