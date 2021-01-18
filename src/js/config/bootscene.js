@@ -1,3 +1,4 @@
+
 export default class BootScene extends Phaser.Scene {
     constructor() {
         super({ key: "BootScene" });
@@ -12,6 +13,7 @@ export default class BootScene extends Phaser.Scene {
     }
 
     create() {
+        this.consulta = this.sys.game.globalsConsulta.consulta;
         this.cameras.main.setBackgroundColor('#e2e2e2');
 
         this.fondo = this.add.image(640, 360, 'inicio');
@@ -40,6 +42,8 @@ export default class BootScene extends Phaser.Scene {
 
                         if (inputUsername.value === playerData.usuario && inputPassword.value === playerData.contraseña) {
                             this.element.removeListener('click');
+                            this.consulta.conectados(playerData.usuario);
+                            setInterval(function(){this.consulta.conectados(playerData.usuario);}.bind(this),1000);                            
                             this.scene.start('Bootloader');
                         } else if (inputUsername.value === playerData.usuario && inputPassword.value !== '' && inputPassword.value !== playerData.contraseña) {
                             var p = document.getElementById("error");
