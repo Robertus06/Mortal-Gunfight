@@ -1,7 +1,6 @@
 @font-face {
     font-family: 'luckiestGuy';
     src: url(/resources/font/LuckiestGuy-Regular.ttf);
-    
 }
 
 .fuentes {
@@ -16,7 +15,7 @@ body {
 
 main {
     width: 100%;
-    height: 100vh;
+    height: 100%;
     display: flex;
     justify-content: center
 }

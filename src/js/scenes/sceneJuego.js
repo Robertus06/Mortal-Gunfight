@@ -62,6 +62,7 @@ export default class SceneJuego extends Phaser.Scene {
                 this.setActive(false);
                 this.setVisible(false);
                 this.body.stop();
+                this.destroy();
             },
             flip: function ()
             {
@@ -143,7 +144,8 @@ export default class SceneJuego extends Phaser.Scene {
 
         this.tiempo = this.sys.game.globalsTiempo.tiempo;
 
-        this.sonidoPistola = this.sound.add('sonidoPistola');
+        this.sonidoPistola1 = this.sound.add('sonidoPistola1');
+        this.sonidoPistola2 = this.sound.add('sonidoPistola2');
 
         this.anims.create({
             key: 'animacion1',
@@ -163,12 +165,43 @@ export default class SceneJuego extends Phaser.Scene {
         
         this.mapa = this.sys.game.globalsMapa.mapa;
         
+        this.plataformas = this.physics.add.staticGroup();
+        this.decoracion = this.add.group();
+        
         if (this.mapa.escenario == 't') {
             this.fondo = this.add.image(640, 360, 'templo');
+
+            this.decoracion.create(450, 0, 'cadenas').setOrigin(0.5, 0);
+            this.decoracion.create(830, 0, 'cadenas').setOrigin(0.5, 0);
+            
+            this.plataformas.create(640, 703, 'spriteSuelo');
+            this.plataformas.create(640, 720, 'pared').setOrigin(0.5, 1).refreshBody();
+            this.plataformas.create(640, 385, 'plataforma').refreshBody();
+            this.plataformas.create(56, 310, 'tejas').setScale(-1, 1).refreshBody();
+            this.plataformas.create(246, 530, 'tejas').refreshBody().setScale(-1, 1);
+            this.plataformas.create(1224, 310, 'tejas').refreshBody();
+            this.plataformas.create(1034, 530, 'tejas').refreshBody();
+            
+            this.decoracion.create(390, 382, 'paloma').setScale(-1, 1).setOrigin(0.5, 1);
+            this.decoracion.create(890, 382, 'paloma').setOrigin(0.5, 1);
+
         } else if (this.mapa.escenario == 'v') {
             this.fondo = this.add.image(640, 360, 'volcan');
+
         } else if (this.mapa.escenario == 'c') {
             this.fondo = this.add.image(640, 360, 'ciudad');
+
+            this.decoracion.create(123, 544, 'cuerda').setOrigin(0.5, 1);
+            this.decoracion.create(1157, 544, 'cuerda').setOrigin(0.5, 1);
+            this.decoracion.create(403, 399, 'cuerda').setOrigin(0.5, 1);
+            this.decoracion.create(877, 399, 'cuerda').setOrigin(0.5, 1);
+
+            this.plataformas.create(640, 703, 'spriteSuelo2');
+            this.plataformas.create(640, 720, 'pared2').setOrigin(0.5, 1).refreshBody();
+            this.plataformas.create(123, 530, 'pale').refreshBody();
+            this.plataformas.create(1157, 530, 'pale').refreshBody();
+            this.plataformas.create(877, 385, 'pale').refreshBody();
+            this.plataformas.create(403, 385, 'pale').refreshBody();
         }
 
         this.sonidoAtras = this.sound.add('sonidoAtras');
@@ -209,26 +242,9 @@ export default class SceneJuego extends Phaser.Scene {
         this.vidaDos.setDepth(6);
         this.vidaDos.fillStyle(0xff4d4d, 1);
         this.vidaDos.fillRect(863, 53, 394*(this.salud2/100), 24);
-
-        
-
-        this.decoracion = this.add.group();
-        this.decoracion.create(450, 0, 'cadenas').setOrigin(0.5, 0);
-        this.decoracion.create(830, 0, 'cadenas').setOrigin(0.5, 0);
         
         this.versus = this.add.image(640, 60, 'vs');
         this.versus.setDepth(4);
-        this.plataformas = this.physics.add.staticGroup();
-        this.plataformas.create(640, 703, 'spriteSuelo');
-        this.plataformas.create(640, 720, 'pared').setOrigin(0.5, 1).refreshBody();
-        this.plataformas.create(640, 385, 'plataforma').refreshBody();
-        this.plataformas.create(56, 310, 'tejas').setScale(-1, 1).refreshBody();
-        this.plataformas.create(246, 530, 'tejas').refreshBody().setScale(-1, 1);
-        this.plataformas.create(1224, 310, 'tejas').refreshBody();
-        this.plataformas.create(1034, 530, 'tejas').refreshBody();
-        
-        this.decoracion.create(390, 382, 'paloma').setScale(-1, 1).setOrigin(0.5, 1);
-        this.decoracion.create(890, 382, 'paloma').setOrigin(0.5, 1);
 
         this.arma1 = null;
         this.arma2 = null;
@@ -248,13 +264,13 @@ export default class SceneJuego extends Phaser.Scene {
         this.balas1 = this.physics.add.group({
             classType: this.Bala,
             defaultKey: 'bala',
-            maxSize: 30,
+            maxSize: 100,
             runChildUpdate: true
         });
         this.balas2 = this.physics.add.group({
             classType: this.Bala,
             defaultKey: 'bala',
-            maxSize: 30,
+            maxSize: 100,
             runChildUpdate: true
         });
         
@@ -595,7 +611,9 @@ export default class SceneJuego extends Phaser.Scene {
                 if(this.jugador1.flipX == true)
                 bullet.flip();
                 this.balas1.add(bullet, true);
-                this.sonidoPistola.play();
+
+                this.sonidoPistola1.play();
+
                 if (bullet)
                 {
                     bullet.fire(this.arma1);
@@ -627,7 +645,9 @@ export default class SceneJuego extends Phaser.Scene {
                 if(this.jugador2.flipX == true)
                 bullet.flip();
                 this.balas2.add(bullet, true);
-                this.sonidoPistola.play();
+
+                this.sonidoPistola2.play();
+
                 if (bullet)
                 {
                     bullet.fire(this.arma2);

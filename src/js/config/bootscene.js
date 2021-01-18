@@ -5,16 +5,14 @@ export default class BootScene extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image('logo', 'resources/img/Icono.png')
+        this.load.html('nameform', 'src/html/loginform.html');
+        this.load.image('logo', 'resources/img/Icono.png');
         this.load.image('inicio', 'resources/img/inicio.png');
         this.load.spritesheet('cargando', 'resources/img/cargandoAnimado.png', { frameWidth: 212, frameHeight: 58 });
         this.load.image('cargado', 'resources/img/cargadoLargo.png');
     }
 
     create() {
-<<<<<<< Updated upstream
-        this.scene.start('Bootloader');
-=======
         this.consulta = this.sys.game.globalsConsulta.consulta;
         this.cameras.main.setBackgroundColor('#e2e2e2');
 
@@ -111,6 +109,5 @@ export default class BootScene extends Phaser.Scene {
                 })
             }
         }.bind(this));
->>>>>>> Stashed changes
     }
 }
