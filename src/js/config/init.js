@@ -18,6 +18,7 @@ import Mapa from '/src/js/component/mapa.js';
 import Transicion from '/src/js/component/transicion.js';
 import Tiempo from '/src/js/component/tiempo.js';
 import Puntos from '/src/js/component/puntos.js';
+import Consulta from '/src/js/component/consulta.js';
 
 class Game extends Phaser.Game {
     constructor() {
@@ -40,6 +41,9 @@ class Game extends Phaser.Game {
 
         const puntos = new Puntos();
         this.globalsPuntos = { puntos };
+
+        const consulta = new Consulta();
+        this.globalsConsulta = {consulta};
 
         this.scene.add('BootScene', BootScene);
         this.scene.add('Bootloader', Bootloader);
