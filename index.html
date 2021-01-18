@@ -17,10 +17,17 @@
     <link rel="app icon" href="/resources/img/icon.ico">
   </head>
   <body>
+<<<<<<< Updated upstream
     
+=======
+
+>>>>>>> Stashed changes
     <div class="fuentes">.</div>
     <main>
-      <div>
+
+      <div id="properties2"></div>
+
+      <div id="game">
         <div class="cabecera">
           <img alt="Logo" class="logo" src="/resources/img/icono.png">
           <div class="descripcion">
@@ -30,8 +37,21 @@
             <span class="creadores">Diseño y Desarrollo de Videojuegos (URJC)</span>
           </div>
         </div>
-    
+        
         <div id="juego"></div>
+    
+        <div id="conexion">
+          <br><br><br><br><br><br><br><br><br><br><br>
+          <h4>SERVIDOR</h4>
+          <h4>DESCONECTADO</h4>
+        </div>
+
+        <!--
+          <script>
+            var estado = document.getElementById("conexion");
+            estado.style.visibility = "visible";
+          </script>
+        -->
     
         <div class="cabecera2">
           <img alt="Tecla ESC" class="tecla" src="/resources/img/ESC.png">
@@ -43,6 +63,54 @@
           </div>
         </div>
       </div>
+
+      <div id="properties">
+        <h2>Jugadores online <span id="contador">(0)</span></h2>
+        <div id="online">
+          <table>
+            <tr>
+              <td class="jugador"><h3 id="yo"></h3></td>
+            </tr>
+            <!--
+              <tr>
+                <td class="jugador"><h3 id="2">&nbsp;2.- Luis</h3></td>
+              </tr>
+              <tr>
+                <td class="jugador"><h3 id="3">&nbsp;3.- Alejandro</h3></td>
+              </tr>
+              <tr>
+                <td class="jugador"><h3 id="4">&nbsp;4.- Miguel</h3></td>
+              </tr>
+              <tr>
+                <td class="jugador"><h3 id="5">&nbsp;5.- Isabel</h3></td>
+              </tr>
+              <tr>
+                <td class="jugador"><h3 id="6">&nbsp;6.- Humberto</h3></td>
+              </tr>
+              <tr>
+                <td class="jugador"><h3 id="7">&nbsp;7.- Ash</h3></td>
+              </tr>
+              <tr>
+                <td class="jugador"><h3 id="8">&nbsp;8.- Jose</h3></td>
+              </tr>
+              <tr>
+                <td class="jugador"><h3 id="9">&nbsp;9.- Ricardo</h3></td>
+              </tr>
+              <tr>
+                <td class="jugador"><h3 id="10">10.- Esther</h3></td>
+              </tr>
+            -->
+          </table>
+        </div>
+        <br>
+        <h2>Chat global</h2>
+        <div id="online">
+
+        </div>
+        <input type="text" placeholder="Escribe un mensaje" id="chatbar">
+        <input type="submit" value=">" id="enviar">
+      </div>
+
     </main>
     
     <script src="/src/js/config/init.js" type="module"></script>
