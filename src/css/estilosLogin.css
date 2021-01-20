@@ -1,9 +1,10 @@
-.login {
+#loginDiv {
     background: #eeedec;
     border: 1px solid #a1a3a3;
     border-radius: 6px;
     height: 258px;
     width: 298px;
+    visibility: visible;
 }
 
 input[type="password"] {

@@ -43,7 +43,7 @@ class Game extends Phaser.Game {
         this.globalsPuntos = { puntos };
 
         const consulta = new Consulta();
-        this.globalsConsulta = {consulta};
+        this.globalsConsulta = { consulta };
 
         this.scene.add('BootScene', BootScene);
         this.scene.add('Bootloader', Bootloader);

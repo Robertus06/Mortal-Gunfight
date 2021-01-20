@@ -27,6 +27,54 @@ export default class BootScene extends Phaser.Scene {
 
         this.element.addListener('click');
 
+        document.getElementById('username').addEventListener('keydown', sendForm);
+        document.getElementById('password').addEventListener('keydown', sendForm);
+        function sendForm(event) {
+ 
+            if (event.keyCode == 13) {
+                $("#login").trigger("click");
+            }
+          
+        }
+        document.getElementById('chatbar').addEventListener('keydown', sendChat);
+        function sendChat(event) {
+ 
+            if (event.keyCode == 13) {
+                $("#enviar").trigger("click");
+            }
+        
+        }
+
+        function sendMessage(e,scene) {
+            if (e.target.name === 'botonEnviar') {
+                var messageText = document.getElementById("chatbar").value;
+
+                if (messageText !== ""){
+                    $(document).ready(function(){
+                        $.ajax({
+                            type: "POST",
+                            url:'http://localhost:8080/chat',
+                            data: JSON.stringify({
+                                nombre : scene.consulta.nombre,
+                                mensaje : messageText,
+                            }),
+                            headers: {
+                                'Accept' : 'application/json',
+                                'Content-Type' : 'application/json'
+                            },
+                            success : function(data) {
+                                scene.consulta.chats();
+                            }
+                        });
+                    }.bind(this));
+        
+                    document.getElementById("chatbar").value = "";
+                }
+            }
+        }
+
+        document.getElementById('enviar').addEventListener('click', function() {sendMessage(event,this);}.bind(this));
+
         this.element.on('click', function (event) {
             if (event.target.name === 'loginButton') {
                 var inputUsername = this.element.getChildByName('username');
@@ -43,8 +91,15 @@ export default class BootScene extends Phaser.Scene {
                         if (inputUsername.value === playerData.usuario && inputPassword.value === playerData.contraseña) {
                             this.element.removeListener('click');
                             this.consulta.conectados(playerData.usuario);
-                            setInterval(function(){this.consulta.conectados(playerData.usuario);}.bind(this),1000);                            
-                            this.scene.start('Bootloader');
+                            setInterval(function(){this.consulta.conectados(playerData.usuario);}.bind(this),1000);
+                            setInterval(function(){this.consulta.chats();}.bind(this),1000);
+                            this.consulta.nombre = inputUsername.value;
+                            document.getElementById("chatbar").style.visibility = "visible";
+                            document.getElementById("enviar").style.visibility = "visible";
+                            this.element.getChildByID("loginDiv").style.visibility = "hidden";
+                            var p = document.getElementById("error");
+                            p.style.visibility = "hidden";
+                            this.scene.launch('Bootloader');
                         } else if (inputUsername.value === playerData.usuario && inputPassword.value !== '' && inputPassword.value !== playerData.contraseña) {
                             var p = document.getElementById("error");
                             p.innerHTML = "Contraseña incorrecta.";

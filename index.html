@@ -38,17 +38,13 @@
         <div id="juego"></div>
     
         <div id="conexion">
-          <br><br><br><br><br><br><br><br><br><br><br>
+          <br><br><br><br><br><br><br>
           <h4>SERVIDOR</h4>
           <h4>DESCONECTADO</h4>
+          <br><br><br>
+          <h4 style="font-size: 30px;">CLICA EN LA PANTALLA PARA CONTINUAR</h4>
+          <h4 style="font-size: 30px;">JUGANDO DESCONECTADO</h4>
         </div>
-
-        <!--
-          <script>
-            var estado = document.getElementById("conexion");
-            estado.style.visibility = "visible";
-          </script>
-        -->
     
         <div class="cabecera2">
           <img alt="Tecla ESC" class="tecla" src="/resources/img/ESC.png">
@@ -70,14 +66,31 @@
         </div>
         <br>
         <h2>Chat global</h2>
-        <div id="online">
+        <div id="online2">
+          <table id="tablaChat">
 
+          </table>
         </div>
         <input type="text" placeholder="Escribe un mensaje" id="chatbar">
-        <input type="submit" value=">" id="enviar">
+        <input type="submit" value=">" id="enviar" name="botonEnviar">
       </div>
 
     </main>
+
+    <h3 id="estado" style="margin-left: 300px; visibility: hidden;">SERVIDOR DESCONECTADO</h3>
+
+    <script>
+      $(document).ready(function(){
+        $('body').on('click', '#conexion', function(){
+          var pantalla = document.getElementById("conexion");
+          pantalla.style.visibility = "hidden";
+
+          var estado = document.getElementById("estado");
+          estado.innerHTML = "SERVIDOR DESCONECTADO";
+          estado.style.visibility = "visible";
+        })
+      });
+    </script>
     
     <script src="/src/js/config/init.js" type="module"></script>
     
