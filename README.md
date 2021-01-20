@@ -106,6 +106,10 @@ En cuanto al diagrama de flujo del juego, partimos de una pantalla donde se pide
 
 Para los efectos sonoros para las armas hemos decidido hacerlos nosotros mismos con nuestras voces y también hemos decidido grabar algunas frases para los personajes. En cuanto a la música, hemos decidido utilizar una canción sin copyright llamada "Oblivion" de el artista TheFatRat.
 
+### Instrucciones para abrir la aplicación
+
+Abrir el proyecto que se encuentra en la carpeta Server/mortalgunfight con el programa Spring Tool Suite > Ejercutar MortalgunfightApplication.java (Run As > Java Application) > Acceder a un navegador > Colocar la dirección url (localhost:8080).
+
 ### Fuentes externas
 
 Nos hemos fijado en juegos de peleas en dos dimensiones con partidas rápidas como podría ser el ejemplo de el "Stickfight", "Super Smash Bros" o juegos de ese estilo.
