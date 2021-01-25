@@ -6,6 +6,7 @@ export default class SceneMenu extends Phaser.Scene {
     create() {
         this.pulsadoControles = false;
         this.pulsadoJugar = false;
+        this.pulsadoJugarLocal = false;
         this.pulsadoCreditos = false;
         this.cameras.main.fadeIn(250);
         
@@ -49,8 +50,9 @@ export default class SceneMenu extends Phaser.Scene {
         this.updateAudio();
 
         this.bJugar = this.add.sprite(640, 475, 'botonJugar').setInteractive();
-        this.bControles = this.add.sprite(640, 640, 'botonControles').setInteractive();
+        this.bControles = this.add.sprite(770, 630, 'botonControles').setInteractive();
         this.bCreditos = this.add.sprite(100, 40, 'botonCreditos').setInteractive();
+        this.bLocal = this.add.sprite(435, 630, 'botonLocal').setInteractive();
 
         this.bCreditos.on('pointerover', function () {
             this.sonidoBoton.play();
@@ -62,10 +64,12 @@ export default class SceneMenu extends Phaser.Scene {
         }.bind(this));
 
         this.bCreditos.on('pointerdown', function () {
+            this.bLocal.destroy();
+            this.bLocal = this.add.sprite(435, 630, 'botonLocal');
             this.bCreditos.destroy();
             this.bCreditos = this.add.sprite(100, 40, 'botonCreditos');
             this.bControles.destroy();
-            this.bControles = this.add.sprite(640, 640, 'botonControles');
+            this.bControles = this.add.sprite(770, 630, 'botonControles');
             this.bJugar.destroy();
             this.bJugar = this.add.sprite(640, 475, 'botonJugar');
             this.cameras.main.fadeOut(250);
@@ -82,10 +86,12 @@ export default class SceneMenu extends Phaser.Scene {
         }.bind(this));
 
         this.bControles.on('pointerdown', function () {
+            this.bLocal.destroy();
+            this.bLocal = this.add.sprite(435, 630, 'botonLocal');
             this.bCreditos.destroy();
             this.bCreditos = this.add.sprite(100, 40, 'botonCreditos');
             this.bControles.destroy();
-            this.bControles = this.add.sprite(640, 640, 'botonControles');
+            this.bControles = this.add.sprite(770, 630, 'botonControles');
             this.bJugar.destroy();
             this.bJugar = this.add.sprite(640, 475, 'botonJugar');
             this.cameras.main.fadeOut(250);
@@ -102,14 +108,38 @@ export default class SceneMenu extends Phaser.Scene {
         }.bind(this));
 
         this.bJugar.on('pointerdown', function () {
+            this.bLocal.destroy();
+            this.bLocal = this.add.sprite(435, 630, 'botonLocal');
             this.bCreditos.destroy();
             this.bCreditos = this.add.sprite(100, 40, 'botonCreditos');
             this.bControles.destroy();
-            this.bControles = this.add.sprite(640, 640, 'botonControles');
+            this.bControles = this.add.sprite(770, 630, 'botonControles');
             this.bJugar.destroy();
             this.bJugar = this.add.sprite(640, 475, 'botonJugar');
             this.cameras.main.fadeOut(250);
             this.pulsadoJugar = true;
+        }.bind(this));
+
+        this.bLocal.on('pointerover', function () {
+            this.sonidoBoton.play();
+            this.bLocal.setScale(1.15);
+        }.bind(this));
+
+        this.bLocal.on('pointerout', function () {
+            this.bLocal.setScale(1);
+        }.bind(this));
+
+        this.bLocal.on('pointerdown', function () {
+            this.bLocal.destroy();
+            this.bLocal = this.add.sprite(435, 630, 'botonLocal');
+            this.bCreditos.destroy();
+            this.bCreditos = this.add.sprite(100, 40, 'botonCreditos');
+            this.bControles.destroy();
+            this.bControles = this.add.sprite(770, 630, 'botonControles');
+            this.bJugar.destroy();
+            this.bJugar = this.add.sprite(640, 475, 'botonJugar');
+            this.cameras.main.fadeOut(250);
+            this.pulsadoJugarLocal = true;
         }.bind(this));
     }
 
@@ -126,9 +156,12 @@ export default class SceneMenu extends Phaser.Scene {
     update() {
         this.cameras.main.once('camerafadeoutcomplete', function () {
             if (this.pulsadoControles) {
-                this.scene.start("SceneControles");
+                this.scene.start("SceneMenuControles");
             } else if (this.pulsadoJugar) {
                 this.scene.start("ScenePersonajeUno");
+                this.transicion.cancelarSeleccion = false;
+            } else if (this.pulsadoJugarLocal) {
+                this.scene.start("ScenePersonajeUnoOnline");
                 this.transicion.cancelarSeleccion = false;
             } else if (this.pulsadoCreditos) {
                 this.scene.start("SceneCreditos");

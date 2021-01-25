@@ -69,6 +69,11 @@ export default class BootScene extends Phaser.Scene {
                     }.bind(this));
         
                     document.getElementById("chatbar").value = "";
+
+                    setTimeout(function(){
+                        var objDiv = document.getElementById("online2");
+                        objDiv.scrollTop = objDiv.scrollHeight;
+                    },1000);
                 }
             }
         }

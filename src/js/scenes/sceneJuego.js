@@ -188,6 +188,22 @@ export default class SceneJuego extends Phaser.Scene {
         } else if (this.mapa.escenario == 'v') {
             this.fondo = this.add.image(640, 360, 'volcan');
 
+            this.crater = this.physics.add.staticGroup();
+
+            this.decoracion.create(640, 0, 'humo').setOrigin(0.5, 0);
+            this.decoracion.create(640, 720, 'salto').setOrigin(0.5, 1);
+            this.decoracion.create(640, 0, 'techo').setOrigin(0.5, 0);
+
+            this.crater.create(640, 720, 'salto2').setOrigin(0.5, 1).refreshBody();
+
+            this.plataformas.create(640, 720, 'spriteSuelo3').setOrigin(0.5, 1).refreshBody();
+            this.plataformas.create(540, 720, 'pared3').setOrigin(0.5, 1).setScale(0.92).refreshBody();
+            this.plataformas.create(740, 720, 'pared3').setOrigin(0.5, 1).setScale(0.92).refreshBody();
+            this.plataformas.create(1170, 400, 'rocas').setScale(-1, 1).refreshBody();
+            this.plataformas.create(855, 235, 'rocas').setScale(-1, 1).refreshBody();
+            this.plataformas.create(425, 235, 'rocas').refreshBody();
+            this.plataformas.create(110, 400, 'rocas').refreshBody();
+
         } else if (this.mapa.escenario == 'c') {
             this.fondo = this.add.image(640, 360, 'ciudad');
 
@@ -279,7 +295,11 @@ export default class SceneJuego extends Phaser.Scene {
             this.nombreUno.setOrigin(0);
             this.nombreUno.setScale(0.75);
             this.nombreUno.setDepth(4);
-            this.jugador1 = this.add.image(80, 640,'spriteDinosaurio');
+            if (this.mapa.escenario == 'v') {
+                this.jugador1 = this.add.image(80, 580,'spriteDinosaurio');
+            } else {
+                this.jugador1 = this.add.image(80, 640,'spriteDinosaurio');
+            }
             this.jugador1.setScale(0.27).setFlipX(true).setOrigin(0.28, 0.53);    
             this.brazo1 = this.add.image(80, 640,'brazoDinosaurio');
             this.brazo1.setScale(-0.27, 0.27);
@@ -289,7 +309,11 @@ export default class SceneJuego extends Phaser.Scene {
             this.nombreUno.setOrigin(0);
             this.nombreUno.setScale(0.75);
             this.nombreUno.setDepth(4);
-            this.jugador1 = this.add.image(80, 640,'spritePerro');            
+            if (this.mapa.escenario == 'v') {
+                this.jugador1 = this.add.image(80, 580,'spritePerro');            
+            } else {
+                this.jugador1 = this.add.image(80, 640,'spritePerro');            
+            }
             this.jugador1.setScale(0.27).setFlipX(true).setOrigin(0.28, 0.53);
             this.brazo1 = this.add.image(80, 640,'brazoPerro');
             this.brazo1.setScale(-0.27, 0.27);
@@ -302,7 +326,11 @@ export default class SceneJuego extends Phaser.Scene {
             this.nombreUno.setOrigin(0);
             this.nombreUno.setScale(0.75);
             this.nombreUno.setDepth(4);
-            this.jugador1 = this.add.image(80, 640,'spriteNinja');
+            if (this.mapa.escenario == 'v') {
+                this.jugador1 = this.add.image(80, 580,'spriteNinja');
+            } else {
+                this.jugador1 = this.add.image(80, 640,'spriteNinja');
+            }
             this.jugador1.setScale(0.27).setFlipX(true).setOrigin(0.28, 0.53);
             this.brazo1 = this.add.image(80, 640,'brazoNinja');
             this.brazo1.setScale(-0.27, 0.27);
@@ -312,7 +340,11 @@ export default class SceneJuego extends Phaser.Scene {
             this.nombreUno.setOrigin(0);
             this.nombreUno.setScale(0.75);
             this.nombreUno.setDepth(4);
-            this.jugador1 = this.add.image(80, 640,'spriteZombie');
+            if (this.mapa.escenario == 'v') {
+                this.jugador1 = this.add.image(80, 580,'spriteZombie');
+            } else {
+                this.jugador1 = this.add.image(80, 640,'spriteZombie');
+            }
             this.jugador1.setScale(0.27).setFlipX(true).setOrigin(0.28, 0.53);
             this.brazo1 = this.add.image(80, 640,'brazoZombie');
             this.brazo1.setScale(-0.27, 0.27);
@@ -324,7 +356,11 @@ export default class SceneJuego extends Phaser.Scene {
             this.nombreDos.setOrigin(1, 0);
             this.nombreDos.setScale(0.75);
             this.nombreDos.setDepth(4);
-            this.jugador2 = this.add.image(1200, 640,'spriteDinosaurio');
+            if (this.mapa.escenario == 'v') {
+                this.jugador2 = this.add.image(1200, 580,'spriteDinosaurio');
+            } else {
+                this.jugador2 = this.add.image(1200, 640,'spriteDinosaurio');
+            }
             this.jugador2.setScale(0.27);
             this.jugador2.setOrigin(0.72, 0.53);
             this.brazo2 = this.add.image(1200, 640,'brazoDinosaurio');
@@ -335,7 +371,11 @@ export default class SceneJuego extends Phaser.Scene {
             this.nombreDos.setOrigin(1, 0);
             this.nombreDos.setScale(0.75);
             this.nombreDos.setDepth(4);
-            this.jugador2 = this.add.image(1200, 640,'spritePerro');
+            if (this.mapa.escenario == 'v') {
+                this.jugador2 = this.add.image(1200, 580,'spritePerro');
+            } else {
+                this.jugador2 = this.add.image(1200, 640,'spritePerro');
+            }
             this.jugador2.setScale(0.27);
             this.jugador2.setOrigin(0.72, 0.53);
             this.brazo2 = this.add.image(1200, 640,'brazoPerro');
@@ -349,7 +389,11 @@ export default class SceneJuego extends Phaser.Scene {
             this.nombreDos.setOrigin(1, 0);
             this.nombreDos.setScale(0.75);
             this.nombreDos.setDepth(4);
-            this.jugador2 = this.add.image(1200, 640,'spriteNinja');
+            if (this.mapa.escenario == 'v') {
+                this.jugador2 = this.add.image(1200, 580,'spriteNinja');
+            } else {
+                this.jugador2 = this.add.image(1200, 640,'spriteNinja');
+            }
             this.jugador2.setScale(0.27);
             this.jugador2.setOrigin(0.72, 0.53);
             this.brazo2 = this.add.image(1200, 640,'brazoNinja');
@@ -360,7 +404,11 @@ export default class SceneJuego extends Phaser.Scene {
             this.nombreDos.setOrigin(1, 0);
             this.nombreDos.setScale(0.75);
             this.nombreDos.setDepth(4);
-            this.jugador2 = this.add.image(1200, 640,'spriteZombie');
+            if (this.mapa.escenario == 'v') {
+                this.jugador2 = this.add.image(1200, 580,'spriteZombie');
+            } else {
+                this.jugador2 = this.add.image(1200, 640,'spriteZombie');
+            }
             this.jugador2.setScale(0.27);
             this.jugador2.setOrigin(0.72, 0.53);
             this.brazo2 = this.add.image(1200, 640,'brazoZombie');
@@ -382,6 +430,10 @@ export default class SceneJuego extends Phaser.Scene {
 
         this.physics.add.collider(this.jugador1, this.plataformas);
         this.physics.add.collider(this.jugador2, this.plataformas);
+        if (this.mapa.escenario == 'v') {
+            this.physics.add.collider(this.jugador1, this.crater, this.saltoCrater1, null, this);
+            this.physics.add.collider(this.jugador2, this.crater, this.saltoCrater2, null, this);
+        }
         this.physics.add.collider(this.armas, this.plataformas);
         this.physics.add.collider(this.balas1, this.plataformas, this.chocarSuelo, null, this);
         this.physics.add.collider(this.balas2, this.plataformas, this.chocarSuelo, null, this);
@@ -713,6 +765,14 @@ export default class SceneJuego extends Phaser.Scene {
 
     chocarSuelo(bala,plataforma){
         bala.kill();
+    }
+
+    saltoCrater1(jugador1,crater){
+        this.jugador1.body.setVelocityY(-950);
+    }
+
+    saltoCrater2(jugador2,crater){
+        this.jugador2.body.setVelocityY(-950);
     }
 
     golpeJugador2(jugador2, bala){

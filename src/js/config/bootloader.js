@@ -49,7 +49,12 @@ export default class Bootloader extends Phaser.Scene {
             this.startCd = true;
         }.bind(this));
 
+        this.load.image('inicio', 'resources/img/inicio.png');
+        this.load.image('fondoControles', 'resources/img/fondoControles.png');
         this.load.image('botonControles', 'resources/img/botonControles.png');
+        this.load.image('botonControlesLocal', 'resources/img/botonControlesLocal.png');
+        this.load.image('botonControlesLinea', 'resources/img/botonControlesLinea.png');
+        this.load.image('botonLocal', 'resources/img/botonLocal.png');
         this.load.image('botonJugar', 'resources/img/botonJugar.png');
         this.load.image('fondoMenu', 'resources/img/fondoMenu.png');
         this.load.image('botonCreditos', 'resources/img/botonCreditos.png');
@@ -58,6 +63,7 @@ export default class Bootloader extends Phaser.Scene {
         // this.load.image('botonMute', 'resources/img/botonMute.png');
         this.load.spritesheet('botonMusic', 'resources/img/botonMusic.png', { frameWidth: 66, frameHeight: 55 });
         this.load.image('controles', 'resources/img/controles.png');
+        this.load.image('controlesLinea', 'resources/img/controlesLinea.png');
         this.load.audio('musica', 'resources/music/backgroundMusic.mp3');
         this.load.image('personajes', 'resources/img/personajes.png');
         this.load.image('dinosaurio', 'resources/img/dinosaurio.png');
@@ -159,11 +165,18 @@ export default class Bootloader extends Phaser.Scene {
         this.load.audio('sonidoSniper', 'resources/music/sniper.mp3');
         this.load.image('spriteSuelo','resources/img/suelo.png');
         this.load.image('spriteSuelo2','resources/img/suelo2.png');
+        this.load.image('spriteSuelo3','resources/img/suelo3.png');
         this.load.image('plataforma', 'resources/img/plataforma.png');
         this.load.image('tejas', 'resources/img/tejas.png');
         this.load.image('pale', 'resources/img/pale.png');
+        this.load.image('rocas', 'resources/img/rocas.png');
         this.load.image('pared', 'resources/img/pared.png');
+        this.load.image('humo', 'resources/img/humo.png');
+        this.load.image('techo', 'resources/img/techo.png');
+        this.load.image('salto', 'resources/img/salto.png');
+        this.load.image('salto2', 'resources/img/salto2.png');
         this.load.image('pared2', 'resources/img/pared2.png');
+        this.load.image('pared3', 'resources/img/pared3.png');
         this.load.image('paloma', 'resources/img/paloma.png');
         this.load.image('cadenas', 'resources/img/cadenas.png');
         this.load.image('cuerda', 'resources/img/cuerda.png');

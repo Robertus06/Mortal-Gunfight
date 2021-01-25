@@ -376,6 +376,17 @@ export default class ScenePersonajeUno extends Phaser.Scene {
         }.bind(this));
 
         if (this.cursor_ESC.isDown && !this.pulsado) {
+            this.resplandorUno.destroy();
+            this.bNinja.destroy();
+            this.bNinja = this.add.sprite(545, 649, 'botonesNinja', 0);
+            this.bZombie.destroy();
+            this.bZombie = this.add.sprite(690, 649, 'botonesZombie', 0);
+            this.bCiego.destroy();
+            this.bCiego = this.add.sprite(400, 649, 'botonesCiego', 0);
+            this.bDinosaurio.destroy();
+            this.bDinosaurio = this.add.sprite(837, 649, 'botonesDinosaurio', 0);
+            this.bAleatorio.destroy();
+            this.bAleatorio = this.add.image(100, 649, 'botonAleatorio');
             this.pulsado = true;
             this.sonidoAtras.play();
             this.cameras.main.fadeOut(250);
