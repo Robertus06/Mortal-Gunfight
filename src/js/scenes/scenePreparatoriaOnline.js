@@ -27,8 +27,13 @@ export default class ScenePreparatoriaOnline extends Phaser.Scene {
             this.fondo = this.add.image(640, 360, 'ciudadBlur');
         }
 
+        this.jugadores = this.sys.game.globalsJugadores.jugadores;
+
         this.tiempo = this.sys.game.globalsTiempo.tiempo;
         this.tiempo.tiempoJuego = 120000;
+        this.tiempoComun = 120000;
+
+        this.cursorEnemi = false;
         
         this.boton30 = this.add.sprite(440, 680, 'botones', 1).setInteractive();
         this.boton2 = this.add.sprite(640, 680, 'botones', 0).setInteractive();
@@ -81,10 +86,7 @@ export default class ScenePreparatoriaOnline extends Phaser.Scene {
 
         this.sonidoBoton = this.sound.add('sonidoBoton');
 
-        this.preparatoria = this.add.image(640, 360, 'preparatoria');
-
-        // this.cameras.main.shake(500);
-        // this.fondo.blendMode = Phaser.BlendModes.LUMINOSITY;
+        this.preparatoria = this.add.image(640, 360, 'preparatoriaOnline');
 
         this.sonido = this.sys.game.globalsSonido.sonido;
 
@@ -106,7 +108,6 @@ export default class ScenePreparatoriaOnline extends Phaser.Scene {
             this.bSonido.setScale(1);
         }.bind(this));
 
-        this.cursor_I = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.I);
         this.cursor_W = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
     }
 
@@ -121,60 +122,92 @@ export default class ScenePreparatoriaOnline extends Phaser.Scene {
     }
 
     update() {
-        if(this.tiempo.tiempoJuego == 30000) {
+        //Recibimos desde el servidor si el enemigo ha pulsado algun boton de cambiar tiempo y lo almacenamos en
+        //this.tiempoComun para usarlo en los ifs.
+
+        if(this.tiempoComun == 30000) {
+            this.boton30.setFrame(0);
+            this.boton2.setFrame(1);
+            this.boton5.setFrame(1);
+
             this.boton2.on('pointerdown', function () {
                 this.boton30.setFrame(1);
                 this.boton2.setFrame(0);
                 this.boton5.setFrame(1);
-                this.tiempo.tiempoJuego = 120000;
+                this.tiempoComun = 120000;
             }.bind(this));
 
             this.boton5.on('pointerdown', function () {
                 this.boton30.setFrame(1);
                 this.boton2.setFrame(1);
                 this.boton5.setFrame(0);
-                this.tiempo.tiempoJuego = 300000;
+                this.tiempoComun = 300000;
             }.bind(this));
 
-        } else if (this.tiempo.tiempoJuego == 120000) {
+        } else if (this.tiempoComun == 120000) {
+            this.boton30.setFrame(1);
+            this.boton2.setFrame(0);
+            this.boton5.setFrame(1);
+
             this.boton30.on('pointerdown', function () {
                 this.boton30.setFrame(0);
                 this.boton2.setFrame(1);
                 this.boton5.setFrame(1);
-                this.tiempo.tiempoJuego = 30000;
+                this.tiempoComun = 30000;
             }.bind(this));
 
             this.boton5.on('pointerdown', function () {
                 this.boton30.setFrame(1);
                 this.boton2.setFrame(1);
                 this.boton5.setFrame(0);
-                this.tiempo.tiempoJuego = 300000;
+                this.tiempoComun = 300000;
             }.bind(this));
 
-        } else if (this.tiempo.tiempoJuego == 300000) {
+        } else if (this.tiempoComun == 300000) {
+            this.boton30.setFrame(1);
+            this.boton2.setFrame(1);
+            this.boton5.setFrame(0);
+
             this.boton30.on('pointerdown', function () {
                 this.boton30.setFrame(0);
                 this.boton2.setFrame(1);
                 this.boton5.setFrame(1);
-                this.tiempo.tiempoJuego = 30000;
+                this.tiempoComun = 30000;
             }.bind(this));
 
             this.boton2.on('pointerdown', function () {
                 this.boton30.setFrame(1);
                 this.boton2.setFrame(0);
                 this.boton5.setFrame(1);
-                this.tiempo.tiempoJuego = 120000;
+                this.tiempoComun = 120000;
             }.bind(this));
         }
 
-        if (this.cursor_I.isDown && !this.unoListo) {
-            this.sonidoBoton.play();
-            this.unoListo = true;
-            this.listo = this.add.image(1120, 400, 'listo');
-        } else if (this.cursor_W.isDown && !this.dosListo) {
-            this.sonidoBoton.play();
-            this.dosListo = true;
-            this.listo = this.add.image(172, 400, 'listo');
+        //en una consulta al WS saber si el enemigo ha pulsado ya la W y entonces almacenarlo en this.cursorEnemi
+        if (this.jugadores.jugYo == 1) {
+            if (this.cursorEnemi && !this.enemiListo) {
+                this.sonidoBoton.play();
+                this.enemiListo = true;
+                this.dosListo = true;
+                this.listo = this.add.image(1120, 400, 'listo');
+            } else if (this.cursor_W.isDown && !this.yoListo) {
+                this.sonidoBoton.play();
+                this.yoListo = true;
+                this.unoListo = true;
+                this.listo = this.add.image(172, 400, 'listo');
+            }
+        } else if (this.jugadores.jugYo == 2) {
+            if (this.cursorEnemi && !this.enemiListo) {
+                this.sonidoBoton.play();
+                this.enemiListo = true;
+                this.unoListo = true;
+                this.listo = this.add.image(172, 400, 'listo');
+            } else if (this.cursor_W.isDown && !this.yoListo) {
+                this.sonidoBoton.play();
+                this.yoListo = true;
+                this.dosListo = true;
+                this.listo = this.add.image(1120, 400, 'listo');
+            }
         }
 
         if (this.unoListo && this.dosListo && !this.cargado) {
@@ -182,6 +215,7 @@ export default class ScenePreparatoriaOnline extends Phaser.Scene {
             this.cargado = true;
 
             this.cuentaAtras.on('animationcomplete', function () {
+                this.tiempo.tiempoJuego = this.tiempoComun;
                 this.scene.start("SceneJuegoOnline");
             }.bind(this));
         }

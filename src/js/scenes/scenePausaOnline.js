@@ -10,6 +10,8 @@ export default class ScenePausaOnline extends Phaser.Scene {
         this.dosListo = false;
         this.cargado = false;
 
+        this.botonEnemi = null;
+
         this.pulsado = false;
 
         this.anims.create({
@@ -113,6 +115,29 @@ export default class ScenePausaOnline extends Phaser.Scene {
     }
 
     update () {
+        //recogemos en una peticion a WS lo que ha hecho el enemigo, y lo almacenamos en la variable this.botonEnemi
+        if ((this.botonEnemi == 'esc' || this.botonEnemi == 'c') && !this.pulsado) {
+            this.sonidoAtras.play();
+            this.bContinuar.destroy();
+            this.bSalir.destroy();
+            this.cuentaAtras = this.add.sprite(640, 360, 'cuentaAtras').play('tiempo');
+            this.cuentaAtras.setScale(1.3);
+
+            this.cuentaAtras.on('animationcomplete', function () {
+                this.scene.wake("SceneJuegoOnline");
+                this.scene.stop();
+            }.bind(this));
+
+            this.pulsado = true;
+        } else if (this.botonEnemi == 's') {
+            this.sonidoAtras.play();
+            this.bContinuar.destroy();
+            this.bContinuar = this.add.image(640, 260, 'continuarPartida');
+            this.bSalir.destroy();
+            this.bSalir = this.add.image(640, 410, 'salirMenu');
+            this.cameras.main.fadeOut(250);
+        }
+
         if (this.cursor_ESC.isDown && !this.pulsado) {
             this.sonidoAtras.play();
             this.pulsado = true;

@@ -134,6 +134,7 @@ export default class SceneJuegoOnline extends Phaser.Scene {
 
         this.pulsado = false;
         this.pausado = false;
+        this.entradoEnPausa = false;
 
         this.nombreArmas = ['ar','lanzacohetes','minigun','pistola','smg','sniper'];
 
@@ -143,9 +144,29 @@ export default class SceneJuegoOnline extends Phaser.Scene {
         this.puntos2 = 0;
 
         this.tiempo = this.sys.game.globalsTiempo.tiempo;
+        this.jugadores = this.sys.game.globalsJugadores.jugadores;
+        this.cambiarArmaEnemi = false;
+        this.dispararEnemi = false;
+        this.saltarEnemi = false;
+        this.derechaEnemi = false;
+        this.izquierdaEnemi = false;
 
         this.sonidoPistola1 = this.sound.add('sonidoPistola1');
         this.sonidoPistola2 = this.sound.add('sonidoPistola2');
+        this.sonidoAr1 = this.sound.add('sonidoAr1');
+        this.sonidoAr2 = this.sound.add('sonidoAr2');
+        this.sonidoSmg1 = this.sound.add('sonidoSmg1');
+        this.sonidoSmg2 = this.sound.add('sonidoSmg2');
+        this.sonidoSniper1 = this.sound.add('sonidoSniper1');
+        this.sonidoSniper2 = this.sound.add('sonidoSniper2');
+        this.sonidoMinigun1 = this.sound.add('sonidoMinigun1');
+        this.sonidoMinigun2 = this.sound.add('sonidoMinigun2');
+        this.sonidoCohete1 = this.sound.add('sonidoCohete1');
+        this.sonidoCohete2 = this.sound.add('sonidoCohete2');
+        this.sonidoLanzacohetes1 = this.sound.add('sonidoLanzacohetes1');
+        this.sonidoLanzacohetes2 = this.sound.add('sonidoLanzacohetes2');
+        this.viento1 = this.sound.add('viento1');
+        this.viento2 = this.sound.add('viento2');
 
         this.anims.create({
             key: 'animacion1',
@@ -457,7 +478,7 @@ export default class SceneJuegoOnline extends Phaser.Scene {
 
         this.cursor_ESC = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
         
-        this.cursors_jugador1 = {
+        this.cursors_jugador = {
             derecha: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D),
             izquierda: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A),
             saltar: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W),
@@ -465,16 +486,8 @@ export default class SceneJuegoOnline extends Phaser.Scene {
             interactuar: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E)
         };
 
-        this.cursors_jugador2 = {
-            derecha: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.L),
-            izquierda: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.J),
-            saltar: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.I),
-            disparar: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.B),
-            interactuar: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.O)
-        };
-
         this.cameras.main.once('camerafadeoutcomplete', function () {
-            this.scene.start("SceneFinal");
+            this.scene.start("SceneFinalOnline");
         }.bind(this));
     }
 
@@ -507,8 +520,18 @@ export default class SceneJuegoOnline extends Phaser.Scene {
             this.pulsado = true;
         }
 
-        if (this.cursor_ESC.isUp && this.pulsado) {
+        //recibir de WS si enemigo ha hecho pausa y almacenarlo en //this.pausaEnemi
+        if (this.pausaEnemi && !this.entradoEnPausa) {
+            this.entradoEnPausa = true;
+            this.timeRestante = time;
+            this.pausado = true;
+            this.scene.pause();
+            this.scene.launch("ScenePausaOnline");
+        }
+
+        if (this.cursor_ESC.isUp && this.pulsado && !this.entradoEnPausa) {
             this.pulsado = false;
+            this.entradoEnPausa = true;
             this.timeRestante = time;
             this.pausado = true;
             this.scene.pause();
@@ -519,9 +542,7 @@ export default class SceneJuegoOnline extends Phaser.Scene {
         {
             this.cdGenerarArma = time + 20000;
             this.generarArmas();
-        } 
-            
-
+        }
         
         if (this.minutos <= 0 && this.segundos <= 0 && !this.entrado) {
             this.timeText.setText('00:00');
@@ -636,74 +657,154 @@ export default class SceneJuegoOnline extends Phaser.Scene {
         }
 
         /*Movimiento*/
-        /*Jugador 1*/
-        if (this.cursors_jugador1.izquierda.isDown)
-        {
-            this.jugador1.body.setVelocityX(-200);
-        }
-        else if (this.cursors_jugador1.derecha.isDown)
-        {
-            this.jugador1.body.setVelocityX(200);
-        }
-        
-        else
-        {
-            this.jugador1.body.setVelocityX(0);
-        }
-        
-        if (this.cursors_jugador1.saltar.isDown && this.jugador1.body.touching.down)
-        {
-            this.jugador1.body.setVelocityY(-620);
-        }
-        
-        if (this.cursors_jugador1.disparar.isDown && this.cd1 < time)
-        {
-            if (this.arma1 != null){
-                var bullet = new this.Bala(this, 'bala');
-                if(this.jugador1.flipX == true)
-                bullet.flip();
-                this.balas1.add(bullet, true);
 
-                this.sonidoPistola1.play();
-
-                if (bullet)
-                {
-                    bullet.fire(this.arma1);
-                    this.cd1 = time + 500;
-                }
+        //solicitar a WS si jugadorEnemi quiere moverse izquierda, o derecha, etc, y almacenar en las variables correspondientes;
+        if (this.izquierdaEnemi) {
+            if (this.jugadores.jugEnemi == 1) {
+                this.jugador1.body.setVelocityX(-200);
+            } else if (this.jugadores.jugEnemi == 2) {
+                this.jugador2.body.setVelocityX(-200);
+            }
+            this.izquierdaEnemi = false;
+        } else if (this.derechaEnemi) {
+            if (this.jugadores.jugEnemi == 1) {
+                this.jugador1.body.setVelocityX(200);
+            } else if (this.jugadores.jugEnemi == 2) {
+                this.jugador2.body.setVelocityX(200);
+            }
+            this.derechaEnemi = false;
+        } else {
+            if (this.jugadores.jugEnemi == 1) {
+                this.jugador1.body.setVelocityX(0);
+            } else if (this.jugadores.jugEnemi == 2) {
+                this.jugador2.body.setVelocityX(0);
             }
         }
-        /*Jugador 2*/
-        if (this.cursors_jugador2.izquierda.isDown)
-        {
-            this.jugador2.body.setVelocityX(-200);
+
+        if (this.jugadores.jugEnemi == 1) {
+            if (this.saltarEnemi) {
+                this.jugador1.body.setVelocityY(-620);
+                this.saltarEnemi = false;
+            }
+        } else if (this.jugadores.jugEnemi == 2) {
+            if (this.saltarEnemi) {
+                this.jugador2.body.setVelocityY(-620);
+                this.saltarEnemi = false;
+            }
         }
-        else if (this.cursors_jugador2.derecha.isDown)
-        {
-            this.jugador2.body.setVelocityX(200);
+
+        if (this.jugadores.jugEnemi == 1) {
+            if (this.dispararEnemi && this.cd1 < time)
+            {
+                if (this.arma1 != null){
+                    var bullet = new this.Bala(this, 'bala');
+                    if(this.jugador1.flipX == true)
+                    bullet.flip();
+                    this.balas1.add(bullet, true);
+    
+                    this.sonidoPistola1.play();
+    
+                    if (bullet)
+                    {
+                        bullet.fire(this.arma1);
+                        this.cd1 = time + 500;
+                    }
+                }
+                this.dispararEnemi = false;
+            }
+        } else if (this.jugadores.jugEnemi == 2) {
+            if (this.dispararEnemi && this.cd2 < time)
+            {
+                if (this.arma2 != null) {
+                    var bullet = new this.Bala(this, 'bala');
+                    if(this.jugador2.flipX == true)
+                    bullet.flip();
+                    this.balas2.add(bullet, true);
+
+                    this.sonidoPistola2.play();
+
+                    if (bullet)
+                    {
+                        bullet.fire(this.arma2);
+                        this.cd2 = time + 500;
+                    }
+                }
+                this.dispararEnemi = false;
+            }
         }
+
+        if (this.cursors_jugador.izquierda.isDown)
+        {
+            if (this.jugadores.jugYo == 1) {
+                this.jugador1.body.setVelocityX(-200);
+            } else if (this.jugadores.jugYo == 2) {
+                this.jugador2.body.setVelocityX(-200);
+            }
+        }
+        else if (this.cursors_jugador.derecha.isDown)
+        {
+            if (this.jugadores.jugYo == 1) {
+                this.jugador1.body.setVelocityX(200);
+            } else if (this.jugadores.jugYo == 2) {
+                this.jugador2.body.setVelocityX(200);
+            }
+        }
+        
         else
         {
-            this.jugador2.body.setVelocityX(0);
+            if (this.jugadores.jugYo == 1) {
+                this.jugador1.body.setVelocityX(0);
+            } else if (this.jugadores.jugYo == 2) {
+                this.jugador2.body.setVelocityX(0);
+            }
         }
-        if (this.cursors_jugador2.saltar.isDown && this.jugador2.body.touching.down)
-        {
-            this.jugador2.body.setVelocityY(-620);
+        
+        if (this.jugadores.jugYo == 1) {
+            if (this.cursors_jugador.saltar.isDown && this.jugador1.body.touching.down)
+            {
+                this.jugador1.body.setVelocityY(-620);
+            }
+        } else if (this.jugadores.jugYo == 2) {
+            if (this.cursors_jugador.saltar.isDown && this.jugador2.body.touching.down)
+            {
+                this.jugador2.body.setVelocityY(-620);
+            }
         }
-        if (this.cursors_jugador2.disparar.isDown && this.cd2 < time)
-        {
-            if (this.arma2 != null) {
-                var bullet = new this.Bala(this, 'bala');
-                if(this.jugador2.flipX == true)
-                bullet.flip();
-                this.balas2.add(bullet, true);
+        
+        if (this.jugadores.jugYo == 1) {
+            if (this.cursors_jugador.disparar.isDown && this.cd1 < time)
+            {
+                if (this.arma1 != null){
+                    var bullet = new this.Bala(this, 'bala');
+                    if(this.jugador1.flipX == true)
+                    bullet.flip();
+                    this.balas1.add(bullet, true);
+    
+                    this.sonidoPistola1.play();
+    
+                    if (bullet)
+                    {
+                        bullet.fire(this.arma1);
+                        this.cd1 = time + 500;
+                    }
+                }
+            }
+        } else if (this.jugadores.jugYo == 2) {
+            if (this.cursors_jugador.disparar.isDown && this.cd2 < time)
+            {
+                if (this.arma2 != null) {
+                    var bullet = new this.Bala(this, 'bala');
+                    if(this.jugador2.flipX == true)
+                    bullet.flip();
+                    this.balas2.add(bullet, true);
 
-                this.sonidoPistola2.play();
+                    this.sonidoPistola2.play();
 
-                if (bullet)
-                {
-                    bullet.fire(this.arma2);
-                    this.cd2 = time + 500;
+                    if (bullet)
+                    {
+                        bullet.fire(this.arma2);
+                        this.cd2 = time + 500;
+                    }
                 }
             }
         }
@@ -719,47 +820,94 @@ export default class SceneJuegoOnline extends Phaser.Scene {
          this.vidaDos.fillRect(863, 53, 394*Phaser.Math.Clamp(this.salud2/100,0,1), 24);
     }
 
+    //hacer peticion a WS y almacenar en this.cambiarArmaEnemi; si el enemigo quiere cambiar arma
     cambiarArma1(jugador1,arma) {
-        if(this.cursors_jugador1.interactuar.isDown){
-            if(this.arma1 != null)
-            {
-                /*
-                this.arma1.setActive(false);
-                this.arma1.setVisible(false);
-                this.arma1.body.stop();
-                */
-               this.arma1.destroy();
+        if (this.jugadores.jugYo == 1) {
+            if(this.cursors_jugador.interactuar.isDown){
+                if(this.arma1 != null)
+                {
+                    /*
+                    this.arma1.setActive(false);
+                    this.arma1.setVisible(false);
+                    this.arma1.body.stop();
+                    */
+                   this.arma1.destroy();
+                }
+                
+                this.arma1 = this.add.image(0, 0, arma.texture).setScale(0.27);
+                arma.destroy();
+                //arma.disableBody(true,false);
+                //this.arma1 = arma;
+                this.arma1.setPosition(jugador1.x,jugador1.y)
+                this.arma1.setRotation(this.brazo1.rotation);
+                this.arma1.setDepth(2);
             }
-            
-            this.arma1 = this.add.image(0, 0, arma.texture).setScale(0.27);
-            arma.destroy();
-            //arma.disableBody(true,false);
-            //this.arma1 = arma;
-            this.arma1.setPosition(jugador1.x,jugador1.y)
-            this.arma1.setRotation(this.brazo1.rotation);
-            this.arma1.setDepth(2);
+        } else if (this.jugadores.jugYo == 2) {
+            if (this.cambiarArmaEnemi) {
+                if(this.arma1 != null)
+                {
+                    /*
+                    this.arma1.setActive(false);
+                    this.arma1.setVisible(false);
+                    this.arma1.body.stop();
+                    */
+                   this.arma1.destroy();
+                }
+                
+                this.arma1 = this.add.image(0, 0, arma.texture).setScale(0.27);
+                arma.destroy();
+                //arma.disableBody(true,false);
+                //this.arma1 = arma;
+                this.arma1.setPosition(jugador1.x,jugador1.y)
+                this.arma1.setRotation(this.brazo1.rotation);
+                this.arma1.setDepth(2);
+
+                this.cambiarArmaEnemi = false;
+            }
         }
     }
 
     cambiarArma2(jugador2,arma) {
-        if(this.cursors_jugador2.interactuar.isDown){
-            if(this.arma2 != null)
-            {
-                /*
-                this.arma2.setActive(false);                
-                this.arma2.setVisible(false);
-                this.arma2.body.stop();
-                */
-               this.arma2.destroy();
+        if (this.jugadores.jugYo == 2) {
+            if(this.cursors_jugador.interactuar.isDown){
+                if(this.arma2 != null)
+                {
+                    /*
+                    this.arma2.setActive(false);                
+                    this.arma2.setVisible(false);
+                    this.arma2.body.stop();
+                    */
+                   this.arma2.destroy();
+                }
+                this.arma2 = this.add.image(0, 0, arma.texture).setScale(0.27);
+                arma.destroy();
+                //arma.disableBody(true,false);
+                //this.arma2 = arma;
+                this.arma2.setPosition(jugador2.x,jugador2.y)
+                this.arma2.setRotation(this.brazo2.rotation);
+                this.arma2.setDepth(2);
             }
-            this.arma2 = this.add.image(0, 0, arma.texture).setScale(0.27);
-            arma.destroy();
-            //arma.disableBody(true,false);
-            //this.arma2 = arma;
-            this.arma2.setPosition(jugador2.x,jugador2.y)
-            this.arma2.setRotation(this.brazo2.rotation);
-            this.arma2.setDepth(2);
+        } else if (this.jugadores.jugYo == 1) {
+            if (this.cambiarArmaEnemi) {
+                if(this.arma2 != null)
+                {
+                    /*
+                    this.arma2.setActive(false);                
+                    this.arma2.setVisible(false);
+                    this.arma2.body.stop();
+                    */
+                    this.arma2.destroy();
+                }
+                this.arma2 = this.add.image(0, 0, arma.texture).setScale(0.27);
+                arma.destroy();
+                //arma.disableBody(true,false);
+                //this.arma2 = arma;
+                this.arma2.setPosition(jugador2.x,jugador2.y)
+                this.arma2.setRotation(this.brazo2.rotation);
+                this.arma2.setDepth(2);
 
+                this.cambiarArmaEnemi = false;
+            }
         }
     }
 
@@ -769,10 +917,12 @@ export default class SceneJuegoOnline extends Phaser.Scene {
 
     saltoCrater1(jugador1,crater){
         this.jugador1.body.setVelocityY(-950);
+        this.viento1.play();
     }
 
     saltoCrater2(jugador2,crater){
         this.jugador2.body.setVelocityY(-950);
+        this.viento2.play();
     }
 
     golpeJugador2(jugador2, bala){

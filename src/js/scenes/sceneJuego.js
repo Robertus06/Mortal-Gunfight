@@ -146,6 +146,20 @@ export default class SceneJuego extends Phaser.Scene {
 
         this.sonidoPistola1 = this.sound.add('sonidoPistola1');
         this.sonidoPistola2 = this.sound.add('sonidoPistola2');
+        this.sonidoAr1 = this.sound.add('sonidoAr1');
+        this.sonidoAr2 = this.sound.add('sonidoAr2');
+        this.sonidoSmg1 = this.sound.add('sonidoSmg1');
+        this.sonidoSmg2 = this.sound.add('sonidoSmg2');
+        this.sonidoSniper1 = this.sound.add('sonidoSniper1');
+        this.sonidoSniper2 = this.sound.add('sonidoSniper2');
+        this.sonidoMinigun1 = this.sound.add('sonidoMinigun1');
+        this.sonidoMinigun2 = this.sound.add('sonidoMinigun2');
+        this.sonidoCohete1 = this.sound.add('sonidoCohete1');
+        this.sonidoCohete2 = this.sound.add('sonidoCohete2');
+        this.sonidoLanzacohetes1 = this.sound.add('sonidoLanzacohetes1');
+        this.sonidoLanzacohetes2 = this.sound.add('sonidoLanzacohetes2');
+        this.viento1 = this.sound.add('viento1');
+        this.viento2 = this.sound.add('viento2');
 
         this.anims.create({
             key: 'animacion1',
@@ -769,10 +783,12 @@ export default class SceneJuego extends Phaser.Scene {
 
     saltoCrater1(jugador1,crater){
         this.jugador1.body.setVelocityY(-950);
+        this.viento1.play();
     }
 
     saltoCrater2(jugador2,crater){
         this.jugador2.body.setVelocityY(-950);
+        this.viento2.play();
     }
 
     golpeJugador2(jugador2, bala){

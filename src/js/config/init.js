@@ -6,10 +6,10 @@ import SceneCreditos from '/src/js/scenes/sceneCreditos.js';
 import SceneControles from '/src/js/scenes/sceneControles.js';
 import SceneControlesLinea from '/src/js/scenes/sceneControlesLinea.js';
 import SceneMenuControles from '/src/js/scenes/sceneMenuControles.js';
+import SceneEspera from '/src/js/scenes/sceneEspera.js';
 import ScenePersonajeUno from '/src/js/scenes/scenePersonajeUno.js';
-import ScenePersonajeUnoOnline from '/src/js/scenes/scenePersonajeUnoOnline.js';
+import ScenePersonajeOnline from '/src/js/scenes/scenePersonajeOnline.js';
 import ScenePersonajeDos from '/src/js/scenes/scenePersonajeDos.js';
-import ScenePersonajeDosOnline from '/src/js/scenes/scenePersonajeDosOnline.js';
 import SceneMapa from '/src/js/scenes/sceneMapa.js';
 import SceneMapaOnline from '/src/js/scenes/sceneMapaOnline.js';
 import ScenePreparatoria from '/src/js/scenes/scenePreparatoria.js';
@@ -19,9 +19,11 @@ import SceneJuegoOnline from '/src/js/scenes/sceneJuegoOnline.js';
 import ScenePausa from '/src/js/scenes/scenePausa.js';
 import ScenePausaOnline from '/src/js/scenes/scenePausaOnline.js';
 import SceneFinal from '/src/js/scenes/sceneFinal.js';
+import SceneFinalOnline from '/src/js/scenes/sceneFinalOnline.js';
 
 import Sonido from '/src/js/component/sonido.js';
 import Personaje from '/src/js/component/personaje.js';
+import JugadoresOnline from '/src/js/component/jugadoresOnline.js';
 import Mapa from '/src/js/component/mapa.js';
 import Transicion from '/src/js/component/transicion.js';
 import Tiempo from '/src/js/component/tiempo.js';
@@ -37,6 +39,9 @@ class Game extends Phaser.Game {
 
         const personaje = new Personaje();
         this.globalsPersonaje = { personaje };
+
+        const jugadores = new JugadoresOnline();
+        this.globalsJugadores = { jugadores };
 
         const mapa = new Mapa();
         this.globalsMapa = { mapa };
@@ -60,10 +65,10 @@ class Game extends Phaser.Game {
         this.scene.add('SceneControles', SceneControles);
         this.scene.add('SceneControlesLinea', SceneControlesLinea);
         this.scene.add('SceneMenuControles', SceneMenuControles);
+        this.scene.add('SceneEspera', SceneEspera);
         this.scene.add('ScenePersonajeUno', ScenePersonajeUno);
-        this.scene.add('ScenePersonajeUnoOnline', ScenePersonajeUnoOnline);
+        this.scene.add('ScenePersonajeOnline', ScenePersonajeOnline);
         this.scene.add('ScenePersonajeDos', ScenePersonajeDos);
-        this.scene.add('ScenePersonajeDosOnline', ScenePersonajeDosOnline);
         this.scene.add('SceneMapa', SceneMapa);
         this.scene.add('SceneMapaOnline', SceneMapaOnline);
         this.scene.add('ScenePreparatoria', ScenePreparatoria);
@@ -73,6 +78,7 @@ class Game extends Phaser.Game {
         this.scene.add('ScenePausa', ScenePausa);
         this.scene.add('ScenePausaOnline', ScenePausaOnline);
         this.scene.add('SceneFinal', SceneFinal);
+        this.scene.add('SceneFinalOnline', SceneFinalOnline);
 
         this.scene.start('BootScene');
     }

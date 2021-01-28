@@ -158,10 +158,10 @@ export default class SceneMenu extends Phaser.Scene {
             if (this.pulsadoControles) {
                 this.scene.start("SceneMenuControles");
             } else if (this.pulsadoJugar) {
-                this.scene.start("ScenePersonajeUno");
+                this.scene.start("SceneEspera");
                 this.transicion.cancelarSeleccion = false;
             } else if (this.pulsadoJugarLocal) {
-                this.scene.start("ScenePersonajeUnoOnline");
+                this.scene.start("ScenePersonajeUno");
                 this.transicion.cancelarSeleccion = false;
             } else if (this.pulsadoCreditos) {
                 this.scene.start("SceneCreditos");

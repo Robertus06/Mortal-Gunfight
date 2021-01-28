@@ -168,7 +168,7 @@ export default class SceneMapa extends Phaser.Scene {
                 this.nombreMapa = this.add.image(293, 125, 'nombreVolcan');
                 this.nombreMapa.setOrigin(0);
                 this.seleccionadoMapa.destroy();
-                this.seleccionadoMapa = this.add.image(640, 342, 'volcan');
+                this.seleccionadoMapa = this.add.image(640, 342, 'volcanSeleccion');
                 this.seleccionadoMapa.setScale(0.505, 0.5);
                 this.bAleatorio.destroy();
                 this.bAleatorio = this.add.image(100, 648, 'botonAleatorio');
@@ -191,7 +191,7 @@ export default class SceneMapa extends Phaser.Scene {
                 this.nombreMapa = this.add.image(293, 125, 'nombreCiudad');
                 this.nombreMapa.setOrigin(0);
                 this.seleccionadoMapa.destroy();
-                this.seleccionadoMapa = this.add.image(640, 342, 'ciudad');
+                this.seleccionadoMapa = this.add.image(640, 342, 'ciudadSeleccion');
                 this.seleccionadoMapa.setScale(0.505, 0.5);
                 this.bAleatorio.destroy();
                 this.bAleatorio = this.add.image(100, 648, 'botonAleatorio');
@@ -214,7 +214,7 @@ export default class SceneMapa extends Phaser.Scene {
                 this.nombreMapa = this.add.image(293, 125, 'nombreTemplo');
                 this.nombreMapa.setOrigin(0);
                 this.seleccionadoMapa.destroy();
-                this.seleccionadoMapa = this.add.image(640, 342, 'templo');
+                this.seleccionadoMapa = this.add.image(640, 342, 'temploSeleccion');
                 this.seleccionadoMapa.setScale(0.505, 0.5);
                 this.bAleatorio.destroy();
                 this.bAleatorio = this.add.image(100, 648, 'botonAleatorio');

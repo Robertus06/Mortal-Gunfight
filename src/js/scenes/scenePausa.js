@@ -41,6 +41,7 @@ export default class ScenePausa extends Phaser.Scene {
             this.bSalir.destroy();
             this.cuentaAtras = this.add.sprite(640, 360, 'cuentaAtras').play('tiempo');
             this.cuentaAtras.setScale(1.3);
+            this.pulsado = true;
 
             this.cuentaAtras.on('animationcomplete', function () {
                 this.scene.wake("SceneJuego");
@@ -62,6 +63,7 @@ export default class ScenePausa extends Phaser.Scene {
             this.bContinuar = this.add.image(640, 260, 'continuarPartida');
             this.bSalir.destroy();
             this.bSalir = this.add.image(640, 410, 'salirMenu');
+            this.pulsado = true;
             this.cameras.main.fadeOut(250);
         }.bind(this));
 
