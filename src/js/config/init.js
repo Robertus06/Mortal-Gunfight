@@ -80,7 +80,7 @@ class Game extends Phaser.Game {
         this.scene.add('SceneFinal', SceneFinal);
         this.scene.add('SceneFinalOnline', SceneFinalOnline);
 
-        this.scene.start('BootScene');
+        this.scene.start('Bootloader');
     }
 }
 

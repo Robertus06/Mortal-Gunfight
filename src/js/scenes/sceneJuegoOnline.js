@@ -10,12 +10,13 @@ export default class SceneJuegoOnline extends Phaser.Scene {
         
             initialize:
         
-            function Bala (scene, nombre)
+            function Bala (scene, nombre,daño)
             {
                 Phaser.Physics.Arcade.Image.call(this, scene, 0, 0, nombre);        
             
                 this.setDepth(1);
                 this.setScale(0.27);
+                this.daño = daño;
                 
         
                 this.speed = 1200;
@@ -29,9 +30,16 @@ export default class SceneJuegoOnline extends Phaser.Scene {
                 this.setActive(true);
                 this.setVisible(true);
                 this.setRotation(arma.rotation);
-                this.setPosition(arma.x, arma.y);
+
+                if(arma.texture.key == "minigun"){
+                    this.setPosition(arma.x, arma.y + 30);
+                    this.body.reset(arma.x, arma.y + 30);
+                } 
+                else{
+                    this.setPosition(arma.x, arma.y);
+                    this.body.reset(arma.x, arma.y);
+                }
         
-                this.body.reset(arma.x, arma.y);
         
                 this.body.setSize(10, 10, true);
                 //this.body.setGravityY(0);
@@ -78,20 +86,66 @@ export default class SceneJuegoOnline extends Phaser.Scene {
         
             initialize:
 
-            function Arma(scene,nombre,bala,sonido)
+            function Arma(scene,nombre,sonido,municionMax,cadencia,recarga,daño,balas)
             {
                 Phaser.Physics.Arcade.Image.call(this, scene, 0, 0, nombre);
                 this.setScale(0.27);
                 this.setOrigin(0.78, 0.28);
-                this.body.setSize(150,150);
-                this.body.setOffset(400,100);
+                //this.body.setSize(150,150);
+                //this.body.setOffset(400,100);
 
-                this.tipoBala = bala;
-                this.sonido = sonido;
+                if(nombre=="lanzacohetes") this.tipoBala = 'cohete';
+                else this.tipoBala = 'bala';
+                this.sonido = scene.sound.add(sonido);
+                this.municionMax = municionMax;
+                this.municion = municionMax;
+                this.cadencia  = cadencia;
+                this.recarga = recarga;
+                this.cd = 0;
+                this.daño = daño;
+                this.balas = balas;
+                this.setActive(true);
+                this.setVisible(true);
             },
-            disparar: function()
+            update: function (time)
             {
-
+                if(this.cd < time)
+                {
+                    if(this.municion == 0)
+                    {
+                        this.municion = this.municionMax;
+                    }
+                }
+            },
+            disparar: function(scene,time)
+            {
+                if(this.cd < time)
+                {
+                    var bullet = new scene.Bala(scene, this.tipoBala,this.daño);
+                    if(this.flipX == true)
+                    bullet.flip();
+                    this.balas.add(bullet, true);
+                    
+                    this.sonido.play();
+                    if(this.municion == 0)
+                    {
+                        this.municion = this.municionMax;
+                    }
+                    
+                    if (bullet)
+                    {   
+                        bullet.fire(this);
+                        this.municion--;
+                        if(this.municion > 0)
+                        {
+                            this.cd = time + this.cadencia;
+                        }
+                        else
+                        {
+                            this.cd = time + this.recarga;
+                        }
+                    }
+                }
             },
 
 
@@ -102,13 +156,13 @@ export default class SceneJuegoOnline extends Phaser.Scene {
                 {
                     this.setFlipX(false)
                     this.setOrigin(0.78, 0.28);
-                    this.body.setOffset(200,100);
+                    //this.body.setOffset(200,100);
                 }
                 else
                 {
                     this.setFlipX(true)
                     this.setOrigin(0.22, 0.28);
-                    this.body.setOffset(400,100);
+                    //this.body.setOffset(400,100);
                 }
 
             }
@@ -129,6 +183,8 @@ export default class SceneJuegoOnline extends Phaser.Scene {
         this.entradoTime = 0;
         this.acabar = false;
         this.girar = false;
+        this.conArma1 = false;
+        this.conArma2 = false;
 
         this.victoria = null;
 
@@ -456,8 +512,8 @@ export default class SceneJuegoOnline extends Phaser.Scene {
             this.physics.add.collider(this.jugador2, this.crater, this.saltoCrater2, null, this);
         }
         this.physics.add.collider(this.armas, this.plataformas);
-        this.physics.add.collider(this.balas1, this.plataformas, this.chocarSuelo, null, this);
-        this.physics.add.collider(this.balas2, this.plataformas, this.chocarSuelo, null, this);
+        this.physics.add.collider(this.balas1, this.plataformas, this.chocarSuelo1, null, this);
+        this.physics.add.collider(this.balas2, this.plataformas, this.chocarSuelo2, null, this);
 
         this.physics.add.overlap(this.jugador1, this.armas, this.cambiarArma1, null, this);
         this.physics.add.overlap(this.jugador2, this.armas, this.cambiarArma2, null, this);
@@ -475,6 +531,19 @@ export default class SceneJuegoOnline extends Phaser.Scene {
         this.p2Text = this.add.text(760, 60,'0',{ fontFamily: 'luckiestGuy', fontSize: 70, shadowStroke: true, shadowBlur: 1, strokeThickness: 4, stroke: '#000000' });
         this.p2Text.setOrigin(0.5);
         this.p2Text.setDepth(4);
+
+        this.m1Text = this.add.text(80, 90,' ',{ fontFamily: 'luckiestGuy', fontSize: 30, shadowStroke: true, shadowBlur: 1, strokeThickness: 4, stroke: '#000000' });
+        this.m1Text.setOrigin(0);
+        this.m1Text.setDepth(4);
+
+        this.interfaz = this.add.group();
+
+        
+
+        this.m2Text = this.add.text(1200, 90,' ',{ fontFamily: 'luckiestGuy', fontSize: 30, shadowStroke: true, shadowBlur: 1, strokeThickness: 4, stroke: '#000000' });
+        this.m2Text.setOrigin(1,0);
+        this.m2Text.setDepth(4);
+
 
         this.cursor_ESC = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
         
@@ -601,6 +670,28 @@ export default class SceneJuegoOnline extends Phaser.Scene {
             this.p1Text.setText(this.puntos1);
             this.p2Text.setText(this.puntos2);
         }
+        this.vidaUno.clear();
+        this.vidaUno.setDepth(6);
+        this.vidaUno.fillStyle(0x4d99ff, 1);
+        this.vidaUno.fillRect(23, 53, 394*Phaser.Math.Clamp(this.salud1/100,0,1), 24);
+
+        this.vidaDos.clear();
+        this.vidaDos.setDepth(6);
+        this.vidaDos.fillStyle(0xff4d4d, 1);
+        this.vidaDos.fillRect(863, 53, 394*Phaser.Math.Clamp(this.salud2/100,0,1), 24);
+
+        if(!this.conArma1 && this.arma1){
+            this.interfaz.create(36,100,'bala').setScale(0.7,0.5).setDepth(4).setOrigin(0).setFlipX(true);
+            this.interfaz.create(38,108,'bala').setScale(0.7,0.5).setDepth(4).setOrigin(0).setFlipX(true);
+            this.interfaz.create(40,116,'bala').setScale(0.7,0.5).setDepth(4).setOrigin(0).setFlipX(true);
+            this.conArma1 = true;
+        }
+        if(!this.conArma2 && this.arma2){
+            this.interfaz.create(1244,100,'bala').setScale(0.7,0.5).setDepth(4).setOrigin(1,0);
+            this.interfaz.create(1242,108,'bala').setScale(0.7,0.5).setDepth(4).setOrigin(1,0);
+            this.interfaz.create(1240,116,'bala').setScale(0.7,0.5).setDepth(4).setOrigin(1,0);
+            this.conArma2 = true;
+        }
 
         /* Fisicas*/
         /*Posicion*/        
@@ -612,8 +703,8 @@ export default class SceneJuegoOnline extends Phaser.Scene {
         if(this.personaje.jugadorDos == 'c') this.ciego.setPosition(this.jugador2.x,this.jugador2.y);
         
         if(this.girar){ 
-            this.brazo1.setRotation(Phaser.Math.Angle.Between(this.jugador2.x,this.jugador2.y,this.jugador1.x,this.jugador1.y));
-            this.brazo2.setRotation(Phaser.Math.Angle.Between(this.jugador2.x,this.jugador2.y,this.jugador1.x,this.jugador1.y));
+            this.brazo1.setRotation(Phaser.Math.Angle.Between(this.game.input.x,this.game.input.y,this.jugador1.x,this.jugador1.y));
+            this.brazo2.setRotation(Phaser.Math.Angle.Between(this.game.input.x,this.game.input.y,this.jugador1.x,this.jugador1.y));
             if(this.jugador1.x < this.jugador2.x){
                 this.jugador1.setFlipX(true).setOrigin(0.28, 0.53);
                 this.jugador2.setFlipX(false).setOrigin(0.72, 0.53);
@@ -626,8 +717,8 @@ export default class SceneJuegoOnline extends Phaser.Scene {
             
         }
         else if (!this.girar){
-            this.brazo1.setRotation(Phaser.Math.Angle.Between(this.jugador1.x,this.jugador1.y,this.jugador2.x,this.jugador2.y));
-            this.brazo2.setRotation(Phaser.Math.Angle.Between(this.jugador1.x,this.jugador1.y,this.jugador2.x,this.jugador2.y));
+            this.brazo1.setRotation(Phaser.Math.Angle.Between(this.jugador1.x,this.jugador1.y,this.game.input.x,this.game.input.y));
+            this.brazo2.setRotation(Phaser.Math.Angle.Between(this.jugador1.x,this.jugador1.y,this.game.input.x,this.game.input.y));
             if(this.jugador1.x > this.jugador2.x){
                 this.jugador1.setFlipX(false).setOrigin(0.72, 0.53);
                 this.jugador2.setFlipX(true).setOrigin(0.28, 0.53);
@@ -640,20 +731,36 @@ export default class SceneJuegoOnline extends Phaser.Scene {
             
         }
         if (this.arma1){
+            this.arma1.update(time);
+            if(this.arma1.texture.key == "lanzacohetes"){
+                if(this.arma1.municion <= 0) this.arma1.setFrame(1);
+                else this.arma1.setFrame(0);
+            }
             if(this.jugador1.flipX == true){
                 this.arma1.setOrigin(0.22, 0.28).setFlipX(true);
             }
             else this.arma1.setOrigin(0.78, 0.28).setFlipX(false);
             this.arma1.setPosition(this.jugador1.x,this.jugador1.y);
             this.arma1.setRotation(this.brazo1.rotation);
+            
+            if(this.arma1.municion <= 0) this.m1Text.setText(this.arma1.municion + ' / ' + this.arma1.municionMax + '     RECARGANDO');
+            else this.m1Text.setText(this.arma1.municion + ' / ' + this.arma1.municionMax);
         }
         if (this.arma2){
+            this.arma2.update(time);
+            if(this.arma2.texture.key == "lanzacohetes"){
+                if(this.arma2.municion <= 0) this.arma2.setFrame(1);
+                else this.arma2.setFrame(0);
+            }
             if(this.jugador2.flipX == true){
                 this.arma2.setOrigin(0.22, 0.28).setFlipX(true);
             }
             else this.arma2.setOrigin(0.78, 0.28).setFlipX(false);
             this.arma2.setPosition(this.jugador2.x,this.jugador2.y);
             this.arma2.setRotation(this.brazo2.rotation);
+
+            if(this.arma2.municion <= 0) this.m2Text.setText('RECARGANDO     '+this.arma2.municion + ' / ' + this.arma2.municionMax);
+            else this.m2Text.setText(this.arma2.municion + ' / ' + this.arma2.municionMax);
         }
 
         /*Movimiento*/
@@ -694,40 +801,18 @@ export default class SceneJuegoOnline extends Phaser.Scene {
         }
 
         if (this.jugadores.jugEnemi == 1) {
-            if (this.dispararEnemi && this.cd1 < time)
+            if (this.dispararEnemi)
             {
                 if (this.arma1 != null){
-                    var bullet = new this.Bala(this, 'bala');
-                    if(this.jugador1.flipX == true)
-                    bullet.flip();
-                    this.balas1.add(bullet, true);
-    
-                    this.sonidoPistola1.play();
-    
-                    if (bullet)
-                    {
-                        bullet.fire(this.arma1);
-                        this.cd1 = time + 500;
-                    }
+                    this.arma1.disparar(this,time);
                 }
                 this.dispararEnemi = false;
             }
         } else if (this.jugadores.jugEnemi == 2) {
-            if (this.dispararEnemi && this.cd2 < time)
+            if (this.dispararEnemi)
             {
                 if (this.arma2 != null) {
-                    var bullet = new this.Bala(this, 'bala');
-                    if(this.jugador2.flipX == true)
-                    bullet.flip();
-                    this.balas2.add(bullet, true);
-
-                    this.sonidoPistola2.play();
-
-                    if (bullet)
-                    {
-                        bullet.fire(this.arma2);
-                        this.cd2 = time + 500;
-                    }
+                    this.arma2.disparar(this,time);
                 }
                 this.dispararEnemi = false;
             }
@@ -772,52 +857,19 @@ export default class SceneJuegoOnline extends Phaser.Scene {
         }
         
         if (this.jugadores.jugYo == 1) {
-            if (this.cursors_jugador.disparar.isDown && this.cd1 < time)
-            {
+            this.input.on('pointerdown',function(){
                 if (this.arma1 != null){
-                    var bullet = new this.Bala(this, 'bala');
-                    if(this.jugador1.flipX == true)
-                    bullet.flip();
-                    this.balas1.add(bullet, true);
-    
-                    this.sonidoPistola1.play();
-    
-                    if (bullet)
-                    {
-                        bullet.fire(this.arma1);
-                        this.cd1 = time + 500;
-                    }
+                    this.arma1.disparar(this,time);
                 }
-            }
+            }.bind(this));
+            
         } else if (this.jugadores.jugYo == 2) {
-            if (this.cursors_jugador.disparar.isDown && this.cd2 < time)
-            {
+            this.input.on('pointerdown',function(){
                 if (this.arma2 != null) {
-                    var bullet = new this.Bala(this, 'bala');
-                    if(this.jugador2.flipX == true)
-                    bullet.flip();
-                    this.balas2.add(bullet, true);
-
-                    this.sonidoPistola2.play();
-
-                    if (bullet)
-                    {
-                        bullet.fire(this.arma2);
-                        this.cd2 = time + 500;
-                    }
+                    this.arma2.disparar(this,time);
                 }
-            }
+            }.bind(this));
         }
-
-         this.vidaUno.clear();
-         this.vidaUno.setDepth(6);
-         this.vidaUno.fillStyle(0x4d99ff, 1);
-         this.vidaUno.fillRect(23, 53, 394*Phaser.Math.Clamp(this.salud1/100,0,1), 24);
- 
-         this.vidaDos.clear();
-         this.vidaDos.setDepth(6);
-         this.vidaDos.fillStyle(0xff4d4d, 1);
-         this.vidaDos.fillRect(863, 53, 394*Phaser.Math.Clamp(this.salud2/100,0,1), 24);
     }
 
     //hacer peticion a WS y almacenar en this.cambiarArmaEnemi; si el enemigo quiere cambiar arma
@@ -834,7 +886,8 @@ export default class SceneJuegoOnline extends Phaser.Scene {
                    this.arma1.destroy();
                 }
                 
-                this.arma1 = this.add.image(0, 0, arma.texture).setScale(0.27);
+                this.arma1 = this.crearArma(arma.texture,1);
+                this.add.existing(this.arma1);
                 arma.destroy();
                 //arma.disableBody(true,false);
                 //this.arma1 = arma;
@@ -854,7 +907,8 @@ export default class SceneJuegoOnline extends Phaser.Scene {
                    this.arma1.destroy();
                 }
                 
-                this.arma1 = this.add.image(0, 0, arma.texture).setScale(0.27);
+                this.arma1 = this.crearArma(arma.texture,1);
+                this.add.existing(this.arma1);                
                 arma.destroy();
                 //arma.disableBody(true,false);
                 //this.arma1 = arma;
@@ -879,7 +933,8 @@ export default class SceneJuegoOnline extends Phaser.Scene {
                     */
                    this.arma2.destroy();
                 }
-                this.arma2 = this.add.image(0, 0, arma.texture).setScale(0.27);
+                this.arma2 = this.crearArma(arma.texture,2);
+                this.add.existing(this.arma2);
                 arma.destroy();
                 //arma.disableBody(true,false);
                 //this.arma2 = arma;
@@ -898,7 +953,8 @@ export default class SceneJuegoOnline extends Phaser.Scene {
                     */
                     this.arma2.destroy();
                 }
-                this.arma2 = this.add.image(0, 0, arma.texture).setScale(0.27);
+                this.arma2 = this.crearArma(arma.texture,2);
+                this.add.existing(this.arma2);
                 arma.destroy();
                 //arma.disableBody(true,false);
                 //this.arma2 = arma;
@@ -911,7 +967,12 @@ export default class SceneJuegoOnline extends Phaser.Scene {
         }
     }
 
-    chocarSuelo(bala,plataforma){
+    chocarSuelo1(bala,plataforma){
+        if(bala.texture.key == "cohete") this.sonidoCohete1.play();
+        bala.kill();
+    }
+    chocarSuelo2(bala,plataforma){
+        if(bala.texture.key == "cohete") this.sonidoCohete2.play();
         bala.kill();
     }
 
@@ -927,13 +988,13 @@ export default class SceneJuegoOnline extends Phaser.Scene {
 
     golpeJugador2(jugador2, bala){
         if(bala.active){
-            this.salud2 -= 10;
+            this.salud2 -= bala.daño;
             bala.kill();
         }
     }
     golpeJugador1(jugador1, bala){
         if(bala.active){
-            this.salud1 -= 10;
+            this.salud1 -= bala.daño;
             bala.kill();
         }
     }
@@ -953,5 +1014,42 @@ export default class SceneJuegoOnline extends Phaser.Scene {
         this.armaX.body.setSize(150,150).setOffset(200,100);        
         this.armaY = this.armas.create(1280-this.x, 20, this.nombreArmas[Phaser.Math.Between(0,5)]).setScale(0.27).setOrigin(0.78, 0.28);
         this.armaY.body.setSize(150,150).setOffset(400,100);
+    }
+
+    crearArma(tipo,jugador)
+    {
+        if(jugador == 1) var balas = this.balas1;
+        else if (jugador == 2) var balas = this.balas2;
+        if(tipo.key == 'pistola')
+        {
+            var sonido = 'sonidoPistola' + jugador;
+            var arma = new this.Arma(this,tipo.key,sonido,12,500,2000,20,balas); //20 dps
+        }
+        if(tipo.key == 'smg')
+        {
+            var sonido = 'sonidoSmg' + jugador;
+            var arma = new this.Arma(this,tipo.key,sonido,28,100,1800,5,balas); // 50 dps
+        }
+        if(tipo.key == 'ar')
+        {
+            var sonido = 'sonidoAr' + jugador;
+            var arma = new this.Arma(this,tipo.key,sonido,32,250,2600,15,balas); //40 dps
+        }
+        if(tipo.key == 'sniper')
+        {
+            var sonido = 'sonidoSniper' + jugador;
+            var arma = new this.Arma(this,tipo.key,sonido,3,1500,3500,80,balas); //60 dps 
+        }
+        if(tipo.key == 'minigun')
+        {
+            var sonido = 'sonidoMinigun' + jugador;
+            var arma = new this.Arma(this,tipo.key,sonido,100,50,6000,2,balas); // 40 dps
+        }
+        if(tipo.key == 'lanzacohetes')
+        {
+            var sonido = 'sonidoLanzacohetes' + jugador;
+            var arma = new this.Arma(this,tipo.key,sonido,1,5000,5000,100,balas);
+        }
+        return arma;
     }
 }
