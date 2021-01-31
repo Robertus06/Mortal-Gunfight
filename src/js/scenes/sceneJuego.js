@@ -879,12 +879,14 @@ export default class SceneJuego extends Phaser.Scene {
 
     golpeJugador2(jugador2, bala){
         if(bala.active){
+            if(bala.texture.key == "cohete") this.sonidoCohete1.play();
             this.salud2 -= bala.daño;
             bala.kill();
         }
     }
     golpeJugador1(jugador1, bala){
         if(bala.active){
+            if(bala.texture.key == "cohete") this.sonidoCohete2.play();
             this.salud1 -= bala.daño;
             bala.kill();
         }

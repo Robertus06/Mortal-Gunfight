@@ -144,9 +144,6 @@ export default class Consulta{
                 }
             }.bind(this));
         }.bind(this));
-
-        var objDiv = document.getElementById("online2");
-        objDiv.scrollTop = objDiv.scrollHeight;
     }
        
 }

@@ -116,6 +116,7 @@ export default class SceneMenu extends Phaser.Scene {
             this.bControles = this.add.sprite(770, 630, 'botonControles');
             this.bJugar.destroy();
             this.bJugar = this.add.sprite(640, 475, 'botonJugar');
+            this.sys.game.connection.send(JSON.stringify({id: 0, nombre: this.sys.game.globalsConsulta.consulta.nombre}));
             this.cameras.main.fadeOut(250);
             this.pulsadoJugar = true;
         }.bind(this));

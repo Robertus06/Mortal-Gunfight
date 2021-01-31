@@ -11,7 +11,7 @@ export default class Bootloader extends Phaser.Scene {
 
         this.logo = this.add.image(640, 360, 'logo');
         this.logo.setScale(0.8, 0.77);
-        /** 
+        /**/
         this.anims.create({
             key: 'carga',
             frames: this.anims.generateFrameNumbers('cargando'),

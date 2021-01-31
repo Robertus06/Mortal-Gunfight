@@ -4,26 +4,18 @@ export default class SceneEspera extends Phaser.Scene {
     }
 
     create() {
-        this.connection = new WebSocket('ws://localhost:8080/servidor');
-        this.connection.onopen = function () {
-            this.connection.send('Comunicación con el servidor establecida con éxito');
-        }.bind(this)
-        this.connection.onerror = function (e) {
-            console.log("WS error: " + e);
-        }
-        this.connection.onmessage = function(msg) {
-            console.log("WS message: " + msg.data);
-        }
-
         this.cameras.main.fadeIn(250);
 
         this.fondo = this.add.image(640, 360, 'inicio');
 
-        this.cameras.main.once('camerafadeincomplete', function () { 
-            this.buscandoText = this.add.text(640, 290, 'BUSCANDO', { align: 'center', fontFamily: 'luckiestGuy', fontSize: 125, shadowStroke: true, shadowBlur: 1, strokeThickness: 4, stroke: '#000000' });
-            this.consejoText = this.add.text(640, 680, 'LA PARTIDA COMENZARÁ CUANDO SE ENCUENTRE UN OPONENTE', { align: 'center', fontFamily: 'luckiestGuy', fontSize: 30, shadowStroke: true, shadowBlur: 1, strokeThickness: 4, stroke: '#000000' });
-            this.buscandoText.setOrigin(0.5);
-            this.consejoText.setOrigin(0.5);
+        this.buscandoText = this.add.text(640, 290, '');
+        this.consejoText = this.add.text(640, 680, '');
+        this.buscandoText.setOrigin(0.5);
+        this.consejoText.setOrigin(0.5);
+
+        this.cameras.main.once('camerafadeincomplete', function () {        
+            this.buscandoText.setText('BUSCANDO').setStyle({ align: 'center', fontFamily: 'luckiestGuy', fontSize: 125, shadowStroke: true, shadowBlur: 1, strokeThickness: 4, stroke: '#000000' });
+            this.consejoText.setText('LA PARTIDA COMENZARÁ CUANDO SE ENCUENTRE UN OPONENTE').setStyle({ align: 'center', fontFamily: 'luckiestGuy', fontSize: 30, shadowStroke: true, shadowBlur: 1, strokeThickness: 4, stroke: '#000000' });
         }.bind(this));
 
         this.anims.create({
@@ -86,18 +78,26 @@ export default class SceneEspera extends Phaser.Scene {
     }
 
     update(time) {
-        //cuando encuentre enemigo (reciba mensaje del servidor) entonces this.enemigoEncontrado = true;
+        if (this.sys.game.mensaje.id == 0) {
+            this.jugadores.jugYo = this.sys.game.mensaje.jugador;
+        } else if (this.sys.game.mensaje.id == 1) {
+            this.enemigoEncontrado = true;
+            if (this.jugadores.jugYo == 1) {
+                this.jugadores.jugEnemi = 2;
+            } else if (this.jugadores.jugYo == 2) {
+                this.jugadores.jugEnemi = 1;
+            }
+        }
+
         if (this.enemigoEncontrado && !this.entrado) {
             this.textoBusca.destroy();
-            this.buscandoText.setText('PREPARATE');
+            this.buscandoText.setText('PREPARATE').setStyle({ align: 'center', fontFamily: 'luckiestGuy', fontSize: 125, shadowStroke: true, shadowBlur: 1, strokeThickness: 4, stroke: '#000000' });;
             this.encontradoText = this.add.text(640, 420, 'OPONENTE ENCONTRADO', { align: 'center', fontFamily: 'luckiestGuy', fontSize: 45, shadowStroke: true, shadowBlur: 1, strokeThickness: 4, stroke: '#000000' });
             this.encontradoText.setOrigin(0.5);
             this.consejoText.destroy();
 
             this.entrado = true;
             this.pulsado = true;
-
-            //cuando haga la llamada, nos dice si somos el uno o el dos, y por tanto al enemigo se le asigna el numero contrario
 
             if (this.jugadores.jugYo != null && this.jugadores.jugEnemi != null) {
                 this.tiempoFinal = true;
@@ -108,8 +108,16 @@ export default class SceneEspera extends Phaser.Scene {
         if (this.cursor_ESC.isDown && !this.pulsado) {
             this.pulsado = true;
             this.sonidoAtras.play();
-            this.connection.close();
+            this.sys.game.connection.send(JSON.stringify({id: -1, nombre: this.sys.game.globalsConsulta.consulta.nombre}));
             this.cameras.main.fadeOut(250);
+        }
+
+        if (this.sys.game.mensaje.id == -1) {
+            if (!this.pulsado) {
+                this.pulsado = true;
+                this.sonidoAtras.play();
+                this.cameras.main.fadeOut(250);
+            }
         }
 
         if ( this.cd < time && this.tiempoFinal) {

@@ -32,8 +32,8 @@ export default class SceneJuegoOnline extends Phaser.Scene {
                 this.setRotation(arma.rotation);
 
                 if(arma.texture.key == "minigun"){
-                    this.setPosition(arma.x, arma.y + 30);
-                    this.body.reset(arma.x, arma.y + 30);
+                    this.setPosition(arma.x - 30 * Math.sin(arma.rotation), arma.y + 30 * Math.cos(arma.rotation));
+                    this.body.reset(arma.x - 30 * Math.sin(arma.rotation), arma.y + 30 * Math.cos(arma.rotation));
                 } 
                 else{
                     this.setPosition(arma.x, arma.y);
@@ -702,9 +702,9 @@ export default class SceneJuegoOnline extends Phaser.Scene {
         if(this.personaje.jugadorUno == 'c') this.ciego.setPosition(this.jugador1.x,this.jugador1.y);
         if(this.personaje.jugadorDos == 'c') this.ciego.setPosition(this.jugador2.x,this.jugador2.y);
         
-        if(this.girar){ 
-            this.brazo1.setRotation(Phaser.Math.Angle.Between(this.game.input.x,this.game.input.y,this.jugador1.x,this.jugador1.y));
-            this.brazo2.setRotation(Phaser.Math.Angle.Between(this.game.input.x,this.game.input.y,this.jugador1.x,this.jugador1.y));
+        if(this.girar){
+            this.brazo1.setRotation(Phaser.Math.Angle.Between(this.input.mousePointer.x,this.input.mousePointer.y,this.jugador1.x,this.jugador1.y));
+            this.brazo2.setRotation(Phaser.Math.Angle.Between(this.jugador2.x,this.jugador2.y,this.input.mousePointer.x,this.input.mousePointer.y));
             if(this.jugador1.x < this.jugador2.x){
                 this.jugador1.setFlipX(true).setOrigin(0.28, 0.53);
                 this.jugador2.setFlipX(false).setOrigin(0.72, 0.53);
@@ -717,8 +717,8 @@ export default class SceneJuegoOnline extends Phaser.Scene {
             
         }
         else if (!this.girar){
-            this.brazo1.setRotation(Phaser.Math.Angle.Between(this.jugador1.x,this.jugador1.y,this.game.input.x,this.game.input.y));
-            this.brazo2.setRotation(Phaser.Math.Angle.Between(this.jugador1.x,this.jugador1.y,this.game.input.x,this.game.input.y));
+            this.brazo1.setRotation(Phaser.Math.Angle.Between(this.jugador1.x,this.jugador1.y,this.input.mousePointer.x,this.input.mousePointer.y));
+            this.brazo2.setRotation(Phaser.Math.Angle.Between(this.input.mousePointer.x,this.input.mousePointer.y,this.jugador2.x,this.jugador2.y));            
             if(this.jugador1.x > this.jugador2.x){
                 this.jugador1.setFlipX(false).setOrigin(0.72, 0.53);
                 this.jugador2.setFlipX(true).setOrigin(0.28, 0.53);
@@ -857,18 +857,17 @@ export default class SceneJuegoOnline extends Phaser.Scene {
         }
         
         if (this.jugadores.jugYo == 1) {
-            this.input.on('pointerdown',function(){
+            if(this.input.mousePointer.isDown) {
                 if (this.arma1 != null){
                     this.arma1.disparar(this,time);
                 }
-            }.bind(this));
-            
+            }
         } else if (this.jugadores.jugYo == 2) {
-            this.input.on('pointerdown',function(){
+            if(this.input.mousePointer.isDown) {
                 if (this.arma2 != null) {
                     this.arma2.disparar(this,time);
                 }
-            }.bind(this));
+            }
         }
     }
 
@@ -988,12 +987,14 @@ export default class SceneJuegoOnline extends Phaser.Scene {
 
     golpeJugador2(jugador2, bala){
         if(bala.active){
+            if(bala.texture.key == "cohete") this.sonidoCohete1.play();
             this.salud2 -= bala.daño;
             bala.kill();
         }
     }
     golpeJugador1(jugador1, bala){
         if(bala.active){
+            if(bala.texture.key == "cohete") this.sonidoCohete2.play();
             this.salud1 -= bala.daño;
             bala.kill();
         }

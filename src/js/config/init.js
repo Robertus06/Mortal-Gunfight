@@ -33,6 +33,20 @@ import Consulta from '/src/js/component/consulta.js';
 class Game extends Phaser.Game {
     constructor() {
         super(config);
+        
+        this.mensaje = null;
+
+        this.connection = new WebSocket('ws://localhost:8080/servidor');
+
+        this.connection.onopen = function () {
+            console.log('Comunicación con el servidor establecida con éxito');
+        }
+        this.connection.onerror = function (e) {
+            console.log("WS error: " + e);
+        }
+        this.connection.onmessage = function(msg) {
+            this.mensaje =  JSON.parse(msg.data);
+        }.bind(this)
 
         const sonido = new Sonido();
         this.globalsSonido = { sonido, music: null };
@@ -80,7 +94,7 @@ class Game extends Phaser.Game {
         this.scene.add('SceneFinal', SceneFinal);
         this.scene.add('SceneFinalOnline', SceneFinalOnline);
 
-        this.scene.start('Bootloader');
+        this.scene.start('BootScene');
     }
 }
 
