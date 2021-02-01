@@ -5,6 +5,10 @@ export default class SceneEspera extends Phaser.Scene {
 
     create() {
         this.cameras.main.fadeIn(250);
+
+        this.abandonado = this.sys.game.globalsAbandonado.abandonado;
+
+        this.abandonado.haAbandonado = false;
         
         this.fondo = this.add.image(640, 360, 'inicio');
 
@@ -30,9 +34,7 @@ export default class SceneEspera extends Phaser.Scene {
         this.jugadores.jugEnemi = null;
 
         this.enemigoEncontrado = false;
-        this.pulsado = false;
         this.entrado = false;
-        this.noVolver = false;
         this.pintado = false;
         this.tiempoFinal = false;
         this.cd = 0;
@@ -56,8 +58,6 @@ export default class SceneEspera extends Phaser.Scene {
         }.bind(this));
 
         this.updateAudio();
-
-        this.cursor_ESC = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
     }
 
     updateAudio() {
@@ -86,6 +86,7 @@ export default class SceneEspera extends Phaser.Scene {
             this.buscandoText.destroy();
             if (!this.pintado) {
                 this.enCurso = this.add.image(640, 360, 'enCurso');
+                this.cdSalir = time + 5000;
                 this.pintado = true;
             }
         }
@@ -103,22 +104,7 @@ export default class SceneEspera extends Phaser.Scene {
             }
         }
 
-        if (this.cursor_ESC.isDown && !this.enemigoEncontrado) {
-            this.pulsadoEsc = true;
-        }
-        
-        if (this.cursor_ESC.isDown && !this.noVolver && !this.enemigoEncontrado) {
-            this.pulsado = true;
-            this.noVolver = true;
-        }
-        
-        if (this.pulsadoEsc) {
-            this.sys.game.connection.send(JSON.stringify({id: -4, nombre: this.sys.game.globalsConsulta.consulta.nombre}));
-        }
-
-        if (this.pulsado) {
-            this.pulsado = false;
-            this.sonidoAtras.play();
+        if (this.cdSalir < time && this.pintado) {
             this.transicion.cancelarSeleccion = true;
             this.scene.start("SceneMenu");
         }

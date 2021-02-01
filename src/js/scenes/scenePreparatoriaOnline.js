@@ -8,6 +8,8 @@ export default class ScenePreparatoriaOnline extends Phaser.Scene {
 
         this.mapa = this.sys.game.globalsMapa.mapa;
 
+        this.abandonado = this.sys.game.globalsAbandonado.abandonado;
+
         this.unoListo = false;
         this.dosListo = false;
         this.cargado = false;
@@ -113,6 +115,7 @@ export default class ScenePreparatoriaOnline extends Phaser.Scene {
             this.bVolcan.destroy();
             this.bVolcan = this.add.image(425, 648, 'botonVolcan');
             this.sonidoAtras.play();
+            this.abandonado.haAbandonado = true;
             this.transicion.cancelarSeleccion = true;
             this.scene.start("SceneMenu");
         } else {

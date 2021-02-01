@@ -50,6 +50,7 @@ export default class Bootloader extends Phaser.Scene {
         }.bind(this));
 
         this.load.image('inicio', 'resources/img/inicio.png');
+        this.load.image('abandono', 'resources/img/abandono.png');
         this.load.image('fondoControles', 'resources/img/fondoControles.png');
         this.load.image('botonControles', 'resources/img/botonControles.png');
         this.load.image('botonControlesLocal', 'resources/img/botonControlesLocal.png');

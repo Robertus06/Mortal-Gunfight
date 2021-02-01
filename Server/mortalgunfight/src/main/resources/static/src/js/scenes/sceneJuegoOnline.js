@@ -188,10 +188,6 @@ export default class SceneJuegoOnline extends Phaser.Scene {
 
         this.victoria = null;
 
-        this.pulsado = false;
-        this.pausado = false;
-        this.entradoEnPausa = false;
-
         this.nombreArmas = ['ar','lanzacohetes','minigun','pistola','smg','sniper'];
 
         this.salud1 = 100;
@@ -201,11 +197,9 @@ export default class SceneJuegoOnline extends Phaser.Scene {
 
         this.tiempo = this.sys.game.globalsTiempo.tiempo;
         this.jugadores = this.sys.game.globalsJugadores.jugadores;
+
         this.cambiarArmaEnemi = false;
         this.dispararEnemi = false;
-        this.saltarEnemi = false;
-        this.derechaEnemi = false;
-        this.izquierdaEnemi = false;
 
         this.sonidoPistola1 = this.sound.add('sonidoPistola1');
         this.sonidoPistola2 = this.sound.add('sonidoPistola2');
@@ -543,15 +537,11 @@ export default class SceneJuegoOnline extends Phaser.Scene {
         this.m2Text = this.add.text(1200, 90,' ',{ fontFamily: 'luckiestGuy', fontSize: 30, shadowStroke: true, shadowBlur: 1, strokeThickness: 4, stroke: '#000000' });
         this.m2Text.setOrigin(1,0);
         this.m2Text.setDepth(4);
-
-
-        this.cursor_ESC = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
         
         this.cursors_jugador = {
             derecha: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D),
             izquierda: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A),
             saltar: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W),
-            disparar: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT),
             interactuar: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E)
         };
 
@@ -569,10 +559,6 @@ export default class SceneJuegoOnline extends Phaser.Scene {
         if (!this.cargado){            
             this.currentTime = time + this.tiempo.tiempoJuego;
             this.cargado = true;
-        } else if (this.pausado) {
-            this.currentTime += time - this.timeRestante;
-            this.cdGenerarArma+= time - this.timeRestante;
-            this.pausado = false;            
         }
 
         this.segundos = Math.trunc(((this.currentTime-time)/1000)%60);
@@ -584,66 +570,7 @@ export default class SceneJuegoOnline extends Phaser.Scene {
             this.timeText.setText('0' + this.minutos + ':' + this.segundos);
         }
 
-        if (this.cursor_ESC.isDown && !this.pulsado) {
-            this.sonidoAtras.play();
-            this.pulsado = true;
-            this.pulsadoEsc = true;
-        }
-
-        if (this.pulsadoEsc) {
-            this.sys.game.connection.send(JSON.stringify({id: 4, nombre: this.sys.game.globalsConsulta.consulta.nombre, pausa: true}));
-        }
-
-        if (this.cursor_ESC.isUp && this.pulsado && !this.entradoEnPausa) {
-            this.pulsado = false;
-            this.entradoEnPausa = true;
-            this.timeRestante = time;
-            this.pausado = true;
-            this.scene.pause();
-            this.scene.launch("ScenePausaOnline");
-        }
-
-        if (this.sys.game.mensaje.id == 4) {
-            this.pausaEnemi = this.sys.game.mensaje.pausa;
-        }
-
-        if (this.pausaEnemi && !this.entradoEnPausa) {
-            this.entradoEnPausa = true;
-            this.timeRestante = time;
-            this.pausado = true;
-            this.scene.pause();
-            this.scene.launch("ScenePausaOnline");
-        }
-
-        /**
-        if (this.cursor_ESC.isDown && !this.pulsado) {
-            this.sonidoAtras.play();
-            this.pulsado = true;
-        }
-
-        if (this.sys.game.mensaje.id == 4) {
-            this.pausaEnemi = this.sys.game.mensaje.pausa;
-        }
-
-        if (this.pausaEnemi && !this.entradoEnPausa) {
-            this.entradoEnPausa = true;
-            this.timeRestante = time;
-            this.pausado = true;
-            this.scene.pause();
-            this.scene.launch("ScenePausaOnline");
-        }
-
-        if (this.cursor_ESC.isUp && this.pulsado && !this.entradoEnPausa) {
-            this.pulsado = false;
-            this.entradoEnPausa = true;
-            this.timeRestante = time;
-            this.pausado = true;
-            this.sys.game.connection.send(JSON.stringify({id: 4, nombre: this.sys.game.globalsConsulta.consulta.nombre, pausa: true}));
-            this.scene.pause();
-            this.scene.launch("ScenePausaOnline");
-        }
-        **/
-
+        /*******************************************************************************************************************************/
         if(this.cdGenerarArma < time)
         {
             this.cdGenerarArma = time + 20000;
@@ -739,6 +666,8 @@ export default class SceneJuegoOnline extends Phaser.Scene {
         if(this.personaje.jugadorUno == 'c') this.ciego.setPosition(this.jugador1.x,this.jugador1.y);
         if(this.personaje.jugadorDos == 'c') this.ciego.setPosition(this.jugador2.x,this.jugador2.y);
         
+        /*********************************************************************************************************************************************/
+
         if(this.girar){
             this.brazo1.setRotation(Phaser.Math.Angle.Between(this.input.mousePointer.x,this.input.mousePointer.y,this.jugador1.x,this.jugador1.y));
             this.brazo2.setRotation(Phaser.Math.Angle.Between(this.jugador2.x,this.jugador2.y,this.input.mousePointer.x,this.input.mousePointer.y));
@@ -801,41 +730,6 @@ export default class SceneJuegoOnline extends Phaser.Scene {
         }
 
         /*Movimiento*/
-
-        //solicitar a WS si jugadorEnemi quiere moverse izquierda, o derecha, etc, y almacenar en las variables correspondientes;
-        if (this.izquierdaEnemi) {
-            if (this.jugadores.jugEnemi == 1) {
-                this.jugador1.body.setVelocityX(-200);
-            } else if (this.jugadores.jugEnemi == 2) {
-                this.jugador2.body.setVelocityX(-200);
-            }
-            this.izquierdaEnemi = false;
-        } else if (this.derechaEnemi) {
-            if (this.jugadores.jugEnemi == 1) {
-                this.jugador1.body.setVelocityX(200);
-            } else if (this.jugadores.jugEnemi == 2) {
-                this.jugador2.body.setVelocityX(200);
-            }
-            this.derechaEnemi = false;
-        } else {
-            if (this.jugadores.jugEnemi == 1) {
-                this.jugador1.body.setVelocityX(0);
-            } else if (this.jugadores.jugEnemi == 2) {
-                this.jugador2.body.setVelocityX(0);
-            }
-        }
-
-        if (this.jugadores.jugEnemi == 1) {
-            if (this.saltarEnemi) {
-                this.jugador1.body.setVelocityY(-620);
-                this.saltarEnemi = false;
-            }
-        } else if (this.jugadores.jugEnemi == 2) {
-            if (this.saltarEnemi) {
-                this.jugador2.body.setVelocityY(-620);
-                this.saltarEnemi = false;
-            }
-        }
 
         if (this.jugadores.jugEnemi == 1) {
             if (this.dispararEnemi)
@@ -908,7 +802,6 @@ export default class SceneJuegoOnline extends Phaser.Scene {
         }
     }
 
-    //hacer peticion a WS y almacenar en this.cambiarArmaEnemi; si el enemigo quiere cambiar arma
     cambiarArma1(jugador1,arma) {
         if (this.jugadores.jugYo == 1) {
             if(this.cursors_jugador.interactuar.isDown){

@@ -13,6 +13,8 @@ export default class SceneMapaOnline extends Phaser.Scene {
 
         this.transicion = this.sys.game.globalsTransicion.transicion;
 
+        this.abandonado = this.sys.game.globalsAbandonado.abandonado;
+
         this.mapa = this.sys.game.globalsMapa.mapa;
         this.mapa.escenario = null;
 
@@ -302,6 +304,7 @@ export default class SceneMapaOnline extends Phaser.Scene {
             this.bVolcan.destroy();
             this.bVolcan = this.add.image(425, 648, 'botonVolcan');
             this.sonidoAtras.play();
+            this.abandonado.haAbandonado = true;
             this.transicion.cancelarSeleccion = true;
             this.scene.start("SceneMenu");
         } else {

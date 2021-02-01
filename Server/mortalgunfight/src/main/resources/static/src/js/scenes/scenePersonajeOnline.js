@@ -5,6 +5,8 @@ export default class ScenePersonajeOnline extends Phaser.Scene {
 
     create() {
         this.transicion = this.sys.game.globalsTransicion.transicion;
+
+        this.abandonado = this.sys.game.globalsAbandonado.abandonado;
         
         if (!this.transicion.cancelarSeleccion) {
             this.cameras.main.fadeIn(250);
@@ -1337,6 +1339,7 @@ export default class ScenePersonajeOnline extends Phaser.Scene {
             this.bAleatorio.destroy();
             this.bAleatorio = this.add.image(100, 649, 'botonAleatorio');
             this.sonidoAtras.play();
+            this.abandonado.haAbandonado = true;
             this.transicion.cancelarSeleccion = true;
             this.scene.start("SceneMenu");
         } else {
