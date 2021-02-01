@@ -42,6 +42,7 @@ export default class SceneMapaOnline extends Phaser.Scene {
         this.mapaJugEnemi = null;
         this.elegido = false;
         this.enviado = false;
+        this.enviadoWS = false;
 
         this.bTemplo.on('pointerover', function () {
             this.sonidoBoton.play();
@@ -302,12 +303,17 @@ export default class SceneMapaOnline extends Phaser.Scene {
             this.bVolcan = this.add.image(425, 648, 'botonVolcan');
             this.sonidoAtras.play();
             this.transicion.cancelarSeleccion = true;
-            this.scene.start("ScenePersonajeOnline");
+            this.scene.start("SceneMenu");
         } else {
             this.sys.game.connection.send(JSON.stringify({id: 2, nombre: this.sys.game.globalsConsulta.consulta.nombre, mapa: this.mapaJugYo}));
         }
 
-        if (this.mapaJugYo != null && this.mapaJugEnemi != null && !this.elegido) {
+        if(this.mapaJugYo != null && this.mapaJugEnemi != null && !this.enviadoWS) {
+            this.sys.game.connection.send(JSON.stringify({id: 2, nombre: this.sys.game.globalsConsulta.consulta.nombre, mapa: this.mapaJugYo}));
+            this.enviadoWS = true;
+        }
+
+        if (this.mapaJugYo != null && this.mapaJugEnemi != null && !this.elegido && this.enviadoWS) {
             if (this.mapaJugYo == this.mapaJugEnemi) {
                 this.mapa.escenario = this.mapaJugYo;
                 this.tiempoFinal = true;

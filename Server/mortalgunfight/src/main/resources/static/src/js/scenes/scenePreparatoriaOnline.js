@@ -28,61 +28,12 @@ export default class ScenePreparatoriaOnline extends Phaser.Scene {
         }
 
         this.jugadores = this.sys.game.globalsJugadores.jugadores;
+        this.transicion = this.sys.game.globalsTransicion.transicion;
 
         this.tiempo = this.sys.game.globalsTiempo.tiempo;
         this.tiempo.tiempoJuego = 120000;
-        this.tiempoComun = 120000;
 
         this.cursorEnemi = false;
-        
-        this.boton30 = this.add.sprite(440, 680, 'botones', 1).setInteractive();
-        this.boton2 = this.add.sprite(640, 680, 'botones', 0).setInteractive();
-        this.boton5 = this.add.sprite(840, 680, 'botones', 1).setInteractive();
-        
-        this.cameras.main.once('camerafadeincomplete', function () {        
-            this.timeText = this.add.text(640, 610, 'Seleccione el tiempo de juego:\n(Por defecto 02:00)', { align: 'center', fontFamily: 'luckiestGuy', fontSize: 25, shadowStroke: true, shadowBlur: 1, strokeThickness: 4, stroke: '#000000' });
-            this.timeText.setOrigin(0.5);
-
-            this.timeText30 = this.add.text(440, 680, '00:30', { fontFamily: 'luckiestGuy', fontSize: 30, shadowStroke: true, shadowBlur: 1, strokeThickness: 4, stroke: '#000000' });
-            this.timeText30.setOrigin(0.5);
-            this.timeText2 = this.add.text(640, 680, '02:00', { fontFamily: 'luckiestGuy', fontSize: 30, shadowStroke: true, shadowBlur: 1, strokeThickness: 4, stroke: '#000000' });
-            this.timeText2.setOrigin(0.5);
-            this.timeText5 = this.add.text(840, 680, '05:00', { fontFamily: 'luckiestGuy', fontSize: 30, shadowStroke: true, shadowBlur: 1, strokeThickness: 4, stroke: '#000000' });
-            this.timeText5.setOrigin(0.5);
-        }.bind(this));
-
-        this.boton30.on('pointerover', function () {
-            this.sonidoBoton.play();
-            this.boton30.setScale(1.15);
-            this.timeText30.setScale(1.15);
-        }.bind(this));
-
-        this.boton30.on('pointerout', function () {
-            this.boton30.setScale(1);
-            this.timeText30.setScale(1);
-        }.bind(this));
-
-        this.boton2.on('pointerover', function () {
-            this.sonidoBoton.play();
-            this.boton2.setScale(1.15);
-            this.timeText2.setScale(1.15);
-        }.bind(this));
-
-        this.boton2.on('pointerout', function () {
-            this.boton2.setScale(1);
-            this.timeText2.setScale(1);
-        }.bind(this));
-
-        this.boton5.on('pointerover', function () {
-            this.sonidoBoton.play();
-            this.boton5.setScale(1.15);
-            this.timeText5.setScale(1.15);
-        }.bind(this));
-
-        this.boton5.on('pointerout', function () {
-            this.boton5.setScale(1);
-            this.timeText5.setScale(1);
-        }.bind(this));
 
         this.sonidoBoton = this.sound.add('sonidoBoton');
 
@@ -122,68 +73,10 @@ export default class ScenePreparatoriaOnline extends Phaser.Scene {
     }
 
     update() {
-        //Recibimos desde el servidor si el enemigo ha pulsado algun boton de cambiar tiempo y lo almacenamos en
-        //this.tiempoComun para usarlo en los ifs.
-
-        if(this.tiempoComun == 30000) {
-            this.boton30.setFrame(0);
-            this.boton2.setFrame(1);
-            this.boton5.setFrame(1);
-
-            this.boton2.on('pointerdown', function () {
-                this.boton30.setFrame(1);
-                this.boton2.setFrame(0);
-                this.boton5.setFrame(1);
-                this.tiempoComun = 120000;
-            }.bind(this));
-
-            this.boton5.on('pointerdown', function () {
-                this.boton30.setFrame(1);
-                this.boton2.setFrame(1);
-                this.boton5.setFrame(0);
-                this.tiempoComun = 300000;
-            }.bind(this));
-
-        } else if (this.tiempoComun == 120000) {
-            this.boton30.setFrame(1);
-            this.boton2.setFrame(0);
-            this.boton5.setFrame(1);
-
-            this.boton30.on('pointerdown', function () {
-                this.boton30.setFrame(0);
-                this.boton2.setFrame(1);
-                this.boton5.setFrame(1);
-                this.tiempoComun = 30000;
-            }.bind(this));
-
-            this.boton5.on('pointerdown', function () {
-                this.boton30.setFrame(1);
-                this.boton2.setFrame(1);
-                this.boton5.setFrame(0);
-                this.tiempoComun = 300000;
-            }.bind(this));
-
-        } else if (this.tiempoComun == 300000) {
-            this.boton30.setFrame(1);
-            this.boton2.setFrame(1);
-            this.boton5.setFrame(0);
-
-            this.boton30.on('pointerdown', function () {
-                this.boton30.setFrame(0);
-                this.boton2.setFrame(1);
-                this.boton5.setFrame(1);
-                this.tiempoComun = 30000;
-            }.bind(this));
-
-            this.boton2.on('pointerdown', function () {
-                this.boton30.setFrame(1);
-                this.boton2.setFrame(0);
-                this.boton5.setFrame(1);
-                this.tiempoComun = 120000;
-            }.bind(this));
+        if (this.sys.game.mensaje.id == 3) {
+            this.cursorEnemi = this.sys.game.mensaje.cursor;
         }
 
-        //en una consulta al WS saber si el enemigo ha pulsado ya la W y entonces almacenarlo en this.cursorEnemi
         if (this.jugadores.jugYo == 1) {
             if (this.cursorEnemi && !this.enemiListo) {
                 this.sonidoBoton.play();
@@ -210,12 +103,28 @@ export default class ScenePreparatoriaOnline extends Phaser.Scene {
             }
         }
 
+        if (this.sys.game.mensaje.id == -1) {
+            this.bAleatorio.destroy();
+            this.bAleatorio = this.add.image(100, 648, 'botonAleatorio');
+            this.bTemplo.destroy();
+            this.bTemplo = this.add.image(850, 648, 'botonTemplo');
+            this.bCiudad.destroy();
+            this.bCiudad = this.add.image(635, 648, 'botonCiudad');
+            this.bVolcan.destroy();
+            this.bVolcan = this.add.image(425, 648, 'botonVolcan');
+            this.sonidoAtras.play();
+            this.transicion.cancelarSeleccion = true;
+            this.scene.start("SceneMenu");
+        } else {
+            this.sys.game.connection.send(JSON.stringify({id: 3, nombre: this.sys.game.globalsConsulta.consulta.nombre, cursor: this.yoListo}));
+        }
+
+
         if (this.unoListo && this.dosListo && !this.cargado) {
             this.cuentaAtras = this.add.sprite(640, 430, 'cuentaAtras').play('tiempo');
             this.cargado = true;
 
             this.cuentaAtras.on('animationcomplete', function () {
-                this.tiempo.tiempoJuego = this.tiempoComun;
                 this.scene.start("SceneJuegoOnline");
             }.bind(this));
         }

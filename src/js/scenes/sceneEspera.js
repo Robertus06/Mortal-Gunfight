@@ -5,7 +5,7 @@ export default class SceneEspera extends Phaser.Scene {
 
     create() {
         this.cameras.main.fadeIn(250);
-
+        
         this.fondo = this.add.image(640, 360, 'inicio');
 
         this.buscandoText = this.add.image(640, 360, 'buscandoText');
@@ -30,7 +30,6 @@ export default class SceneEspera extends Phaser.Scene {
         this.jugadores.jugEnemi = null;
 
         this.enemigoEncontrado = false;
-        this.siguiente = false;
         this.pulsado = false;
         this.entrado = false;
         this.noVolver = false;
@@ -120,23 +119,18 @@ export default class SceneEspera extends Phaser.Scene {
         if (this.pulsado) {
             this.pulsado = false;
             this.sonidoAtras.play();
-            this.siguiente = false;
-            this.cameras.main.fadeOut(250);
+            this.transicion.cancelarSeleccion = true;
+            this.scene.start("SceneMenu");
         }
 
         if ( this.cd < time && this.tiempoFinal) {
-            this.siguiente = true;
             this.cameras.main.fadeOut(250);
             this.tiempoFinal = false;
         }
 
         this.cameras.main.once('camerafadeoutcomplete', function () {
-            if (this.siguiente) {
-                this.scene.start("ScenePersonajeOnline");
-                this.transicion.cancelarSeleccion = false;
-            } else if (!this.siguiente) {
-                this.scene.start("SceneMenu");
-            }
+            this.scene.start("ScenePersonajeOnline");
+            this.transicion.cancelarSeleccion = false;
         }.bind(this));
     }
 }

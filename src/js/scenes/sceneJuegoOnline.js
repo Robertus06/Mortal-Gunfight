@@ -587,9 +587,44 @@ export default class SceneJuegoOnline extends Phaser.Scene {
         if (this.cursor_ESC.isDown && !this.pulsado) {
             this.sonidoAtras.play();
             this.pulsado = true;
+            this.pulsadoEsc = true;
         }
 
-        //recibir de WS si enemigo ha hecho pausa y almacenarlo en //this.pausaEnemi
+        if (this.pulsadoEsc) {
+            this.sys.game.connection.send(JSON.stringify({id: 4, nombre: this.sys.game.globalsConsulta.consulta.nombre, pausa: true}));
+        }
+
+        if (this.cursor_ESC.isUp && this.pulsado && !this.entradoEnPausa) {
+            this.pulsado = false;
+            this.entradoEnPausa = true;
+            this.timeRestante = time;
+            this.pausado = true;
+            this.scene.pause();
+            this.scene.launch("ScenePausaOnline");
+        }
+
+        if (this.sys.game.mensaje.id == 4) {
+            this.pausaEnemi = this.sys.game.mensaje.pausa;
+        }
+
+        if (this.pausaEnemi && !this.entradoEnPausa) {
+            this.entradoEnPausa = true;
+            this.timeRestante = time;
+            this.pausado = true;
+            this.scene.pause();
+            this.scene.launch("ScenePausaOnline");
+        }
+
+        /**
+        if (this.cursor_ESC.isDown && !this.pulsado) {
+            this.sonidoAtras.play();
+            this.pulsado = true;
+        }
+
+        if (this.sys.game.mensaje.id == 4) {
+            this.pausaEnemi = this.sys.game.mensaje.pausa;
+        }
+
         if (this.pausaEnemi && !this.entradoEnPausa) {
             this.entradoEnPausa = true;
             this.timeRestante = time;
@@ -603,9 +638,11 @@ export default class SceneJuegoOnline extends Phaser.Scene {
             this.entradoEnPausa = true;
             this.timeRestante = time;
             this.pausado = true;
+            this.sys.game.connection.send(JSON.stringify({id: 4, nombre: this.sys.game.globalsConsulta.consulta.nombre, pausa: true}));
             this.scene.pause();
             this.scene.launch("ScenePausaOnline");
         }
+        **/
 
         if(this.cdGenerarArma < time)
         {
