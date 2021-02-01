@@ -15,7 +15,7 @@ export default class SceneEspera extends Phaser.Scene {
 
         this.cameras.main.once('camerafadeincomplete', function () {        
             this.buscandoText.setText('BUSCANDO').setStyle({ align: 'center', fontFamily: 'luckiestGuy', fontSize: 125, shadowStroke: true, shadowBlur: 1, strokeThickness: 4, stroke: '#000000' });
-            this.consejoText.setText('LA PARTIDA COMENZARÁ CUANDO SE ENCUENTRE UN OPONENTE').setStyle({ align: 'center', fontFamily: 'luckiestGuy', fontSize: 30, shadowStroke: true, shadowBlur: 1, strokeThickness: 4, stroke: '#000000' });
+            //this.consejoText.setText('LA PARTIDA COMENZARÁ CUANDO SE ENCUENTRE UN OPONENTE').setStyle({ align: 'center', fontFamily: 'luckiestGuy', fontSize: 30, shadowStroke: true, shadowBlur: 1, strokeThickness: 4, stroke: '#000000' });
         }.bind(this));
 
         this.anims.create({
@@ -80,12 +80,13 @@ export default class SceneEspera extends Phaser.Scene {
     update(time) {
         if (this.sys.game.mensaje.id == 0) {
             this.jugadores.jugYo = this.sys.game.mensaje.jugador;
-        } else if (this.sys.game.mensaje.id == 1) {
-            this.enemigoEncontrado = true;
-            if (this.jugadores.jugYo == 1) {
-                this.jugadores.jugEnemi = 2;
-            } else if (this.jugadores.jugYo == 2) {
-                this.jugadores.jugEnemi = 1;
+            this.enemigoEncontrado = this.sys.game.mensaje.enemigo;
+            if (this.enemigoEncontrado == true ) {
+                if (this.jugadores.jugYo == 1) {
+                    this.jugadores.jugEnemi = 2;
+                } else if (this.jugadores.jugYo == 2) {
+                    this.jugadores.jugEnemi = 1;
+                }
             }
         }
 

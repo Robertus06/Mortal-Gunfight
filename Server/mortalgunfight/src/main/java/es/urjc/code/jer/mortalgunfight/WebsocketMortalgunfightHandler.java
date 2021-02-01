@@ -63,17 +63,17 @@ public class WebsocketMortalgunfightHandler extends TextWebSocketHandler {
 
 				ObjectNode msg = mapper.createObjectNode();
 				msg.put("id", 0);
-				msg.put("jugador", enPartida.indexOf(jugador) + 1);
+				msg.put("enemigo", false);
 				
-				jugador.session.sendMessage(new TextMessage(msg.toString()));
 				
 				if (enPartida.indexOf(jugador) + 1 == 2) {
-					ObjectNode start = mapper.createObjectNode();
-					start.put("id", 1);
 					
-					for (WebsocketJugador i : enPartida) {
-						i.session.sendMessage(new TextMessage(start.toString()));
-					}
+					msg.put("enemigo", true);
+					
+				}
+				for (WebsocketJugador i : enPartida) {
+					msg.put("jugador", enPartida.indexOf(i) + 1);
+					i.session.sendMessage(new TextMessage(msg.toString()));
 				}
 			} else {
 				ObjectNode lleno = mapper.createObjectNode();
