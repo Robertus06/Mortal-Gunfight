@@ -46,6 +46,7 @@ public class WebsocketMortalgunfightHandler extends TextWebSocketHandler {
 				}
 				enPartida.remove(i);
 			}
+			enPartida.remove(jugador);
 		}
 		jugadores.remove(session.getId());
 	}
@@ -63,14 +64,13 @@ public class WebsocketMortalgunfightHandler extends TextWebSocketHandler {
 
 				ObjectNode msg = mapper.createObjectNode();
 				msg.put("id", 0);
-				msg.put("enemigo", false);
-				
 				
 				if (enPartida.indexOf(jugador) + 1 == 2) {
-					
 					msg.put("enemigo", true);
-					
+				} else {
+					msg.put("enemigo", false);					
 				}
+				
 				for (WebsocketJugador i : enPartida) {
 					msg.put("jugador", enPartida.indexOf(i) + 1);
 					i.session.sendMessage(new TextMessage(msg.toString()));
@@ -81,18 +81,33 @@ public class WebsocketMortalgunfightHandler extends TextWebSocketHandler {
 				
 				jugador.session.sendMessage(new TextMessage(lleno.toString()));
 			}
-		} else if (node.get("id").asInt() == -1) {
-			if (enPartida.contains(jugador)) {			
-				ObjectNode salir = mapper.createObjectNode();
-				salir.put("id", -1);
-				
-				for (WebsocketJugador i : enPartida) {
-					if (i.session.isOpen()) {
-						i.session.sendMessage(new TextMessage(salir.toString()));
+		} else if (node.get("id").asInt() == -4) {
+			if (enPartida.contains(jugador)) {
+				enPartida.remove(jugador);
+			}
+		} else if (node.get("id").asInt() == 100) {
+			ObjectNode random = mapper.createObjectNode();
+			random.put("id", 100);
+			
+			int max = node.get("max").asInt();
+			int randomNum = (int) Math.floor(Math.random()*max+1);
+			
+			random.put("random", randomNum);
+			
+			for (WebsocketJugador i : enPartida) {
+				if (i.session.isOpen()) {
+					i.session.sendMessage(new TextMessage(random.toString()));
+				}
+			}
+	    } else {
+			for (WebsocketJugador i : enPartida) {
+				if (i.session.isOpen()) {
+					if (i != jugador) {
+						i.session.sendMessage(new TextMessage(node.toString()));
 					}
-					enPartida.remove(i);
 				}
 			}
 		}
+	
 	}
 }

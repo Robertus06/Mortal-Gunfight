@@ -5,8 +5,6 @@ export default class ScenePersonajeOnline extends Phaser.Scene {
 
     create() {
         this.transicion = this.sys.game.globalsTransicion.transicion;
-
-        this.pulsado = false;
         
         if (!this.transicion.cancelarSeleccion) {
             this.cameras.main.fadeIn(250);
@@ -23,7 +21,6 @@ export default class ScenePersonajeOnline extends Phaser.Scene {
         this.sonidoAtras = this.sound.add('sonidoAtras');
 
         this.transicion = this.sys.game.globalsTransicion.transicion;
-        this.siguiente = false;
 
         this.personaje = this.sys.game.globalsPersonaje.personaje;
         this.personaje.jugadorUno = null;
@@ -46,6 +43,7 @@ export default class ScenePersonajeOnline extends Phaser.Scene {
         this.personajeJugEnemi = null;
         this.elegido = false;
         this.fraseTerminada = false;
+        this.fraseEnemigo = false;
 
         this.bDinosaurio = this.add.sprite(837, 649, 'botonesDinosaurio', 0).setInteractive();
         this.bZombie = this.add.sprite(690, 649, 'botonesZombie', 0).setInteractive();
@@ -209,8 +207,6 @@ export default class ScenePersonajeOnline extends Phaser.Scene {
         this.bSonido.on('pointerout', function () {
             this.bSonido.setScale(1);
         }.bind(this));
-
-        this.cursor_ESC = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
     }
 
     updateAudio() {
@@ -224,8 +220,11 @@ export default class ScenePersonajeOnline extends Phaser.Scene {
     }
 
     update(time) {
-        // Aqui hacemos la llamada a saber que personaje ha elegido nuestro rival, podemos hacerlo que API REST
-        // lo almacenamos en this.personajeJugEnemi y lo mostramos en el recuadro que corresponda
+        if (this.sys.game.mensaje.id == 1) {
+            this.personajeJugEnemi = this.sys.game.mensaje.personaje;
+            this.fraseEnemigo = this.sys.game.mensaje.ready;
+        }
+        
         if (this.personajeJugEnemi != null && !this.entrado) {
             if (this.personajeJugEnemi == 'd') {
                 if (this.jugadores.jugEnemi == 1) {
@@ -1326,9 +1325,7 @@ export default class ScenePersonajeOnline extends Phaser.Scene {
             }.bind(this));
         }.bind(this));
 
-        if (this.cursor_ESC.isDown && !this.pulsado) {
-            this.resplandorUno.destroy();
-            this.resplandorDos.destroy();
+        if (this.sys.game.mensaje.id == -1) {
             this.bNinja.destroy();
             this.bNinja = this.add.sprite(545, 649, 'botonesNinja', 0);
             this.bZombie.destroy();
@@ -1339,13 +1336,14 @@ export default class ScenePersonajeOnline extends Phaser.Scene {
             this.bDinosaurio = this.add.sprite(837, 649, 'botonesDinosaurio', 0);
             this.bAleatorio.destroy();
             this.bAleatorio = this.add.image(100, 649, 'botonAleatorio');
-            this.pulsado = true;
             this.sonidoAtras.play();
-            this.cameras.main.fadeOut(250);
-            //avisar al enemigo de ESC y pulsarle ESC también a él.
+            this.transicion.cancelarSeleccion = true;
+            this.scene.start("SceneMenu");
+        } else {
+            this.sys.game.connection.send(JSON.stringify({id: 1, nombre: this.sys.game.globalsConsulta.consulta.nombre, personaje: this.personajeJugYo, ready: this.fraseTerminada}));
         }
 
-        if (this.personajeJugYo != null && this.personajeJugEnemi != null && !this.elegido && this.fraseTerminada) {
+        if (this.personajeJugYo != null && this.personajeJugEnemi != null && !this.elegido && this.fraseTerminada && this.fraseEnemigo) {
             if (this.jugadores.jugYo == 1) {
                 this.personaje.jugadorUno = this.personajeJugYo;
                 this.personaje.jugadorDos = this.personajeJugEnemi;
@@ -1355,25 +1353,17 @@ export default class ScenePersonajeOnline extends Phaser.Scene {
             }
 
             this.tiempoFinal = true;
-
-            this.pulsado = true;
             this.cd = time + 2000;
             this.elegido = true;
         }
         
         if ( this.cd < time && this.tiempoFinal) {
-            this.siguiente = true;
             this.cameras.main.fadeOut(250);
             this.tiempoFinal = false;
         }
 
         this.cameras.main.once('camerafadeoutcomplete', function () {
-            if (this.siguiente) {
-                this.scene.start("SceneMapaOnline");
-            } else if (!this.siguiente) {
-                this.scene.start("SceneMenu");
-                this.transicion.cancelarSeleccion = false;
-            }
+            this.scene.start("SceneMapaOnline");
         }.bind(this));
     }
 }

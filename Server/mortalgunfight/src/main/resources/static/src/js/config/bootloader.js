@@ -65,6 +65,9 @@ export default class Bootloader extends Phaser.Scene {
         this.load.image('controles', 'resources/img/controles.png');
         this.load.image('controlesLinea', 'resources/img/controlesLinea.png');
         this.load.spritesheet('buscando', 'resources/img/buscandoAnimado.png', { frameWidth: 114, frameHeight: 35 });
+        this.load.image('buscandoText', 'resources/img/buscandoText.png');
+        this.load.image('encontradoText', 'resources/img/encontradoText.png');
+        this.load.image('enCurso', 'resources/img/enCurso.png');
         this.load.audio('musica', 'resources/music/backgroundMusic.mp3');
         this.load.image('personajes', 'resources/img/personajes.png');
         this.load.image('dinosaurio', 'resources/img/dinosaurio.png');
