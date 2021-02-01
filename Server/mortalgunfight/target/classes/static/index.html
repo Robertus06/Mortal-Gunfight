@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Mortal Gunfight</title>
+    <!-- Para coger fuentes de letra en CSS: -->
+    <!-- https://fonts.google.com/?selection.family=Do+Hyeon -->
+    <meta charset="UTF-8"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Londrina+Solid:wght@300&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css" href="/src/css/estilos.css" media="screen"/>
+
+    <script src="/src/js/phaser.js"></script>
+    <script src="/src/js/jquery-3.5.1.js"></script>
+
+    <link rel="app icon" href="/resources/img/icon.ico">
+  </head>
+  <body>
+
+    <div class="fuentes">.</div>
+    <main>
+
+      <div id="properties2"></div>
+
+      <div id="game">
+        <div class="cabecera">
+          <img alt="Logo" class="logo" src="/resources/img/icono.png">
+          <div class="descripcion">
+            <div>
+              <h1>Mortal GunFight</h1>
+            </div>
+            <span class="creadores">Diseño y Desarrollo de Videojuegos (URJC)</span>
+          </div>
+        </div>
+        
+        <div id="juego"></div>
+    
+        <div id="conexion">
+          <br><br><br><br><br><br><br>
+          <h4>SERVIDOR</h4>
+          <h4>DESCONECTADO</h4>
+          <br><br><br>
+          <h4 style="font-size: 30px;">CLICA EN LA PANTALLA PARA CONTINUAR</h4>
+          <h4 style="font-size: 30px;">JUGANDO DESCONECTADO</h4>
+        </div>
+    
+        <div class="cabecera2">
+          <img alt="Tecla ESC" class="tecla" src="/resources/img/ESC.png">
+          <div class="descripcion">
+            <div>
+              <h1>Recuerda:</h1>
+            </div>
+            <span class="creadores2">Con la tecla '<strong>ESC</strong>' podrás volver atrás en los menús, y pausar el juego una vez en partida.</span>
+          </div>
+        </div>
+      </div>
+
+      <div id="properties">
+        <h2>Jugadores online <span id="contador">(0)</span></h2>
+        <div id="online">
+          <table id="tablaJugadores">
+
+          </table>
+        </div>
+        <br>
+        <h2>Chat global</h2>
+        <div id="online2">
+          <table id="tablaChat">
+
+          </table>
+        </div>
+        <input type="text" placeholder="Escribe un mensaje" id="chatbar">
+        <input type="submit" value=">" id="enviar" name="botonEnviar">
+      </div>
+
+    </main>
+
+    <h3 id="estado" style="margin-left: 300px; visibility: hidden;">SERVIDOR DESCONECTADO</h3>
+
+    <script>
+      $(document).ready(function(){
+        $('body').on('click', '#conexion', function(){
+          var pantalla = document.getElementById("conexion");
+          pantalla.style.visibility = "hidden";
+
+          var estado = document.getElementById("estado");
+          estado.innerHTML = "SERVIDOR DESCONECTADO";
+          estado.style.visibility = "visible";
+        })
+      });
+    </script>
+    
+    <script src="/src/js/config/init.js" type="module"></script>
+    
+  </body>
+</html>
