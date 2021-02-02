@@ -36,7 +36,7 @@ export default class SceneMapaOnline extends Phaser.Scene {
         this.entrado = false;
         this.tiempoFinal = false;
         this.cd = 0;
-        this.seleccionar1o2 = null;
+        this.seleccionar1o2 = Phaser.Math.Between(1,2);
 
         this.jugadores = this.sys.game.globalsJugadores.jugadores;
 
@@ -278,6 +278,9 @@ export default class SceneMapaOnline extends Phaser.Scene {
     update(time) {
         if (this.sys.game.mensaje.id == 2) {
             this.mapaJugEnemi = this.sys.game.mensaje.mapa;
+            if(this.jugadores.jugYo == 2){
+                this.seleccionar1o2 = this.sys.game.mensaje.random;
+            }
         }
 
         if (this.mapaJugEnemi != null && !this.entrado) {
@@ -291,6 +294,7 @@ export default class SceneMapaOnline extends Phaser.Scene {
                 this.seleccionadoMapa = this.add.image(178, 200, 'volcanSeleccion');
                 this.seleccionadoMapa.setScale(0.132, 0.131);
             }
+            
             this.entrado = true;
         }
 
@@ -308,28 +312,19 @@ export default class SceneMapaOnline extends Phaser.Scene {
             this.transicion.cancelarSeleccion = true;
             this.scene.start("SceneMenu");
         } else {
+            if(this.jugadores.jugYo == 1)
+            this.sys.game.connection.send(JSON.stringify({id: 2, nombre: this.sys.game.globalsConsulta.consulta.nombre, mapa: this.mapaJugYo, random: this.seleccionar1o2}));
+            else if(this.jugadores.jugYo == 2)
             this.sys.game.connection.send(JSON.stringify({id: 2, nombre: this.sys.game.globalsConsulta.consulta.nombre, mapa: this.mapaJugYo}));
         }
 
-        if(this.mapaJugYo != null && this.mapaJugEnemi != null && !this.enviadoWS) {
-            this.sys.game.connection.send(JSON.stringify({id: 2, nombre: this.sys.game.globalsConsulta.consulta.nombre, mapa: this.mapaJugYo}));
-            this.enviadoWS = true;
-        }
-
-        if (this.mapaJugYo != null && this.mapaJugEnemi != null && !this.elegido && this.enviadoWS) {
+        if (this.mapaJugYo != null && this.mapaJugEnemi != null && !this.elegido) {
             if (this.mapaJugYo == this.mapaJugEnemi) {
                 this.mapa.escenario = this.mapaJugYo;
                 this.tiempoFinal = true;
-                this.pulsado = true;
                 this.cd = time + 2000;
                 this.elegido = true;
-            } else if (this.jugadores.jugYo == 1 && this.sys.game.mensaje.id != 100) {
-                this.sys.game.connection.send(JSON.stringify({id: 100, nombre: this.sys.game.globalsConsulta.consulta.nombre, max: 2}));
-            }
-        }
-        if (this.sys.game.mensaje.id == 100) {
-            this.seleccionar1o2 = this.sys.game.mensaje.random;
-            if (this.seleccionar1o2 != null && !this.elegido) {
+            } else{
                 if (this.seleccionar1o2 == 1) {
                     if (this.jugadores.jugYo == 1) {
                         this.mapa.escenario = this.mapaJugYo;
@@ -349,7 +344,7 @@ export default class SceneMapaOnline extends Phaser.Scene {
                 this.elegido = true;
             }
         }
-        
+            
         if ( this.cd < time && this.tiempoFinal) {
             this.cameras.main.fadeOut(250);
             this.tiempoFinal = false;
