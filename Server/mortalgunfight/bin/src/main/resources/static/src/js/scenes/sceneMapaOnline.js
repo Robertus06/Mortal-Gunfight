@@ -6,15 +6,14 @@ export default class SceneMapaOnline extends Phaser.Scene {
     create() {
         this.cameras.main.fadeIn(250);
 
-        this.pulsado = false;
-
         this.fondo = this.add.image(640, 360, 'mapa');
 
         this.sonidoBoton = this.sound.add('sonidoBoton');
         this.sonidoAtras = this.sound.add('sonidoAtras');
 
         this.transicion = this.sys.game.globalsTransicion.transicion;
-        this.siguiente = false;
+
+        this.abandonado = this.sys.game.globalsAbandonado.abandonado;
 
         this.mapa = this.sys.game.globalsMapa.mapa;
         this.mapa.escenario = null;
@@ -37,10 +36,15 @@ export default class SceneMapaOnline extends Phaser.Scene {
         this.entrado = false;
         this.tiempoFinal = false;
         this.cd = 0;
+        this.seleccionar1o2 = null;
+
+        this.jugadores = this.sys.game.globalsJugadores.jugadores;
 
         this.mapaJugYo = null;
         this.mapaJugEnemi = null;
         this.elegido = false;
+        this.enviado = false;
+        this.enviadoWS = false;
 
         this.bTemplo.on('pointerover', function () {
             this.sonidoBoton.play();
@@ -75,7 +79,6 @@ export default class SceneMapaOnline extends Phaser.Scene {
             this.bVolcan.destroy();
             this.bVolcan = this.add.image(425, 648, 'botonVolcan');
             this.mapaJugYo = 't';
-            //decir cual he escogido
         }.bind(this));
 
         this.bCiudad.on('pointerover', function () {
@@ -111,7 +114,6 @@ export default class SceneMapaOnline extends Phaser.Scene {
             this.bVolcan.destroy();
             this.bVolcan = this.add.image(425, 648, 'botonVolcan');
             this.mapaJugYo = 'c';
-            //decir cual he escogido
         }.bind(this));
 
         this.bVolcan.on('pointerover', function () {
@@ -147,7 +149,6 @@ export default class SceneMapaOnline extends Phaser.Scene {
             this.bVolcan = this.add.image(425, 648, 'botonVolcan');
             this.bVolcan.setDepth(2);
             this.mapaJugYo = 'v';
-            //decir cual he escogido
         }.bind(this));
 
         this.bAleatorio.on('pointerover', function () {
@@ -196,7 +197,6 @@ export default class SceneMapaOnline extends Phaser.Scene {
                 this.bVolcan = this.add.image(425, 648, 'botonVolcan');
                 this.bVolcan.setDepth(2);
                 this.mapaJugYo = 'v';
-                //decir cual he escogido
             } else if (this.seleccionar == 2) {
                 this.resplandorMapa.destroy();
                 this.resplandorMapa = this.add.image(635, 648, 'botonMapa');
@@ -219,7 +219,6 @@ export default class SceneMapaOnline extends Phaser.Scene {
                 this.bVolcan.destroy();
                 this.bVolcan = this.add.image(425, 648, 'botonVolcan');
                 this.mapaJugYo = 'c';
-                //decir cual he escogido
             } else if (this.seleccionar == 3) {
                 this.resplandorMapa.destroy();
                 this.resplandorMapa = this.add.image(850, 648, 'botonMapa');
@@ -242,7 +241,6 @@ export default class SceneMapaOnline extends Phaser.Scene {
                 this.bVolcan.destroy();
                 this.bVolcan = this.add.image(425, 648, 'botonVolcan');
                 this.mapaJugYo = 't';
-                //decir cual he escogido
             }
         }.bind(this));
 
@@ -265,8 +263,6 @@ export default class SceneMapaOnline extends Phaser.Scene {
         this.bSonido.on('pointerout', function () {
             this.bSonido.setScale(1);
         }.bind(this));
-
-        this.cursor_ESC = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
     }
 
     updateAudio() {
@@ -280,8 +276,10 @@ export default class SceneMapaOnline extends Phaser.Scene {
     }
 
     update(time) {
-        // Aqui hacemos la llamada a saber que mapa ha elegido nuestro rival, podemos hacerlo que API REST
-        // lo almacenamos en this.mapaJugEnemi y lo mostramos en el recuadro pequeño
+        if (this.sys.game.mensaje.id == 2) {
+            this.mapaJugEnemi = this.sys.game.mensaje.mapa;
+        }
+
         if (this.mapaJugEnemi != null && !this.entrado) {
             if (this.mapaJugEnemi == 't') {
                 this.seleccionadoMapa = this.add.image(178, 200, 'temploSeleccion');
@@ -296,8 +294,7 @@ export default class SceneMapaOnline extends Phaser.Scene {
             this.entrado = true;
         }
 
-        if (this.cursor_ESC.isDown && !this.pulsado) {
-            this.resplandorMapa.destroy();
+        if (this.sys.game.mensaje.id == -1) {
             this.bAleatorio.destroy();
             this.bAleatorio = this.add.image(100, 648, 'botonAleatorio');
             this.bTemplo.destroy();
@@ -307,46 +304,59 @@ export default class SceneMapaOnline extends Phaser.Scene {
             this.bVolcan.destroy();
             this.bVolcan = this.add.image(425, 648, 'botonVolcan');
             this.sonidoAtras.play();
-            this.pulsado = true;
-            this.cameras.main.fadeOut(250);
-            this.siguiente = false;
-            //avisar al enemigo de ESC y pulsarle ESC también a él.
+            this.abandonado.haAbandonado = true;
+            this.transicion.cancelarSeleccion = true;
+            this.scene.start("SceneMenu");
+        } else {
+            this.sys.game.connection.send(JSON.stringify({id: 2, nombre: this.sys.game.globalsConsulta.consulta.nombre, mapa: this.mapaJugYo}));
         }
 
-        if (this.mapaJugYo != null && this.mapaJugEnemi != null && !this.elegido) {
+        if(this.mapaJugYo != null && this.mapaJugEnemi != null && !this.enviadoWS) {
+            this.sys.game.connection.send(JSON.stringify({id: 2, nombre: this.sys.game.globalsConsulta.consulta.nombre, mapa: this.mapaJugYo}));
+            this.enviadoWS = true;
+        }
+
+        if (this.mapaJugYo != null && this.mapaJugEnemi != null && !this.elegido && this.enviadoWS) {
             if (this.mapaJugYo == this.mapaJugEnemi) {
                 this.mapa.escenario = this.mapaJugYo;
                 this.tiempoFinal = true;
-            } else {
-                //recibir de WS un numero aleatorio entre 1 y 2 y almacenarlo en this.seleccionar1o2;
-                this.seleccionar1o2 = 1;
-
+                this.pulsado = true;
+                this.cd = time + 2000;
+                this.elegido = true;
+            } else if (this.jugadores.jugYo == 1 && this.sys.game.mensaje.id != 100) {
+                this.sys.game.connection.send(JSON.stringify({id: 100, nombre: this.sys.game.globalsConsulta.consulta.nombre, max: 2}));
+            }
+        }
+        if (this.sys.game.mensaje.id == 100) {
+            this.seleccionar1o2 = this.sys.game.mensaje.random;
+            if (this.seleccionar1o2 != null && !this.elegido) {
                 if (this.seleccionar1o2 == 1) {
-                    this.mapa.escenario = this.mapaJugYo;
+                    if (this.jugadores.jugYo == 1) {
+                        this.mapa.escenario = this.mapaJugYo;
+                    } else {
+                        this.mapa.escenario = this.mapaJugEnemi;
+                    }
                     this.tiempoFinal = true;
                 } else if (this.seleccionar1o2 == 2) {
-                    this.mapa.escenario = this.mapaJugEnemi;
+                    if (this.jugadores.jugYo == 1) {
+                        this.mapa.escenario = this.mapaJugEnemi;
+                    } else {
+                        this.mapa.escenario = this.mapaJugYo;
+                    }
                     this.tiempoFinal = true;
                 }
+                this.cd = time + 2000;
+                this.elegido = true;
             }
-            this.pulsado = true;
-            this.cd = time + 2000;
-            this.elegido = true;
         }
         
         if ( this.cd < time && this.tiempoFinal) {
-            this.siguiente = true;
             this.cameras.main.fadeOut(250);
             this.tiempoFinal = false;
         }
 
         this.cameras.main.once('camerafadeoutcomplete', function () {
-            if (this.siguiente) {
-                this.scene.start("ScenePreparatoriaOnline");
-            } else if (!this.siguiente) {
-                this.scene.start("ScenePersonajeOnline");
-                this.transicion.cancelarSeleccion = false;
-            }
+            this.scene.start("ScenePreparatoriaOnline");
         }.bind(this));
     }
 }

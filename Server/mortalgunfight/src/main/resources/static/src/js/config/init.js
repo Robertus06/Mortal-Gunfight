@@ -17,7 +17,6 @@ import ScenePreparatoriaOnline from '/src/js/scenes/scenePreparatoriaOnline.js';
 import SceneJuego from '/src/js/scenes/sceneJuego.js';
 import SceneJuegoOnline from '/src/js/scenes/sceneJuegoOnline.js';
 import ScenePausa from '/src/js/scenes/scenePausa.js';
-import ScenePausaOnline from '/src/js/scenes/scenePausaOnline.js';
 import SceneFinal from '/src/js/scenes/sceneFinal.js';
 import SceneFinalOnline from '/src/js/scenes/sceneFinalOnline.js';
 
@@ -94,7 +93,6 @@ class Game extends Phaser.Game {
         this.scene.add('SceneJuego', SceneJuego);
         this.scene.add('SceneJuegoOnline', SceneJuegoOnline);
         this.scene.add('ScenePausa', ScenePausa);
-        this.scene.add('ScenePausaOnline', ScenePausaOnline);
         this.scene.add('SceneFinal', SceneFinal);
         this.scene.add('SceneFinalOnline', SceneFinalOnline);
 

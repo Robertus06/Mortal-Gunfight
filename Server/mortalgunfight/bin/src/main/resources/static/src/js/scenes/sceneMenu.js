@@ -16,6 +16,12 @@ export default class SceneMenu extends Phaser.Scene {
 
         this.transicion = this.sys.game.globalsTransicion.transicion;
 
+        this.abandonado = this.sys.game.globalsAbandonado.abandonado;
+
+        if (this.abandonado.haAbandonado == true) {
+            this.abandonadoText = this.add.image(640, 360, 'abandono');
+        }
+
         // Para que la música no pare si clicamos fuera de la pantalla de google
         this.sound.pauseOnBlur = false;
 

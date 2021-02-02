@@ -185,6 +185,8 @@ export default class SceneJuegoOnline extends Phaser.Scene {
         this.girar = false;
         this.conArma1 = false;
         this.conArma2 = false;
+        this.transicion = this.sys.game.globalsTransicion.transicion;
+        this.abandonado = this.sys.game.globalsAbandonado.abandonado;
 
         this.victoria = null;
 
@@ -198,8 +200,22 @@ export default class SceneJuegoOnline extends Phaser.Scene {
         this.tiempo = this.sys.game.globalsTiempo.tiempo;
         this.jugadores = this.sys.game.globalsJugadores.jugadores;
 
-        this.cambiarArmaEnemi = false;
-        this.dispararEnemi = false;
+        this.cambiar1 = false;
+        this.disparar1 = false;
+        this.cambiar2 = false;
+        this.disparar2 = false;
+        this.x1 = 0;
+        this.x2 = 0;
+        this.y1 = 0;
+        this.y2 = 0;
+        this.armasOnline = null;
+        this.x = null;
+        this.t1 = null;
+        this.t2 = null;
+        this.municion1 = 0;
+        this.municion2 = 0;
+        this.muerto1 = false;
+        this.muerto2 = false;
 
         this.sonidoPistola1 = this.sound.add('sonidoPistola1');
         this.sonidoPistola2 = this.sound.add('sonidoPistola2');
@@ -556,8 +572,47 @@ export default class SceneJuegoOnline extends Phaser.Scene {
 
     update(time) {
         
+        
+        if(this.sys.game.mensaje.id == 4){
+            if (this.jugadores.jugYo == 1){
+                this.jugador2.x = this.sys.game.mensaje.posx;
+                this.jugador2.y = this.sys.game.mensaje.posy;
+                this.x2 = this.sys.game.mensaje.x;
+                this.y2 = this.sys.game.mensaje.y;
+                this.disparar2 = this.sys.game.mensaje.disparar;
+                this.cambiar2 = this.sys.game.mensaje.cambiar; 
+                if(this.arma2)
+                this.arma2.municion = this.sys.game.mensaje.municion;
+            }else if(this.jugadores.jugYo == 2){
+                this.jugador1.x = this.sys.game.mensaje.posx;
+                this.jugador1.y = this.sys.game.mensaje.posy;
+                this.x1 = this.sys.game.mensaje.x;
+                this.y1 = this.sys.game.mensaje.y;
+                this.disparar1 = this.sys.game.mensaje.disparar;
+                this.cambiar1 = this.sys.game.mensaje.cambiar;
+                this.x =  this.sys.game.mensaje.xarma;
+                this.t1 = this.sys.game.mensaje.t1;
+                this.t2 = this.sys.game.mensaje.t2;
+                this.salud1 = this.sys.game.mensaje.vida1;
+                this.salud2 = this.sys.game.mensaje.vida2;
+                this.muerto1 = this.sys.game.mensaje.muerto1;
+                this.muerto2 = this.sys.game.mensaje.muerto2;
+                if(this.arma1)
+                this.arma1.municion = this.sys.game.mensaje.municion;
+            }
+        }
+        if (this.jugadores.jugYo == 1){
+            this.x1 = this.input.mousePointer.x;
+            this.y1 = this.input.mousePointer.y;
+        }else if (this.jugadores.jugYo == 2){
+            this.x2 = this.input.mousePointer.x;
+            this.y2 = this.input.mousePointer.y;
+        }
+
+        
         if (!this.cargado){            
             this.currentTime = time + this.tiempo.tiempoJuego;
+            this.cdGenerarArma = time + 3000;
             this.cargado = true;
         }
 
@@ -571,12 +626,16 @@ export default class SceneJuegoOnline extends Phaser.Scene {
         }
 
         /*******************************************************************************************************************************/
-        if(this.cdGenerarArma < time)
+        if(this.cdGenerarArma < time && this.jugadores.jugYo == 1)
         {
+            this.x = Phaser.Math.Between(80,480);
+            this.t1 = Phaser.Math.Between(0,5);
+            this.t2 = Phaser.Math.Between(0,5);
             this.cdGenerarArma = time + 20000;
-            this.generarArmas();
         }
-        
+        if(this.x != null && this.t1 != null && this.t2 != null){
+            this.generarArmas(this.x,this.t1,this.t2);
+        }
         if (this.minutos <= 0 && this.segundos <= 0 && !this.entrado) {
             this.timeText.setText('00:00');
             
@@ -619,15 +678,17 @@ export default class SceneJuegoOnline extends Phaser.Scene {
             this.acabar = true;
         }
         
-        if(this.salud1 <= 0){
+        if(this.salud1 <= 0 || this.muerto1){
             this.puntos2 ++;
             this.salud1 = 100;
             this.jugador1.body.reset(Phaser.Math.Between(80,1200),80);
+            this.muerto1 = true;
         }
-        if(this.salud2 <= 0){
+        if(this.salud2 <= 0 || this.muerto2){
             this.puntos1 ++;
             this.salud2 = 100;
             this.jugador2.body.reset(Phaser.Math.Between(80,1200),80);
+            this.muerto2 = true;
         }
 
         if(!this.final){
@@ -669,8 +730,8 @@ export default class SceneJuegoOnline extends Phaser.Scene {
         /*********************************************************************************************************************************************/
 
         if(this.girar){
-            this.brazo1.setRotation(Phaser.Math.Angle.Between(this.input.mousePointer.x,this.input.mousePointer.y,this.jugador1.x,this.jugador1.y));
-            this.brazo2.setRotation(Phaser.Math.Angle.Between(this.jugador2.x,this.jugador2.y,this.input.mousePointer.x,this.input.mousePointer.y));
+            this.brazo1.setRotation(Phaser.Math.Angle.Between(this.x1,this.y1,this.jugador1.x,this.jugador1.y));
+            this.brazo2.setRotation(Phaser.Math.Angle.Between(this.jugador2.x,this.jugador2.y,this.x2,this.y2));
             if(this.jugador1.x < this.jugador2.x){
                 this.jugador1.setFlipX(true).setOrigin(0.28, 0.53);
                 this.jugador2.setFlipX(false).setOrigin(0.72, 0.53);
@@ -683,8 +744,8 @@ export default class SceneJuegoOnline extends Phaser.Scene {
             
         }
         else if (!this.girar){
-            this.brazo1.setRotation(Phaser.Math.Angle.Between(this.jugador1.x,this.jugador1.y,this.input.mousePointer.x,this.input.mousePointer.y));
-            this.brazo2.setRotation(Phaser.Math.Angle.Between(this.input.mousePointer.x,this.input.mousePointer.y,this.jugador2.x,this.jugador2.y));            
+            this.brazo1.setRotation(Phaser.Math.Angle.Between(this.jugador1.x,this.jugador1.y,this.x1,this.y1));
+            this.brazo2.setRotation(Phaser.Math.Angle.Between(this.x2,this.y2,this.jugador2.x,this.jugador2.y));            
             if(this.jugador1.x > this.jugador2.x){
                 this.jugador1.setFlipX(false).setOrigin(0.72, 0.53);
                 this.jugador2.setFlipX(true).setOrigin(0.28, 0.53);
@@ -731,24 +792,49 @@ export default class SceneJuegoOnline extends Phaser.Scene {
 
         /*Movimiento*/
 
-        if (this.jugadores.jugEnemi == 1) {
-            if (this.dispararEnemi)
-            {
-                if (this.arma1 != null){
-                    this.arma1.disparar(this,time);
-                }
-                this.dispararEnemi = false;
+
+        
+        if(this.input.mousePointer.isDown){
+            if(this.jugadores.jugYo == 1){
+                if(this.physics.overlap(this.jugador1, this.armas))
+                this.disparar1 = true;
+                
+            }else if (this.jugadores.jugYo == 2){
+                if(this.physics.overlap(this.jugador2, this.armas))
+                this.disparar2 = true;
             }
-        } else if (this.jugadores.jugEnemi == 2) {
-            if (this.dispararEnemi)
-            {
-                if (this.arma2 != null) {
-                    this.arma2.disparar(this,time);
-                }
-                this.dispararEnemi = false;
+        }
+        if(this.cursors_jugador.interactuar.isDown){
+            if(this.jugadores.jugYo == 1){
+                if(this.physics.overlap(this.jugador1, this.armas))
+                this.cambiar1 = true;
+            }else if (this.jugadores.jugYo == 2){
+                if(this.physics.overlap(this.jugador2, this.armas))
+                this.cambiar2 = true;
             }
         }
 
+        if(this.disparar1){
+            if (this.arma1 != null){
+                this.arma1.disparar(this,time);
+            }
+        }
+        if(this.disparar2){
+            if (this.arma2 != null){
+                this.arma2.disparar(this,time);
+            }
+        }
+
+        if(this.jugadores.jugYo == 1){
+            if(this.arma1)
+           this.municion1 = this.arma1.municion;
+            
+        }else if (this.jugadores.jugYo == 2){
+            if(this.arma2)
+            this.municion2 = this.arma2.municion;
+        }
+        
+        
         if (this.cursors_jugador.izquierda.isDown)
         {
             if (this.jugadores.jugYo == 1) {
@@ -786,114 +872,114 @@ export default class SceneJuegoOnline extends Phaser.Scene {
                 this.jugador2.body.setVelocityY(-620);
             }
         }
+        /** Construir mensaje */
         
-        if (this.jugadores.jugYo == 1) {
-            if(this.input.mousePointer.isDown) {
-                if (this.arma1 != null){
-                    this.arma1.disparar(this,time);
-                }
-            }
-        } else if (this.jugadores.jugYo == 2) {
-            if(this.input.mousePointer.isDown) {
-                if (this.arma2 != null) {
-                    this.arma2.disparar(this,time);
-                }
-            }
+        
+        if(this.jugadores.jugYo == 1){
+            
+            this.mensaje = {
+                id: 4,
+                nombre: this.sys.game.globalsConsulta.consulta.nombre,
+                posx: this.jugador1.x,
+                posy: this.jugador1.y,
+                xarma: this.x, 
+                t1: this.t1,
+                t2: this.t2,
+                x: this.x1,
+                y: this.y1,
+                municion: this.municion1,
+                disparar: this.disparar1,
+                cambiar: this.cambiar1,
+                vida1: this.salud1,
+                vida2: this.salud2,
+                muerto1: this.muerto1,
+                muerto2: this.muerto2
+            };
+        }else if(this.jugadores.jugYo == 2){
+            
+            this.mensaje = {
+                id: 4,
+                nombre: this.sys.game.globalsConsulta.consulta.nombre,
+                posx: this.jugador2.x,
+                posy: this.jugador2.y,
+                x: this.x2,
+                y: this.y2,
+                municion: this.municion2,
+                disparar: this.disparar2,
+                cambiar: this.cambiar2
+            };
         }
+        
+        if (this.sys.game.mensaje.id == -1){
+            this.abandonado.haAbandonado = true;
+            this.transicion.cancelarSeleccion = true;
+            this.scene.start("SceneMenu");
+        }else if(this.sys.game.connection.readyState == 1){
+            this.sys.game.connection.send(JSON.stringify(this.mensaje));
+        }
+        
+        
+        
+        this.disparar1 = false;
+        this.disparar2 = false;
+        this.x = null;
+        this.t1 = null;
+        this.t2 = null;
+        this.muerto1 = false;
+        this.muerto2 = false;
+
+
+        
     }
 
     cambiarArma1(jugador1,arma) {
-        if (this.jugadores.jugYo == 1) {
-            if(this.cursors_jugador.interactuar.isDown){
-                if(this.arma1 != null)
-                {
-                    /*
-                    this.arma1.setActive(false);
-                    this.arma1.setVisible(false);
-                    this.arma1.body.stop();
-                    */
-                   this.arma1.destroy();
-                }
-                
-                this.arma1 = this.crearArma(arma.texture,1);
-                this.add.existing(this.arma1);
-                arma.destroy();
-                //arma.disableBody(true,false);
-                //this.arma1 = arma;
-                this.arma1.setPosition(jugador1.x,jugador1.y)
-                this.arma1.setRotation(this.brazo1.rotation);
-                this.arma1.setDepth(2);
+        
+        if(this.cambiar1){
+            if(this.arma1 != null)
+            {
+                /*
+                this.arma1.setActive(false);
+                this.arma1.setVisible(false);
+                this.arma1.body.stop();
+                */
+                this.arma1.destroy();
             }
-        } else if (this.jugadores.jugYo == 2) {
-            if (this.cambiarArmaEnemi) {
-                if(this.arma1 != null)
-                {
-                    /*
-                    this.arma1.setActive(false);
-                    this.arma1.setVisible(false);
-                    this.arma1.body.stop();
-                    */
-                   this.arma1.destroy();
-                }
-                
-                this.arma1 = this.crearArma(arma.texture,1);
-                this.add.existing(this.arma1);                
-                arma.destroy();
-                //arma.disableBody(true,false);
-                //this.arma1 = arma;
-                this.arma1.setPosition(jugador1.x,jugador1.y)
-                this.arma1.setRotation(this.brazo1.rotation);
-                this.arma1.setDepth(2);
-
-                this.cambiarArmaEnemi = false;
-            }
+            
+            this.arma1 = this.crearArma(arma.texture,1);
+            this.add.existing(this.arma1);
+            arma.destroy();
+            //arma.disableBody(true,false);
+            //this.arma1 = arma;
+            this.arma1.setPosition(jugador1.x,jugador1.y)
+            this.arma1.setRotation(this.brazo1.rotation);
+            this.arma1.setDepth(2);
         }
+        this.cambiar1 = false;
+         
     }
 
-    cambiarArma2(jugador2,arma) {
-        if (this.jugadores.jugYo == 2) {
-            if(this.cursors_jugador.interactuar.isDown){
-                if(this.arma2 != null)
-                {
-                    /*
-                    this.arma2.setActive(false);                
-                    this.arma2.setVisible(false);
-                    this.arma2.body.stop();
-                    */
-                   this.arma2.destroy();
-                }
-                this.arma2 = this.crearArma(arma.texture,2);
-                this.add.existing(this.arma2);
-                arma.destroy();
-                //arma.disableBody(true,false);
-                //this.arma2 = arma;
-                this.arma2.setPosition(jugador2.x,jugador2.y)
-                this.arma2.setRotation(this.brazo2.rotation);
-                this.arma2.setDepth(2);
+    cambiarArma2(jugador2,arma) {  
+        if(this.cambiar2){
+            if(this.arma2 != null)
+            {
+                /*
+                this.arma2.setActive(false);                
+                this.arma2.setVisible(false);
+                this.arma2.body.stop();
+                */
+                this.arma2.destroy();
             }
-        } else if (this.jugadores.jugYo == 1) {
-            if (this.cambiarArmaEnemi) {
-                if(this.arma2 != null)
-                {
-                    /*
-                    this.arma2.setActive(false);                
-                    this.arma2.setVisible(false);
-                    this.arma2.body.stop();
-                    */
-                    this.arma2.destroy();
-                }
-                this.arma2 = this.crearArma(arma.texture,2);
-                this.add.existing(this.arma2);
-                arma.destroy();
-                //arma.disableBody(true,false);
-                //this.arma2 = arma;
-                this.arma2.setPosition(jugador2.x,jugador2.y)
-                this.arma2.setRotation(this.brazo2.rotation);
-                this.arma2.setDepth(2);
-
-                this.cambiarArmaEnemi = false;
-            }
+            this.arma2 = this.crearArma(arma.texture,2);
+            this.add.existing(this.arma2);
+            arma.destroy();
+            //arma.disableBody(true,false);
+            //this.arma2 = arma;
+            this.arma2.setPosition(jugador2.x,jugador2.y)
+            this.arma2.setRotation(this.brazo2.rotation);
+            this.arma2.setDepth(2);
         }
+        this.cambiar2 = false;
+        
     }
 
     chocarSuelo1(bala,plataforma){
@@ -916,21 +1002,26 @@ export default class SceneJuegoOnline extends Phaser.Scene {
     }
 
     golpeJugador2(jugador2, bala){
-        if(bala.active){
-            if(bala.texture.key == "cohete") this.sonidoCohete1.play();
-            this.salud2 -= bala.daño;
-            bala.kill();
+        if(this.jugadores.jugYo == 1){
+            
+            if(bala.active){
+                if(bala.texture.key == "cohete") this.sonidoCohete1.play();
+                this.salud2 -= bala.daño;
+                bala.kill();
+            }
         }
     }
     golpeJugador1(jugador1, bala){
-        if(bala.active){
-            if(bala.texture.key == "cohete") this.sonidoCohete2.play();
-            this.salud1 -= bala.daño;
-            bala.kill();
+        if(this.jugadores.jugYo == 1){
+            if(bala.active){
+                if(bala.texture.key == "cohete") this.sonidoCohete2.play();
+                this.salud1 -= bala.daño;
+                bala.kill();
+            }
         }
     }
 
-    generarArmas(){
+    generarArmas(x,t1,t2){
         this.armas.clear(true,true);
         //this.armas.children.iterate(function(child){
             //child.setActive(false);                
@@ -939,11 +1030,9 @@ export default class SceneJuegoOnline extends Phaser.Scene {
             //child.destroy();
         //});
 
-        this.x = Phaser.Math.Between(80,480);
-
-        this.armaX = this.armas.create(this.x, 20, this.nombreArmas[Phaser.Math.Between(0,5)]).setScale(0.27).setOrigin(0.22, 0.28).setFlipX(true);
+        this.armaX = this.armas.create(x, 20, this.nombreArmas[t1]).setScale(0.27).setOrigin(0.22, 0.28).setFlipX(true);
         this.armaX.body.setSize(150,150).setOffset(200,100);        
-        this.armaY = this.armas.create(1280-this.x, 20, this.nombreArmas[Phaser.Math.Between(0,5)]).setScale(0.27).setOrigin(0.78, 0.28);
+        this.armaY = this.armas.create(1280 - x, 20, this.nombreArmas[t2]).setScale(0.27).setOrigin(0.78, 0.28);
         this.armaY.body.setSize(150,150).setOffset(400,100);
     }
 

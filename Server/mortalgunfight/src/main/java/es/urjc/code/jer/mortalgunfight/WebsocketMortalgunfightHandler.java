@@ -81,21 +81,7 @@ public class WebsocketMortalgunfightHandler extends TextWebSocketHandler {
 				
 				jugador.session.sendMessage(new TextMessage(lleno.toString()));
 			}
-		} else if (node.get("id").asInt() == 100) {
-			ObjectNode random = mapper.createObjectNode();
-			random.put("id", 100);
-			
-			int max = node.get("max").asInt();
-			int randomNum = (int) Math.floor(Math.random()*max+1);
-			
-			random.put("random", randomNum);
-			
-			for (WebsocketJugador i : enPartida) {
-				if (i.session.isOpen()) {
-					i.session.sendMessage(new TextMessage(random.toString()));
-				}
-			}
-	    } else {
+		} else {
 			for (WebsocketJugador i : enPartida) {
 				if (i.session.isOpen()) {
 					if (i != jugador) {
