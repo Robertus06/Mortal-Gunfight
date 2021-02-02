@@ -7,19 +7,10 @@ export default class SceneFinalOnline extends Phaser.Scene {
         this.cameras.main.fadeIn(250);
 
         this.pulsadoSalir = false;
-        this.pulsadoSalirEnemi = false;
-        this.pulsadoCambiar = false;
-        this.pulsadoCambiarEnemi = false;
-        this.pulsadoMismos = false;
-        this.pulsadoMismosYo = false;
-        this.pulsadoMismosEnemi = false;
-
-        this.entrado = false;
-        this.cd = 0;
-        this.tiempoFinal = false;
-        this.escrito = false;
 
         this.transicion = this.sys.game.globalsTransicion.transicion;
+
+        this.abandonado = this.sys.game.globalsAbandonado.abandonado;
 
         this.points = this.sys.game.globalsPuntos.puntos;
 
@@ -101,67 +92,22 @@ export default class SceneFinalOnline extends Phaser.Scene {
             this.derrota.setOrigin(0);
         }
 
-        this.bCambiar = this.add.sprite(640, 318, 'cambiarPersonajes').setInteractive();
-        this.bMismos = this.add.sprite(640, 475, 'mismosPersonajes').setInteractive();
-        this.bSalir = this.add.sprite(640, 610, 'salirMenu').setInteractive();
-
-        this.bMismos.setScale(0.85);
-        this.bCambiar.setScale(0.85);
-        this.bSalir.setScale(0.85);
-
-        this.bMismos.on('pointerover', function () {
-            this.sonidoBoton.play();
-            this.bMismos.setScale(1);
-        }.bind(this));
-
-        this.bMismos.on('pointerout', function () {
-            this.bMismos.setScale(0.85);
-        }.bind(this));
-
-        this.bMismos.on('pointerdown', function () {
-            this.bMismos.destroy();
-            this.bMismos = this.add.sprite(640, 475, 'mismosPersonajes');
-            this.bCambiar.destroy();
-            this.bCambiar = this.add.sprite(640, 318, 'cambiarPersonajes');
-            this.bSalir.destroy();
-            this.bSalir = this.add.sprite(640, 610, 'salirMenu');
-            this.bMismos.setScale(0.85);
-            this.bCambiar.setScale(0.85);
-            this.bSalir.setScale(0.85);
-            this.pulsadoMismosYo = true;
-        }.bind(this));
-
-        this.bCambiar.on('pointerover', function () {
-            this.sonidoBoton.play();
-            this.bCambiar.setScale(1);
-        }.bind(this));
-
-        this.bCambiar.on('pointerout', function () {
-            this.bCambiar.setScale(0.85);
-        }.bind(this));
+        this.bSalir = this.add.sprite(640, 475, 'salirMenu').setInteractive();
 
         this.bSalir.on('pointerover', function () {
             this.sonidoBoton.play();
-            this.bSalir.setScale(1);
+            this.bSalir.setScale(1.15);
         }.bind(this));
 
         this.bSalir.on('pointerout', function () {
-            this.bSalir.setScale(0.85);
+            this.bSalir.setScale(1);
         }.bind(this));
 
         this.bSalir.on('pointerdown', function () {
-            this.bMismos.destroy();
-            this.bMismos = this.add.sprite(640, 475, 'mismosPersonajes');
-            this.bCambiar.destroy();
-            this.bCambiar = this.add.sprite(640, 318, 'cambiarPersonajes');
             this.bSalir.destroy();
-            this.bSalir = this.add.sprite(640, 610, 'salirMenu');
-            this.bMismos.setScale(0.85);
-            this.bCambiar.setScale(0.85);
-            this.bSalir.setScale(0.85);
-            this.cameras.main.fadeOut(250);
+            this.bSalir = this.add.sprite(640, 475, 'salirMenu');
+            this.bSalir.setScale(1);
             this.pulsadoSalir = true;
-            //decir al WS que saque al enemigo tambien
         }.bind(this));
 
         this.sonido = this.sys.game.globalsSonido.sonido;
@@ -196,80 +142,23 @@ export default class SceneFinalOnline extends Phaser.Scene {
     }
 
     update(time) {
-        //recibe de WS lo que hace el enemigo y lo almacena en las variables correspondientes
-        if (this.pulsadoCambiarEnemi && !this.escrito) {
-            this.consejoText = this.add.text(640, 690, 'EL OPONENTE QUIERE CAMBIAR LOS PERSONAJES', { align: 'center', fontFamily: 'luckiestGuy', fontSize: 30, shadowStroke: true, shadowBlur: 1, strokeThickness: 4, stroke: '#000000' });
-            this.consejoText.setOrigin(0.5);
-            this.bMismos.destroy();
-            this.bMismos = this.add.sprite(640, 475, 'mismosPersonajes');
-            this.bCambiar.destroy();
-            this.bCambiar = this.add.sprite(640, 318, 'cambiarPersonajes');
+        if (this.sys.game.mensaje.id == -1) {
             this.bSalir.destroy();
-            this.bSalir = this.add.sprite(640, 610, 'salirMenu');
-            this.bMismos.setScale(0.85);
-            this.bCambiar.setScale(0.85);
-            this.bSalir.setScale(0.85);
-            this.pulsadoCambiar = true;
-            this.tiempoFinal = true;
-            this.cd = time + 2000;
-            this.escrito = true;
-        } else if (this.pulsadoMismosEnemi && !this.escrito) {
-            this.consejoText = this.add.text(640, 690, 'EL OPONENTE QUIERE JUGAR CON LOS MISMOS PERSONAJES', { align: 'center', fontFamily: 'luckiestGuy', fontSize: 30, shadowStroke: true, shadowBlur: 1, strokeThickness: 4, stroke: '#000000' });
-            this.consejoText.setOrigin(0.5);
-            this.escrito = true;
-        } else if (this.pulsadoSalirEnemi && !this.escrito) {
-            this.consejoText = this.add.text(640, 690, 'OPONENTE DESCONECTADO', { align: 'center', fontFamily: 'luckiestGuy', fontSize: 30, shadowStroke: true, shadowBlur: 1, strokeThickness: 4, stroke: '#000000' });
-            this.consejoText.setOrigin(0.5);
-            this.bMismos.destroy();
-            this.bMismos = this.add.sprite(640, 475, 'mismosPersonajes');
-            this.bCambiar.destroy();
-            this.bCambiar = this.add.sprite(640, 318, 'cambiarPersonajes');
-            this.bSalir.destroy();
-            this.bSalir = this.add.sprite(640, 610, 'salirMenu');
-            this.bMismos.setScale(0.85);
-            this.bCambiar.setScale(0.85);
-            this.bSalir.setScale(0.85);
-            this.cameras.main.fadeOut(250);
-            this.pulsadoSalir = true;
-            this.escrito = true;
+            this.bSalir = this.add.sprite(640, 475, 'salirMenu');
+            this.bSalir.setScale(1);
+            this.abandonado.haAbandonado = true;
+            this.transicion.cancelarSeleccion = true;
+            this.scene.start("SceneMenu");
         }
 
-        this.bCambiar.on('pointerdown', function () {
-            this.bMismos.destroy();
-            this.bMismos = this.add.sprite(640, 475, 'mismosPersonajes');
-            this.bCambiar.destroy();
-            this.bCambiar = this.add.sprite(640, 318, 'cambiarPersonajes');
+        if (this.pulsadoSalir) {
+            this.sys.game.connection.send(JSON.stringify({id: -1, nombre: this.sys.game.globalsConsulta.consulta.nombre}));
             this.bSalir.destroy();
-            this.bSalir = this.add.sprite(640, 610, 'salirMenu');
-            this.bMismos.setScale(0.85);
-            this.bCambiar.setScale(0.85);
-            this.bSalir.setScale(0.85);
-            this.pulsadoCambiar = true;
-            this.tiempoFinal = true;
-            this.cd = time + 2000;
-        }.bind(this));
-
-        if (this.pulsadoMismosYo && this.pulsadoMismosEnemi && !this.entrado) {
-            this.pulsadoMismos = true;
-            this.tiempoFinal = true;
-            this.cd = time + 2000;
-            this.entrado = true;
+            this.bSalir = this.add.sprite(640, 475, 'salirMenu');
+            this.bSalir.setScale(1);
+            this.abandonado.haAbandonado = false;
+            this.transicion.cancelarSeleccion = true;
+            this.scene.start("SceneMenu");
         }
-
-        if ( this.cd < time && this.tiempoFinal) {
-            this.cameras.main.fadeOut(250);
-            this.tiempoFinal = false;
-        }
-
-        this.cameras.main.once('camerafadeoutcomplete', function () {
-            if (this.pulsadoMismos) {
-                this.scene.start("ScenePreparatoriaOnline");
-            } else if (this.pulsadoCambiar) {
-                this.scene.start("ScenePersonajeOnline");
-                this.transicion.cancelarSeleccion = false;
-            } else if (this.pulsadoSalir) {
-                this.scene.start("SceneMenu");
-            }
-        }.bind(this));
     }
 }

@@ -69,7 +69,7 @@ export default class SceneJuegoOnline extends Phaser.Scene {
             {
                 this.setActive(false);
                 this.setVisible(false);
-                this.body.stop();
+                //this.body.stop();
                 this.destroy();
             },
             flip: function ()
@@ -796,11 +796,9 @@ export default class SceneJuegoOnline extends Phaser.Scene {
         
         if(this.input.mousePointer.isDown){
             if(this.jugadores.jugYo == 1){
-                if(this.physics.overlap(this.jugador1, this.armas))
                 this.disparar1 = true;
                 
             }else if (this.jugadores.jugYo == 2){
-                if(this.physics.overlap(this.jugador2, this.armas))
                 this.disparar2 = true;
             }
         }

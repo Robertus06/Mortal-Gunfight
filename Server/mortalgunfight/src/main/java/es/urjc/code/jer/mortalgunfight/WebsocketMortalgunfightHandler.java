@@ -81,6 +81,17 @@ public class WebsocketMortalgunfightHandler extends TextWebSocketHandler {
 				
 				jugador.session.sendMessage(new TextMessage(lleno.toString()));
 			}
+		} else if (node.get("id").asInt() == -1){ 
+			if (enPartida.contains(jugador)) {				
+				for (WebsocketJugador i : enPartida) {
+					if (i != jugador) {
+						if (i.session.isOpen()) {
+							i.session.sendMessage(new TextMessage(node.toString()));
+						}
+					}
+				}
+				enPartida = new ArrayList<WebsocketJugador>();
+			}
 		} else {
 			for (WebsocketJugador i : enPartida) {
 				if (i.session.isOpen()) {
