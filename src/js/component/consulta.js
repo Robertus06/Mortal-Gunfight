@@ -1,3 +1,6 @@
+let url = 'https://mortal-gunfight.herokuapp.com';
+// let url = 'http://localhost:8080';
+
 export default class Consulta{
     constructor() {
         this._jugadores = [];
@@ -50,7 +53,7 @@ export default class Consulta{
     conectados(usuario) {
         $(document).ready(function(){
             $.ajax({
-                url:'http://localhost:8080/connected/' + usuario
+                url: url + '/connected/' + usuario
             }).done(function(data) {
                 console.log(data);
                 this.jugadores = data;
@@ -110,7 +113,7 @@ export default class Consulta{
     chats() {
         $(document).ready(function(){
             $.ajax({
-                url:'http://localhost:8080/chat'
+                url: url + '/chat'
             }).done(function(data) {
                 console.log(data);
                 this.chat = data;

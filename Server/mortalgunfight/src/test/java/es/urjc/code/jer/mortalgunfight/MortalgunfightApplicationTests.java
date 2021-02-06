@@ -1,13 +1,13 @@
 package es.urjc.code.jer.mortalgunfight;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
+import static org.junit.Assert.assertTrue;
+import org.junit.Test;
 
-@SpringBootTest
-class MortalgunfightApplicationTests {
-
-	@Test
-	void contextLoads() {
-	}
-
+public class MortalgunfightApplicationTests
+{
+    @Test
+    public void shouldAnswerWithTrue()
+    {
+        assertTrue( true );
+    }
 }

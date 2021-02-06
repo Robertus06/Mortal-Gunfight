@@ -53,7 +53,7 @@ export default class BootScene extends Phaser.Scene {
                     $(document).ready(function(){
                         $.ajax({
                             type: "POST",
-                            url:'http://localhost:8080/chat',
+                            url: this.sys.game.url + '/chat',
                             data: JSON.stringify({
                                 nombre : scene.consulta.nombre,
                                 mensaje : messageText,
@@ -89,7 +89,7 @@ export default class BootScene extends Phaser.Scene {
 
                 $(document).ready(function(){
                     $.ajax({
-                        url:'http://localhost:8080/logins/' + inputUsername.value
+                        url: this.sys.game.url + '/logins/' + inputUsername.value
                     }).done(function(data) {
                         playerData = data;
 
@@ -128,7 +128,7 @@ export default class BootScene extends Phaser.Scene {
 
                 $(document).ready(function(){
                     $.ajax({
-                        url:'http://localhost:8080/logins/' + inputUsername.value
+                        url: this.sys.game.url + '/logins/' + inputUsername.value
                     }).done(function(data) {
                         playerData = data;
 
@@ -146,7 +146,7 @@ export default class BootScene extends Phaser.Scene {
                             $(document).ready(function(){
                                 $.ajax({
                                     type: "POST",
-                                    url:'http://localhost:8080/logins',
+                                    url: this.sys.game.url + '/logins',
                                     data: JSON.stringify({
                                         usuario : inputUsername.value,
                                         contraseña : inputPassword.value,
