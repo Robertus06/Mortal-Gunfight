@@ -64,7 +64,7 @@ export default class Bootloader extends Phaser.Scene {
         // this.load.image('botonMute', 'resources/img/botonMute.png');
         this.load.spritesheet('botonMusic', 'resources/img/botonMusic.png', { frameWidth: 66, frameHeight: 55 });
         this.load.image('controles', 'resources/img/controles.png');
-        this.load.image('controlesLinea', 'resources/img/controlesLinea.png');
+        this.load.image('controlesLinea', 'resources/img/ControlesLinea.png');
         this.load.spritesheet('buscando', 'resources/img/buscandoAnimado.png', { frameWidth: 114, frameHeight: 35 });
         this.load.image('buscandoText', 'resources/img/buscandoText.png');
         this.load.image('encontradoText', 'resources/img/encontradoText.png');
@@ -122,14 +122,14 @@ export default class Bootloader extends Phaser.Scene {
         this.load.image('ciudadBlur', 'resources/img/ciudadBlur.png');
         this.load.image('cohete', 'resources/img/cohete.png');
         this.load.image('bala', 'resources/img/bala.png');
-        this.load.image('ar', 'resources/img/ar.png');
+        this.load.image('ar', 'resources/img/AR.png');
         // this.load.image('lanzacohetes0', 'resources/img/lanzacahotes0.png');
         // this.load.image('lanzacohetes1', 'resources/img/lanzacahotes1.png');
         this.load.spritesheet('lanzacohetes', 'resources/img/lanzacohetes.png', { frameWidth: 745, frameHeight: 273 });
-        this.load.image('minigun', 'resources/img/minigun.png');
-        this.load.image('pistola', 'resources/img/pistola.png');
-        this.load.image('smg', 'resources/img/smg.png');
-        this.load.image('sniper', 'resources/img/sniper.png');
+        this.load.image('minigun', 'resources/img/Minigun.png');
+        this.load.image('pistola', 'resources/img/Pistola.png');
+        this.load.image('smg', 'resources/img/SMG.png');
+        this.load.image('sniper', 'resources/img/Sniper.png');
         this.load.image('brazoPerro', 'resources/img/brazoPerro.png');
         this.load.image('brazoPerroRelax', 'resources/img/brazoPerroRelax.png');
         this.load.image('brazoDinosaurio', 'resources/img/brazoDinosaurio.png');

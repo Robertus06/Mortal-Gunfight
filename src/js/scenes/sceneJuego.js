@@ -32,8 +32,8 @@ export default class SceneJuego extends Phaser.Scene {
                 this.setRotation(arma.rotation);
                 
                 if(arma.texture.key == "minigun"){
-                    this.setPosition(arma.x, arma.y + 30);
-                    this.body.reset(arma.x, arma.y + 30);
+                    this.setPosition(arma.x - 30 * Math.sin(arma.rotation), arma.y + 30 * Math.cos(arma.rotation));
+                    this.body.reset(arma.x - 30 * Math.sin(arma.rotation), arma.y + 30 * Math.cos(arma.rotation));
                 } 
                 else{
                     this.setPosition(arma.x, arma.y);

@@ -60,6 +60,7 @@ export default class SceneMapa extends Phaser.Scene {
             this.bVolcan.destroy();
             this.bVolcan = this.add.image(425, 648, 'botonVolcan');
             this.siguiente = true;
+            this.pulsado = true;
             this.cameras.main.fadeOut(250);
         }.bind(this));
 
@@ -96,6 +97,7 @@ export default class SceneMapa extends Phaser.Scene {
             this.bVolcan.destroy();
             this.bVolcan = this.add.image(425, 648, 'botonVolcan');
             this.siguiente = true;
+            this.pulsado = true;
             this.cameras.main.fadeOut(250);
         }.bind(this));
 
@@ -132,6 +134,7 @@ export default class SceneMapa extends Phaser.Scene {
             this.bVolcan = this.add.image(425, 648, 'botonVolcan');
             this.bVolcan.setDepth(2);
             this.siguiente = true;
+            this.pulsado = true;
             this.cameras.main.fadeOut(250);
         }.bind(this));
 
@@ -180,6 +183,7 @@ export default class SceneMapa extends Phaser.Scene {
                 this.bVolcan = this.add.image(425, 648, 'botonVolcan');
                 this.bVolcan.setDepth(2);
                 this.siguiente = true;
+                this.pulsado = true;
                 this.cameras.main.fadeOut(250);
             } else if (this.seleccionar == 2) {
                 this.mapa.escenario = 'c';
@@ -203,6 +207,7 @@ export default class SceneMapa extends Phaser.Scene {
                 this.bVolcan.destroy();
                 this.bVolcan = this.add.image(425, 648, 'botonVolcan');
                 this.siguiente = true;
+                this.pulsado = true;
                 this.cameras.main.fadeOut(250);
             } else if (this.seleccionar == 3) {
                 this.mapa.escenario = 't';
@@ -226,6 +231,7 @@ export default class SceneMapa extends Phaser.Scene {
                 this.bVolcan.destroy();
                 this.bVolcan = this.add.image(425, 648, 'botonVolcan');
                 this.siguiente = true;
+                this.pulsado = true;
                 this.cameras.main.fadeOut(250);
             }
         }.bind(this));

@@ -53,7 +53,7 @@ export default class BootScene extends Phaser.Scene {
                     $(document).ready(function(){
                         $.ajax({
                             type: "POST",
-                            url: this.sys.game.url + '/chat',
+                            url: 'http://localhost:8080/chat',
                             data: JSON.stringify({
                                 nombre : scene.consulta.nombre,
                                 mensaje : messageText,
@@ -89,7 +89,7 @@ export default class BootScene extends Phaser.Scene {
 
                 $(document).ready(function(){
                     $.ajax({
-                        url: this.sys.game.url + '/logins/' + inputUsername.value
+                        url: 'http://localhost:8080/logins/' + inputUsername.value
                     }).done(function(data) {
                         playerData = data;
 
@@ -128,7 +128,7 @@ export default class BootScene extends Phaser.Scene {
 
                 $(document).ready(function(){
                     $.ajax({
-                        url: this.sys.game.url + '/logins/' + inputUsername.value
+                        url: 'http://localhost:8080/logins/' + inputUsername.value
                     }).done(function(data) {
                         playerData = data;
 
@@ -146,7 +146,7 @@ export default class BootScene extends Phaser.Scene {
                             $(document).ready(function(){
                                 $.ajax({
                                     type: "POST",
-                                    url: this.sys.game.url + '/logins',
+                                    url: 'http://localhost:8080/logins',
                                     data: JSON.stringify({
                                         usuario : inputUsername.value,
                                         contraseña : inputPassword.value,
@@ -156,7 +156,6 @@ export default class BootScene extends Phaser.Scene {
                                         'Content-Type' : 'application/json'
                                     },
                                     success : function(data) {
-                                        console.log(data);
                                         var p = document.getElementById("error");
                                         p.innerHTML = "Registrado con éxito.";
                                         p.style.visibility = "visible";

@@ -1,46 +1,43 @@
-import config from 'src/js/config/config.js'
-import BootScene from 'src/js/config/bootScene.js';
-import Bootloader from 'src/js/config/bootloader.js';
-import SceneMenu from 'src/js/scenes/sceneMenu.js';
-import SceneCreditos from 'src/js/scenes/sceneCreditos.js';
-import SceneControles from 'src/js/scenes/sceneControles.js';
-import SceneControlesLinea from 'src/js/scenes/sceneControlesLinea.js';
-import SceneMenuControles from 'src/js/scenes/sceneMenuControles.js';
-import SceneEspera from 'src/js/scenes/sceneEspera.js';
-import ScenePersonajeUno from 'src/js/scenes/scenePersonajeUno.js';
-import ScenePersonajeOnline from 'src/js/scenes/scenePersonajeOnline.js';
-import ScenePersonajeDos from 'src/js/scenes/scenePersonajeDos.js';
-import SceneMapa from 'src/js/scenes/sceneMapa.js';
-import SceneMapaOnline from 'src/js/scenes/sceneMapaOnline.js';
-import ScenePreparatoria from 'src/js/scenes/scenePreparatoria.js';
-import ScenePreparatoriaOnline from 'src/js/scenes/scenePreparatoriaOnline.js';
-import SceneJuego from 'src/js/scenes/sceneJuego.js';
-import SceneJuegoOnline from 'src/js/scenes/sceneJuegoOnline.js';
-import ScenePausa from 'src/js/scenes/scenePausa.js';
-import SceneFinal from 'src/js/scenes/sceneFinal.js';
-import SceneFinalOnline from 'src/js/scenes/sceneFinalOnline.js';
+import config from '/src/js/config/config.js'
+import BootScene from '/src/js/config/bootscene.js';
+import Bootloader from '/src/js/config/bootloader.js';
+import SceneMenu from '/src/js/scenes/sceneMenu.js';
+import SceneCreditos from '/src/js/scenes/sceneCreditos.js';
+import SceneControles from '/src/js/scenes/sceneControles.js';
+import SceneControlesLinea from '/src/js/scenes/sceneControlesLinea.js';
+import SceneMenuControles from '/src/js/scenes/sceneMenuControles.js';
+import SceneEspera from '/src/js/scenes/sceneEspera.js';
+import ScenePersonajeUno from '/src/js/scenes/scenePersonajeUno.js';
+import ScenePersonajeOnline from '/src/js/scenes/scenePersonajeOnline.js';
+import ScenePersonajeDos from '/src/js/scenes/scenePersonajeDos.js';
+import SceneMapa from '/src/js/scenes/sceneMapa.js';
+import SceneMapaOnline from '/src/js/scenes/sceneMapaOnline.js';
+import ScenePreparatoria from '/src/js/scenes/scenePreparatoria.js';
+import ScenePreparatoriaOnline from '/src/js/scenes/scenePreparatoriaOnline.js';
+import SceneJuego from '/src/js/scenes/sceneJuego.js';
+import SceneJuegoOnline from '/src/js/scenes/sceneJuegoOnline.js';
+import ScenePausa from '/src/js/scenes/scenePausa.js';
+import SceneFinal from '/src/js/scenes/sceneFinal.js';
+import SceneFinalOnline from '/src/js/scenes/sceneFinalOnline.js';
 
-import Sonido from 'src/js/component/sonido.js';
-import Personaje from 'src/js/component/personaje.js';
-import JugadoresOnline from 'src/js/component/jugadoresOnline.js';
-import Mapa from 'src/js/component/mapa.js';
-import Transicion from 'src/js/component/transicion.js';
-import Tiempo from 'src/js/component/tiempo.js';
-import Puntos from 'src/js/component/puntos.js';
-import Consulta from 'src/js/component/consulta.js';
-import Abandonado from 'src/js/component/abandonado.js';
+import Sonido from '/src/js/component/sonido.js';
+import Personaje from '/src/js/component/personaje.js';
+import JugadoresOnline from '/src/js/component/jugadoresOnline.js';
+import Mapa from '/src/js/component/mapa.js';
+import Transicion from '/src/js/component/transicion.js';
+import Tiempo from '/src/js/component/tiempo.js';
+import Puntos from '/src/js/component/puntos.js';
+import Consulta from '/src/js/component/consulta.js';
+import Abandonado from '/src/js/component/abandonado.js';
 
 
 class Game extends Phaser.Game {
     constructor() {
         super(config);
-        
-        this.url = 'https://mortal-gunfight.herokuapp.com';
-        // this.url = 'http://localhost:8080';
 
         this.mensaje = null;
 
-        this.connection = new WebSocket('wss://mortal-gunfight.herokuapp.com/servidor');
+        this.connection = new WebSocket('ws://localhost:8080/servidor');
 
         this.connection.onopen = function () {
             console.log('Comunicación con el servidor establecida con éxito');
