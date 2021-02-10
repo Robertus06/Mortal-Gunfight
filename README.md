@@ -108,7 +108,8 @@ Para los efectos sonoros para las armas hemos decidido hacerlos nosotros mismos 
 
 ### Instrucciones para abrir la aplicación
 
-Abrir el proyecto que se encuentra en la carpeta Server/mortalgunfight con el programa Spring Tool Suite > Ejercutar MortalgunfightApplication.java (Run As > Java Application) > Acceder a un navegador > Colocar la dirección url (localhost:8080).
+En la carpeta 'Mortal Gunfight' se encuentra un archivo 'mortalgunfight-1.1.jar' el cual debe ser ejecutado en CMD, para evitar tener que conocer como ejecutar archivos .jar en un CMD, se ha creado el archivo 'MortalGunfight.bat' que ejecuta directamente la consola, y además abre el link del juego en el navegador.
+Mortal Gunfight > MortalGunfight.bat > (Acceder a un navegador > Colocar la dirección url '(localhost:8080)').
 
 ### Fuentes externas
 
