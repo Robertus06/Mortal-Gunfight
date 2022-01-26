@@ -1,5 +1,5 @@
 @font-face {
-    font-family: 'luckiestGuy';
+    font-family: 'Luckiest Guy';
     src: url(/resources/font/LuckiestGuy-Regular.ttf);
 }
 
@@ -174,7 +174,7 @@ h2 {
 }
 
 .fuentes {
-    font-family: 'luckiestGuy';
+    font-family: 'Luckiest Guy';
     position: absolute;
     top: -3000px;
 }

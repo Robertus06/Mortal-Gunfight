@@ -35,14 +35,14 @@ export default class ScenePreparatoria extends Phaser.Scene {
         this.boton5 = this.add.sprite(840, 680, 'botones', 1).setInteractive();
         
         this.cameras.main.once('camerafadeincomplete', function () {        
-            this.timeText = this.add.text(640, 610, 'Seleccione el tiempo de juego:\n(Por defecto 02:00)', { align: 'center', fontFamily: 'luckiestGuy', fontSize: 25, shadowStroke: true, shadowBlur: 1, strokeThickness: 4, stroke: '#000000' });
+            this.timeText = this.add.text(640, 610, 'Seleccione el tiempo de juego:\n(Por defecto 02:00)', { align: 'center', fontFamily: 'Luckiest Guy', fontSize: 25, shadowStroke: true, shadowBlur: 1, strokeThickness: 4, stroke: '#000000' });
             this.timeText.setOrigin(0.5);
 
-            this.timeText30 = this.add.text(440, 680, '00:30', { fontFamily: 'luckiestGuy', fontSize: 30, shadowStroke: true, shadowBlur: 1, strokeThickness: 4, stroke: '#000000' });
+            this.timeText30 = this.add.text(440, 680, '00:30', { fontFamily: 'Luckiest Guy', fontSize: 30, shadowStroke: true, shadowBlur: 1, strokeThickness: 4, stroke: '#000000' });
             this.timeText30.setOrigin(0.5);
-            this.timeText2 = this.add.text(640, 680, '02:00', { fontFamily: 'luckiestGuy', fontSize: 30, shadowStroke: true, shadowBlur: 1, strokeThickness: 4, stroke: '#000000' });
+            this.timeText2 = this.add.text(640, 680, '02:00', { fontFamily: 'Luckiest Guy', fontSize: 30, shadowStroke: true, shadowBlur: 1, strokeThickness: 4, stroke: '#000000' });
             this.timeText2.setOrigin(0.5);
-            this.timeText5 = this.add.text(840, 680, '05:00', { fontFamily: 'luckiestGuy', fontSize: 30, shadowStroke: true, shadowBlur: 1, strokeThickness: 4, stroke: '#000000' });
+            this.timeText5 = this.add.text(840, 680, '05:00', { fontFamily: 'Luckiest Guy', fontSize: 30, shadowStroke: true, shadowBlur: 1, strokeThickness: 4, stroke: '#000000' });
             this.timeText5.setOrigin(0.5);
         }.bind(this));
 
