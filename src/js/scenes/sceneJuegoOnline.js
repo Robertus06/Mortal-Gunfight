@@ -530,19 +530,19 @@ export default class SceneJuegoOnline extends Phaser.Scene {
         this.physics.add.overlap(this.jugador2, this.balas1, this.golpeJugador2, null, this);
         this.physics.add.overlap(this.jugador1, this.balas2, this.golpeJugador1, null, this);    
         
-        this.timeText = this.add.text(638, 130, '02:00', { fontFamily: 'luckiestGuy', fontSize: 50, shadowStroke: true, shadowBlur: 1, strokeThickness: 4, stroke: '#000000' });
+        this.timeText = this.add.text(638, 130, '02:00', { fontFamily: 'Luckiest Guy', fontSize: 50, shadowStroke: true, shadowBlur: 1, strokeThickness: 4, stroke: '#000000' });
         this.timeText.setOrigin(0.5);
         this.timeText.setDepth(4);
 
-        this.p1Text = this.add.text(530, 60,'0',{ fontFamily: 'luckiestGuy', fontSize: 70, shadowStroke: true, shadowBlur: 1, strokeThickness: 4, stroke: '#000000' });
+        this.p1Text = this.add.text(530, 60,'0',{ fontFamily: 'Luckiest Guy', fontSize: 70, shadowStroke: true, shadowBlur: 1, strokeThickness: 4, stroke: '#000000' });
         this.p1Text.setOrigin(0.5);
         this.p1Text.setDepth(4);
 
-        this.p2Text = this.add.text(760, 60,'0',{ fontFamily: 'luckiestGuy', fontSize: 70, shadowStroke: true, shadowBlur: 1, strokeThickness: 4, stroke: '#000000' });
+        this.p2Text = this.add.text(760, 60,'0',{ fontFamily: 'Luckiest Guy', fontSize: 70, shadowStroke: true, shadowBlur: 1, strokeThickness: 4, stroke: '#000000' });
         this.p2Text.setOrigin(0.5);
         this.p2Text.setDepth(4);
 
-        this.m1Text = this.add.text(80, 90,' ',{ fontFamily: 'luckiestGuy', fontSize: 30, shadowStroke: true, shadowBlur: 1, strokeThickness: 4, stroke: '#000000' });
+        this.m1Text = this.add.text(80, 90,' ',{ fontFamily: 'Luckiest Guy', fontSize: 30, shadowStroke: true, shadowBlur: 1, strokeThickness: 4, stroke: '#000000' });
         this.m1Text.setOrigin(0);
         this.m1Text.setDepth(4);
 
@@ -550,7 +550,7 @@ export default class SceneJuegoOnline extends Phaser.Scene {
 
         
 
-        this.m2Text = this.add.text(1200, 90,' ',{ fontFamily: 'luckiestGuy', fontSize: 30, shadowStroke: true, shadowBlur: 1, strokeThickness: 4, stroke: '#000000' });
+        this.m2Text = this.add.text(1200, 90,' ',{ fontFamily: 'Luckiest Guy', fontSize: 30, shadowStroke: true, shadowBlur: 1, strokeThickness: 4, stroke: '#000000' });
         this.m2Text.setOrigin(1,0);
         this.m2Text.setDepth(4);
         

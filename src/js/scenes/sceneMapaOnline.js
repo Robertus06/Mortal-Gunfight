@@ -25,7 +25,7 @@ export default class SceneMapaOnline extends Phaser.Scene {
         this.bAleatorio = this.add.image(100, 648, 'botonAleatorio').setInteractive();
 
         this.cameras.main.once('camerafadeincomplete', function () { 
-            this.mapaText = this.add.text(640, 275, 'Si los mapas no coinciden\nse elegirá uno al azar\nentre los dos votados', { align: 'center', fontFamily: 'luckiestGuy', fontSize: 40, shadowStroke: true, shadowBlur: 1, strokeThickness: 4, stroke: '#000000' });
+            this.mapaText = this.add.text(640, 275, 'Si los mapas no coinciden\nse elegirá uno al azar\nentre los dos votados', { align: 'center', fontFamily: 'Luckiest Guy', fontSize: 40, shadowStroke: true, shadowBlur: 1, strokeThickness: 4, stroke: '#000000' });
             this.mapaText.setOrigin(0.5);
             this.mapaText.setAlpha(0.5);
             this.mapaText.setDepth(1);
